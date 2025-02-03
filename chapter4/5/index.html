@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 4.5 Recent Advancements - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter4/5/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter4/5/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 4.5 Recent Advancements">
+  <meta property="og:description" content="Quantum neural networks (QNNs) have emerged as a prominent paradigm in quantum machine learning, demonstrating potential in both discriminative and generative learning tasks. For discriminative tasks, QNNs utilize high-dimensional Hilbert spaces to efficiently capture and represent complex intrinsic relationships. In generative tasks, QNNs leverage variational quantum circuits to generate complex probability distributions that may exceed the capabilities of classical models. While these approaches share common learning strategies, they each introduce unique challenges and opportunities in terms of model design, theoretical exploration, and practical implementation. In the remainder of this section, we briefly review recent advances in QNNs. Interested readers can refer to @ablayev2019quantum [@li2022recent; @massoli2022leap] for a more comprehensive review.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter4">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 4.5 Recent Advancements">
+  <meta name="twitter:description" content="Quantum neural networks (QNNs) have emerged as a prominent paradigm in quantum machine learning, demonstrating potential in both discriminative and generative learning tasks. For discriminative tasks, QNNs utilize high-dimensional Hilbert spaces to efficiently capture and represent complex intrinsic relationships. In generative tasks, QNNs leverage variational quantum circuits to generate complex probability distributions that may exceed the capabilities of classical models. While these approaches share common learning strategies, they each introduce unique challenges and opportunities in terms of model design, theoretical exploration, and practical implementation. In the remainder of this section, we briefly review recent advances in QNNs. Interested readers can refer to @ablayev2019quantum [@li2022recent; @massoli2022leap] for a more comprehensive review.">
+
+  <meta itemprop="name" content="Chapter 4.5 Recent Advancements">
+  <meta itemprop="description" content="Quantum neural networks (QNNs) have emerged as a prominent paradigm in quantum machine learning, demonstrating potential in both discriminative and generative learning tasks. For discriminative tasks, QNNs utilize high-dimensional Hilbert spaces to efficiently capture and represent complex intrinsic relationships. In generative tasks, QNNs leverage variational quantum circuits to generate complex probability distributions that may exceed the capabilities of classical models. While these approaches share common learning strategies, they each introduce unique challenges and opportunities in terms of model design, theoretical exploration, and practical implementation. In the remainder of this section, we briefly review recent advances in QNNs. Interested readers can refer to @ablayev2019quantum [@li2022recent; @massoli2022leap] for a more comprehensive review.">
+  <meta itemprop="wordCount" content="1596">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 4.5 Recent Advancements</h1>
+<p>Quantum neural networks (QNNs) have emerged as a prominent paradigm in
+quantum machine learning, demonstrating potential in both discriminative
+and generative learning tasks. For discriminative tasks, QNNs utilize
+high-dimensional Hilbert spaces to efficiently capture and represent
+complex intrinsic relationships. In generative tasks, QNNs leverage
+variational quantum circuits to generate complex probability
+distributions that may exceed the capabilities of classical models.
+While these approaches share common learning strategies, they each
+introduce unique challenges and opportunities in terms of model design,
+theoretical exploration, and practical implementation. In the remainder
+of this section, we briefly review recent advances in QNNs. Interested
+readers can refer to @ablayev2019quantum
+[@li2022recent; @massoli2022leap] for a more comprehensive review.</p>
+<h3 id="discriminative-learning-with-qnn">Discriminative learning with QNN</h3>
+<p>QNNs for discriminative tasks have emerged as one of the most active
+research areas in quantum machine learning, demonstrating potential
+advantages in feature representation and processing efficiency. The
+quantum learning approach leverages the high-dimensional Hilbert space
+and quantum parallelism to potentially handle complex classification
+boundaries more effectively than classical neural networks. Research has
+shown particular promise in handling datasets with inherent quantum
+properties and problems where quantum entanglement can be meaningfully
+exploited [@huang2022quantum].</p>
+<h4 id="model-designs">Model designs</h4>
+<p>In the realm of quantum discriminative models, researchers have
+developed various quantum neural architectures. In general, variational
+quantum classifiers [@havlivcek2019supervised; @mitarai2018quantum]
+could employ parameterized quantum circuits for classification tasks.
+Subsequently, quantum convolutional neural networks [@cong2019quantum]
+are designed for processing structured data. Hybrid quantum-classical
+architectures [@arthur2022hybrid] are proposed to combine quantum layers
+with classical neural networks. Other notable works include the
+development of quantum versions of popular classical architectures like
+recurrent neural networks [@bausch2020recurrent] and attention
+mechanisms [@shi2024qsan]. Finally, @perez2020data [@fan2022compact]
+have explored quantum re-uploading strategies for encoding classical
+data, achieving QML models with more expressive feature maps.</p>
+<p>In addition to manually designed architectures, various lightening
+strategies have been explored to enhance the efficiency of quantum
+neural networks. For example, quantum architecture search methods have
+been developed by [@du2022quantum; @zhang2022differentiable] to
+automatically discover optimal quantum circuit designs with reduced gate
+complexity. @sim2021adaptive [@wang2022symmetric] introduced quantum
+pruning techniques that systematically identify and remove redundant
+quantum gates while preserving the performance. In the realm of
+knowledge distillation, researchers have demonstrated how to transfer
+knowledge from the teacher model given as quantum [@alam2023knowledge]
+or classical [@li2024hybrid] neural networks to more compact quantum
+circuit architectures that are more robust against quantum noises. These
+optimization approaches have collectively contributed to improving the
+practical performance of QNNs on real quantum devices, particularly in
+the NISQ era.</p>
+<h4 id="theoretical-foundations">Theoretical foundations</h4>
+<p>To gain a deeper understanding of the potential advantages and
+limitations of QNNs, a crucial research topic is analyzing their
+learnability. More concisely, the learnability is determined by the
+interplay of three key aspects: expressivity, trainability, and
+generalization, as preliminarily introduced in
+Chapter <a href="#chapt5:sec:qnn_theory">1.4</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;chapt5:sec:qnn_theory&rdquo;} with essential theoretical results.
+Beyond these foundational insights, an extensive body of research has
+conducted more comprehensive and detailed investigations into these
+three aspects, which will be reviewed individually in the following.</p>
+<p><strong>Expressivity</strong>. The expressivity of QNNs refers to their ability to
+represent complex functions or quantum states efficiently. Universal
+approximation theorems (UAT) incorporating data re-uploading strategies
+have been established by @perez2020data firstly with subsequent works
+ [@schuld2021effect; @yu2022power] in various problem settings. Beyond
+the UAT, @sim2019expressibility and @nakaji2021expressibility analyze
+the expressivity of QNNs by investigating how well the parameterized
+quantum circuits used in QNNs can approximate the Haar distribution, a
+critical measure of expressive capacity in quantum systems. Moreover,
+@yu2024non analyze the non-asymptotic error bounds of variational
+quantum circuits for approximating multivariate polynomials and smooth
+functions.</p>
+<p><strong>Trainability</strong>. The trainability of QNNs corresponds to two aspects
+during the optimization of QNNs: the <em>gradient magnitude</em> and the
+<em>convergence rate</em>.</p>
+<p>For the first research line, @mcclean2018barren first found the
+phenomenon of vanishing gradients, dubbed as the barren plateau, where
+the gradient magnitude scales exponentially small with the quantum
+system size. Since then, a series of studies explored the cause of
+barren plateau, including global measurements [@cerezo2021cost], highly
+entanglement [@ortiz2021entanglement], and quantum system noise
+[@wang2021noise].</p>
+<p>Efforts to address the barren plateau problem, a major challenge in
+training deep quantum circuits, have yielded strategies such as proper
+circuit and parameter initialization
+techniques [@grant2019initialization; @zhang2022escaping], cost function
+design [@cerezo2021cost], and proper circuits [@pesah2021absence].
+Quantum-specific regularization techniques have also been developed to
+mitigate these effects [@larocca2022diagnosing].</p>
+<p>Another research line on the trainability of QNNs focuses on the
+convergence of QNNs, which is not introduced in this Chapter. In
+particular, @kiani2020learning and @wiersema2020exploring experimentally
+found that overparameterized QNNs embrace a benign landscape and permit
+fast convergence towards near optimal local minima. Afterward, initial
+attempts have been made to theoretically explain the superiority of
+over-parameterized QNNs. Specifically, @larocca2023theory and
+@anschuetz2021critical utilized tools from dynamical Lie algebra and
+random matrix theory, respectively, to quantify the critical points in
+the optimization landscape of overparameterized QNNs. Moreover,
+@you2022convergence extended the classical convergence results of
+@xu2018convergence to the quantum domain, proving that overparameterized
+QNNs achieve an exponential convergence rate. Additionally,
+@liu2023analytic and @wang2023symmetric introduced the concept of the
+quantum neural tangent kernel (QNTK) to further demonstrate the
+exponential convergence rate of overparameterized QNNs. Besides the
+overparameterization theory,
+[@du2021learnability; @qi2023theoretical; @qian2024shuffle] investigated
+the required conditions to ensure the convergence of QNNs towards local
+minima.</p>
+<p><strong>Generalization</strong>. Research has also focused on understanding the
+sample complexity and generalization error bounds of quantum machine
+learning algorithms by using different statistical learning tools. In
+particular, @abbas2021power compared the generalization power of QNNs
+and classical learning models based on an information geometry metric.
+@caro2022generalization and @du2022efficient established generalization
+error bounds using covering numbers, revealing the impact of circuit
+structural factors&mdash;such as the number of gates and types of
+observables&mdash;on generalization ability. Similarly, @bu2022statistical
+analyzed the generalization ability of QNNs from the perspective of
+quantum resource theory, emphasizing the role of quantum resources such
+as entanglement and magic in influencing generalization.</p>
+<p>Furthermore, frameworks for demonstrating quantum advantage in specific
+learning scenarios have been
+proposed [@huang2021information; @huang2022quantum], providing insights
+into the conditions under which quantum models outperform their
+classical counterparts. @du2021learnability and @zhang2024curse
+investigate the training-dependent generalization abilities of QNNs,
+while @du2023problem study problem-dependent generalization,
+highlighting key factors that enable QNNs to achieve strong
+generalization performance.</p>
+<p>Beyond analyses focused on specific datasets and problems, the
+generalization ability of QNNs has also been examined through the lens
+of the No-Free-Lunch theorem. @poland2020no explore the average
+performance of QNNs across all possible datasets and problems, providing
+a broader perspective on their generalization potential. Extending this
+work, @sharma2022reformulation and @wang2024transition adapt the
+No-Free-Lunch theorem to scenarios involving entangled data,
+demonstrating the potential benefits of entanglement in certain
+settings. Additionally, @wang2024separable establish a No-Free-Lunch
+framework for various learning protocols, considering different quantum
+resources used in these protocols.</p>
+<h4 id="applications">Applications</h4>
+<p>Practical applications of quantum neural networks for discriminative
+learning have spanned multiple domains. In computer vision, researchers
+have demonstrated quantum approaches to image
+classification [@henderson2020quanvolutional] and pattern
+recognition [@alrikabi2022face]. In quantum chemistry, QNNs have been
+applied to proton affinity predictions  [@jin2024integrating] and
+catalyst developments [@roh2024hybrid]. Financial applications include
+market trend classification [@li2023quantum] and fraud
+detection [@innan2024financial]. Medical applications encompass drug
+discovery [@batra2021quantum] and disease diagnosis [@enad2023review].</p>
+<h3 id="generative-learning-with-qnns">Generative learning with QNNs</h3>
+<p>QNNs for generative tasks represent a promising avenue in quantum
+machine learning, offering new methodologies for generating complex data
+distributions. By leveraging variational quantum circuits, these models
+aim to generate potentially more complex probability distributions
+compared to classical counterparts, particularly in domains where
+high-dimensional data or quantum properties are prominent. We refer the
+readers to @tian2023recent for a survey of QNNs in generative learning.</p>
+<h4 id="model-designs-1">Model designs</h4>
+<p>Researchers have developed various QNN architectures tailored for
+generative tasks. Quantum circuit Born machines
+(QCBMs) [@benedetti2019generative] are one of the pioneering models,
+utilizing parameterized quantum circuits to generate discrete
+probability distributions. Quantum generative adversarial
+networks [@lloyd2018quantum] extend the adversarial framework to the
+quantum domain, where quantum generators and discriminators compete to
+learn complex distributions. Quantum Boltzmann
+machines [@amin2018quantum] are another notable model, employing quantum
+devices to prepare Boltzmann distributions for estimating target
+discrete distributions. Additionally, quantum
+autoencoders [@romero2017quantum] have been proposed for tasks like
+quantum state compression and reconstruction, offering potential
+advantages in quantum information processing. Recently, quantum
+diffusion models [@zhang2024generative; @kolle2024quantum] have been
+proposed for generating quantum state ensembles or classical images.
+These models showcase the versatility of QNNs in addressing diverse
+generative tasks.</p>
+<h4 id="theoretical-foundations-1">Theoretical foundations</h4>
+<p>The theoretical understanding of generative quantum neural networks has
+advanced in several directions. Similar to QNNs for discriminative
+tasks, quantum generative models like QCBMs face the barren plateau
+issue with additional mechanisms from the Kullbach-Leibler (KL)
+divergence loss function [@rudolph2024trainability]. In parallel, QCBMs
+are more efficient in the data-limited regime than the other classical
+generative models [@hibat2024framework]. Besides, @gao2018quantum proved
+the existence of quantum generative model that is more capable of
+representing probability distributions compared with classical
+generative models, which has exponential speedup in learning and
+inference. Similarly, @gao2022enhancing proved the separation in
+expressive power between a class of widely used generative models, known
+as Bayesian networks, and its minimal quantum-inspired extension.</p>
+<h4 id="applications-1">Applications</h4>
+<p>Generative QNNs have shown potential in various practical applications.
+In finance, they have been used to model complex financial data
+distributions and generate synthetic financial datasets, demonstrating
+better performance than classical models in certain
+scenarios [@alcazar2020classical; @zhu2022generative]. In the domain of
+quantum physics, quantum generative models have been applied for quantum
+state tomography and quantum simulation, aiding in the understanding of
+quantum systems [@benedetti2019adversarial]. In image generation, QGANs
+have been employed to produce high-quality images, showcasing their
+capability in handling complex visual data [@huang2021experimental].
+Furthermore, quantum generative models have been explored for drug
+discovery, where they can potentially accelerate the process by
+efficiently exploring large chemical spaces [@li2021quantum]. These
+applications highlight the broad potential of QNNs in generative tasks
+across different domains.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter4/5.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter4/4/" title="Chapter 4.4 Theoretical Foundations of QNNs"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 4.4 Theoretical Foundations of QNNs</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter5/" title="Chapter 5 Quantum Transformer">Next - Chapter 5 Quantum Transformer <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class="active"><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

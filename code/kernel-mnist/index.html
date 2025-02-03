@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Classification on MNIST - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/code/kernel-mnist/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/code/kernel-mnist/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Classification on MNIST">
+  <meta property="og:description" content="In this tutorial, we will train a SVM classifier with a quantum kernel on the MNIST dataset. The basic pipeline is implemented with following steps:
+Load the dataset. Define the quantum feature mapping. Construct the quantum kernel. Construct and train the SVM. We begin by importing all related libraries:
+import pennylane as qml from sklearn.datasets import fetch_openml from sklearn.decomposition import PCA from sklearn.model_selection import train_test_split from sklearn.preprocessing import StandardScaler from sklearn.svm import SVC from sklearn.metrics import accuracy_score import numpy as np import matplotlib.pyplot as plt We then load the MNIST dataset. Here we focus on two classes of 3 and 6, leading to a binary classification problem. PCA is firstly applied to reduce the feature dimension of images in MNIST to reduce the required number of qubits to encode this classifcal feature. The compressed features are then normalized to match the periodicity of the quantum feature mapping used later.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="code">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Classification on MNIST">
+  <meta name="twitter:description" content="In this tutorial, we will train a SVM classifier with a quantum kernel on the MNIST dataset. The basic pipeline is implemented with following steps:
+Load the dataset. Define the quantum feature mapping. Construct the quantum kernel. Construct and train the SVM. We begin by importing all related libraries:
+import pennylane as qml from sklearn.datasets import fetch_openml from sklearn.decomposition import PCA from sklearn.model_selection import train_test_split from sklearn.preprocessing import StandardScaler from sklearn.svm import SVC from sklearn.metrics import accuracy_score import numpy as np import matplotlib.pyplot as plt We then load the MNIST dataset. Here we focus on two classes of 3 and 6, leading to a binary classification problem. PCA is firstly applied to reduce the feature dimension of images in MNIST to reduce the required number of qubits to encode this classifcal feature. The compressed features are then normalized to match the periodicity of the quantum feature mapping used later.">
+
+  <meta itemprop="name" content="Classification on MNIST">
+  <meta itemprop="description" content="In this tutorial, we will train a SVM classifier with a quantum kernel on the MNIST dataset. The basic pipeline is implemented with following steps:
+Load the dataset. Define the quantum feature mapping. Construct the quantum kernel. Construct and train the SVM. We begin by importing all related libraries:
+import pennylane as qml from sklearn.datasets import fetch_openml from sklearn.decomposition import PCA from sklearn.model_selection import train_test_split from sklearn.preprocessing import StandardScaler from sklearn.svm import SVC from sklearn.metrics import accuracy_score import numpy as np import matplotlib.pyplot as plt We then load the MNIST dataset. Here we focus on two classes of 3 and 6, leading to a binary classification problem. PCA is firstly applied to reduce the feature dimension of images in MNIST to reduce the required number of qubits to encode this classifcal feature. The compressed features are then normalized to match the periodicity of the quantum feature mapping used later.">
+  <meta itemprop="wordCount" content="447">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Classification on MNIST</h1>
+<p>In this tutorial, we will train a SVM classifier with a quantum kernel on the MNIST dataset. The basic pipeline is implemented with following steps:</p>
+<ol>
+<li>Load the dataset.</li>
+<li>Define the quantum feature mapping.</li>
+<li>Construct the quantum kernel.</li>
+<li>Construct and train the SVM.</li>
+</ol>
+<p>We begin by importing all related libraries:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pennylane <span style="color:#66d9ef">as</span> qml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.datasets <span style="color:#f92672">import</span> fetch_openml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.decomposition <span style="color:#f92672">import</span> PCA
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.svm <span style="color:#f92672">import</span> SVC
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> accuracy_score
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span></code></pre></div><p>We then load the MNIST dataset. Here we focus on two classes of <code>3</code> and <code>6</code>, leading to a binary classification problem. PCA is firstly applied to reduce the feature dimension of images in MNIST to reduce the required number of qubits to encode this classifcal feature. The compressed features are then normalized to match the periodicity of the quantum feature mapping used later.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_mnist</span>(n_qubit):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Load MNIST dataset from OpenML</span>
+</span></span><span style="display:flex;"><span>    mnist <span style="color:#f92672">=</span> fetch_openml(<span style="color:#e6db74">&#39;mnist_784&#39;</span>, version<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    X, y <span style="color:#f92672">=</span> mnist<span style="color:#f92672">.</span>data, mnist<span style="color:#f92672">.</span>target
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Filter out the digits 3 and 6</span>
+</span></span><span style="display:flex;"><span>    mask <span style="color:#f92672">=</span> (y <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;3&#39;</span>) <span style="color:#f92672">|</span> (y <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;6&#39;</span>)
+</span></span><span style="display:flex;"><span>    X_filtered <span style="color:#f92672">=</span> X[mask]
+</span></span><span style="display:flex;"><span>    y_filtered <span style="color:#f92672">=</span> y[mask]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Convert labels to binary (0 for digit 3 and 1 for digit 6)</span>
+</span></span><span style="display:flex;"><span>    y_filtered <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(y_filtered <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;3&#39;</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Apply PCA to reduce the feature dimension</span>
+</span></span><span style="display:flex;"><span>    pca <span style="color:#f92672">=</span> PCA(n_components<span style="color:#f92672">=</span>n_qubit)
+</span></span><span style="display:flex;"><span>    X_reduced <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(X_filtered)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Normalize the input feature</span>
+</span></span><span style="display:flex;"><span>    scaler <span style="color:#f92672">=</span> StandardScaler()<span style="color:#f92672">.</span>fit(X_reduced)
+</span></span><span style="display:flex;"><span>    X_scaled <span style="color:#f92672">=</span> scaler<span style="color:#f92672">.</span>transform(X_reduced)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Split into training and testing sets</span>
+</span></span><span style="display:flex;"><span>    X_train, X_test, y_train, y_test <span style="color:#f92672">=</span> train_test_split(X_scaled, y_filtered, test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">0.2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_train, X_test, y_train, y_test
+</span></span></code></pre></div><p>We use the angle embedding as the quantum feature mapping method. The quantum kernel is therefore implemented as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n_qubit <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>dev <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>device(<span style="color:#e6db74">&#39;default.qubit&#39;</span>, wires<span style="color:#f92672">=</span>n_qubit)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@qml.qnode</span>(dev)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">kernel</span>(x1, x2, n_qubit):
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>AngleEmbedding(x1, wires<span style="color:#f92672">=</span>range(n_qubit))
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>adjoint(qml<span style="color:#f92672">.</span>AngleEmbedding)(x2, wires<span style="color:#f92672">=</span>range(n_qubit))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> qml<span style="color:#f92672">.</span>expval(qml<span style="color:#f92672">.</span>Projector([<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span>n_qubit, wires<span style="color:#f92672">=</span>range(n_qubit)))
+</span></span></code></pre></div><p>With the estimated quantum kernel, a SVM classifier is constructed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">kernel_mat</span>(A, B):
+</span></span><span style="display:flex;"><span>    mat <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> a <span style="color:#f92672">in</span> A:
+</span></span><span style="display:flex;"><span>        row <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> b <span style="color:#f92672">in</span> B:
+</span></span><span style="display:flex;"><span>            row<span style="color:#f92672">.</span>append(kernel(a, b, n_qubit))
+</span></span><span style="display:flex;"><span>        mat<span style="color:#f92672">.</span>append(row)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array(mat)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>svm <span style="color:#f92672">=</span> SVC(kernel<span style="color:#f92672">=</span>kernel_mat)
+</span></span></code></pre></div><p>We then train and evaluate the performance of the SVM with quantum kernel.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>X_train, X_test, y_train, y_test <span style="color:#f92672">=</span> load_mnist(n_qubit)
+</span></span><span style="display:flex;"><span>svm<span style="color:#f92672">.</span>fit(X_train, y_train)
+</span></span><span style="display:flex;"><span>pred <span style="color:#f92672">=</span> svm<span style="color:#f92672">.</span>predict(X_test)
+</span></span><span style="display:flex;"><span>accuracy_score(y_test, pred)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>svm <span style="color:#f92672">=</span> SVC(kernel<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;precomputed&#39;</span>)
+</span></span><span style="display:flex;"><span>n_sample_max <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>X_train_sample <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>y_train_sample <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> label <span style="color:#f92672">in</span> np<span style="color:#f92672">.</span>unique(y_train):
+</span></span><span style="display:flex;"><span>    index <span style="color:#f92672">=</span> y_train <span style="color:#f92672">==</span> label
+</span></span><span style="display:flex;"><span>    X_train_sample<span style="color:#f92672">.</span>append(X_train[index][:n_sample_max])
+</span></span><span style="display:flex;"><span>    y_train_sample<span style="color:#f92672">.</span>append(y_train[index][:n_sample_max])
+</span></span><span style="display:flex;"><span>X_train_sample <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate(X_train_sample, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>y_train_sample <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate(y_train_sample, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>kernel_mat_train <span style="color:#f92672">=</span> kernel_mat(X_train_sample, X_train_sample)
+</span></span><span style="display:flex;"><span>kernel_mat_test <span style="color:#f92672">=</span> kernel_mat(X_test, X_train_sample)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>accuracy <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>n_samples <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> n_sample <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>, n_sample_max<span style="color:#f92672">+</span><span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>):
+</span></span><span style="display:flex;"><span>    class1_indices <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(n_sample)
+</span></span><span style="display:flex;"><span>    class2_indices <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(n_sample_max, n_sample_max<span style="color:#f92672">+</span>n_sample)
+</span></span><span style="display:flex;"><span>    selected_indices <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate([class1_indices, class2_indices])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    svm<span style="color:#f92672">.</span>fit(kernel_mat_train[np<span style="color:#f92672">.</span>ix_(selected_indices, selected_indices)], np<span style="color:#f92672">.</span>concatenate([y_train_sample[:n_sample], y_train_sample[n_sample_max:n_sample_max<span style="color:#f92672">+</span>n_sample]]))
+</span></span><span style="display:flex;"><span>    pred <span style="color:#f92672">=</span> svm<span style="color:#f92672">.</span>predict(np<span style="color:#f92672">.</span>concatenate([kernel_mat_test[:, :n_sample], kernel_mat_test[:, n_sample_max:n_sample_max<span style="color:#f92672">+</span>n_sample]], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>    accuracy<span style="color:#f92672">.</span>append(accuracy_score(y_test, pred))
+</span></span><span style="display:flex;"><span>    n_samples<span style="color:#f92672">.</span>append(n_sample)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(n_sample, accuracy, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Classification Accuracy vs. #Training Samples&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;#Training Samples&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xticks(n_sample, n_sample)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Accuracy&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>grid()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/code/kernel-mnist.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/code/data-encode/" title="Data Encoding"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Data Encoding</a>
+<a class="nav nav-next" href="http://localhost:1313/code/classifier/" title="Quantum Classifier">Next - Quantum Classifier <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class="active"><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

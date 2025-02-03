@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 5.2 Fault-tolerant Quantum Transformer - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter5/2/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter5/2/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 5.2 Fault-tolerant Quantum Transformer">
+  <meta property="og:description" content="This content of this section corresponds to the Chapter 5.2 of our paper. Please refer to the original paper for more details.
+In this section, we move on to show an end-to-end transformer architecture implementable on a quantum device, which includes all the key building blocks introduced in Chapter 5.1, and a discussion of the potential runtime speedups of this quantum model. In particular, here we focus on the inference process in which a classical Transformer has already been trained and is queried to predict the single next token.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter5">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 5.2 Fault-tolerant Quantum Transformer">
+  <meta name="twitter:description" content="This content of this section corresponds to the Chapter 5.2 of our paper. Please refer to the original paper for more details.
+In this section, we move on to show an end-to-end transformer architecture implementable on a quantum device, which includes all the key building blocks introduced in Chapter 5.1, and a discussion of the potential runtime speedups of this quantum model. In particular, here we focus on the inference process in which a classical Transformer has already been trained and is queried to predict the single next token.">
+
+  <meta itemprop="name" content="Chapter 5.2 Fault-tolerant Quantum Transformer">
+  <meta itemprop="description" content="This content of this section corresponds to the Chapter 5.2 of our paper. Please refer to the original paper for more details.
+In this section, we move on to show an end-to-end transformer architecture implementable on a quantum device, which includes all the key building blocks introduced in Chapter 5.1, and a discussion of the potential runtime speedups of this quantum model. In particular, here we focus on the inference process in which a classical Transformer has already been trained and is queried to predict the single next token.">
+  <meta itemprop="wordCount" content="750">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 5.2 Fault-tolerant Quantum Transformer</h1>
+<p><em>This content of this section corresponds to the Chapter 5.2 of our paper. Please refer to the original paper for more details.</em></p>
+<p>In this section, we move on to show an end-to-end transformer
+architecture implementable on a quantum device, which includes all the
+key building blocks introduced in
+Chapter 5.1, and a discussion of the
+potential runtime speedups of this quantum model. In particular, here we
+focus on the <em>inference process</em> in which a classical Transformer has
+already been trained and is queried to predict the single next token.</p>
+<p>Recall that in
+Chapter 5.1, we suppose that the three
+parameterized matrices in the self-attention mechanism have the same
+size, i.e., $W_q, W_k, W_v \in \mathbb{R}^{d \times d}$. Besides, the
+input sequence $S$ and the matrix returned by the attention block
+$G^{\text{soft}}$ has the size $\ell \times d$. Here, we further suppose
+the length of the sentence and the dimension of hidden features
+exponentially scale with $2$, i.e., $\ell=2^N$ and
+$\log d\in \mathbb{N^+}$. This setting aligns with the scaling of
+quantum computing, making it easier to understand. For other cases,
+padding techniques can be applied to expand the matrix and vector
+dimensions to conform to this requirement.</p>
+<p>Since the runtime speedups depend heavily on the capabilities of the
+available input oracles, it is essential to specify the input oracles
+used in the quantum Transformer before detailing the algorithms. For the
+classical Transformers, the memory access to the inputs such as the
+sentence and the query, key, and value matrices is assumed. In the
+quantum version, we assume the access of several matrices via block
+encodings introduced in
+Chapter 2.4.</p>
+<p><em>Assumption 5.2.1.</em> Following the
+explicit form of the single-head and single-layer Transformer, there are five
+parameterized weight matrices, i.e., $W_q$, $W_k$,
+$W_v \in \mathbb{R}^{d\times d}$ in the attention block, as well as
+$M_1\in \mathbb R^{d&rsquo; \times d}$ and $M_2 \in \mathbb R^{d \times d&rsquo;}$
+in FFN. Note that here, $M_1$ and $M_2$ is actually the transpose of
+parameterized matrices in the classical transformer. Quantum Transformer
+assumes access to these five parameterized weight matrices, as well as
+the input sequence $S\in \mathbb{R}^{\ell \times d}$ via block encoding.</p>
+<p>Mathematically, given any $A\in {W_q, W_k, W_v, M_1, M_2, S}$
+corresponding to an $N$-qubit operator, $\alpha, \varepsilon\geq 0$ and
+$a\in \mathbb{N}$, there exists a $(a+ N)$-qubit unitary $U_A$ referring
+to the $(\alpha,a,\varepsilon)$-block-encoding of $A$ with</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter5/block_encode.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>where $|\cdot|$ represents the spectral norm.</p>
+<p>Under this assumption, we know that the quantum Transformer can access
+$U_S$, $U_{W_q}$, $U_{W_k}$, and $U_{W_v}$ corresponding to the
+$(\alpha_s,a_s)$-encoding of $S$ and $(\alpha_w,a_w)$-encodings of $W_q,W_k$ and
+$W_v$, respectively. Moreover, the quantum Transformer can access
+$(\alpha_{m},a_{m})$-encodings $U_{M_1}$ and $U_{M_2}$ corresponding two
+weight matrices $M_1\in \mathbb R^{d&rsquo; \times d}$ and
+$M_2 \in \mathbb R^{d \times d&rsquo;}$ in FFN.</p>
+<blockquote>
+<p>For simplicity and clarity, in the following, we consider the <em>perfect</em>
+block encoding of input matrices <em>without errors</em>, i.e.,
+$\varepsilon=0$. As such, we will not explicitly write the error term of
+the block encoding, and use $(\alpha,a)$ instead of $(\alpha, a,0)$. The
+output of quantum transformer is a quantum state corresponding to the
+probability distribution of the next token. The complete single-layer
+structure is described in
+Figure 5.2.</p>
+</blockquote>
+<figure style="text-align:center;">
+  <img src="../../images/chapter5/qtransformer.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>Under the above assumptions about access to the read-in protocols, the
+following theorem indicates how to implement a single-layer transformer
+architecture on the quantum computer.</p>
+<p><em>Theorem 5.1.</em>
+For a single-layer and single-head Transformer depicted in
+Figure 5.2, suppose its embedding dimension is
+$d$ and its input sequence $S$ has the length $\ell=2^N$. Under
+Assumption 5.2.1 about the input oracles, for the index
+$j\in [\ell]$, one can construct an $\epsilon$-accurate quantum circuit
+for the quantum state proportional to $$\begin{aligned}
+\sum_{k=1}^d \mathrm{Transformer}(S,j)_k \ket{k},
+\end{aligned}$$ by using
+${\mathcal{\tilde{O}}}(d N^2 \alpha_s\alpha_w \log^2(1/\epsilon))$ times
+of the input block encodings.</p>
+<p>We show this theorem by explicitly designing the quantum circuit for
+each computation block of the transformer architecture in a coherent
+way, i.e., without intermediate measurement. The quantum circuit can be
+used for subsequent layers. In addition, a subsequent transformation of
+the amplitude-encoded state and measuring in the computational basis
+outputs the index of the next predicted token according to the
+probabilities modeled by the transformer architecture.</p>
+<p><strong>Roadmap</strong>. In our paper, we detail the
+implementation of quantum Transformers, proceeding from the bottom to
+the top as illustrated in
+Figure 5.2. Specifically, we first demonstrate
+how to quantize the attention block. Next, we present the
+quantization of residual connections and layer normalization operations. Last, we exhibit the
+quantization of the fully connected neural network to complete the
+computation
+$\mathrm{LN}(\mathrm{FFN}(\mathrm{LN}(\mathrm{Attention}(S,j))))$. Please refer to the original paper for details.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter5/2.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter5/1/" title="Chapter 5.1 Classical Transformer"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 5.1 Classical Transformer</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter5/3/" title="Chapter 5.3 Runtime Analysis with Quadratic Speedups">Next - Chapter 5.3 Runtime Analysis with Quadratic Speedups <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class="active"><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

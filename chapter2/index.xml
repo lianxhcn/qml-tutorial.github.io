@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chapter 2 Basis of Quantum Computing on Quantum Machine Learning Tutorial</title>
+    <link>http://localhost:1313/chapter2/</link>
+    <description>Recent content in Chapter 2 Basis of Quantum Computing on Quantum Machine Learning Tutorial</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/chapter2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Chapter 2.1 From Classical Bits to Quantum Bits</title>
+      <link>http://localhost:1313/chapter2/1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter2/1/</guid>
+      <description>&lt;p&gt;In this section, we define quantum bits (qubits) and present the&#xA;mathematical tools used to describe quantum states. We begin by&#xA;discussing classical bits and then transition to their quantum&#xA;counterparts.&lt;/p&gt;&#xA;&lt;h3 id=&#34;classical-bits&#34;&gt;Classical bits&lt;/h3&gt;&#xA;&lt;p&gt;In classical computing, a bit is the basic unit of information, which&#xA;can exist in one of two distinct states: $0$ or $1$. Each bit holds a&#xA;definite value at any given time. When multiple classical bits are used&#xA;together, they can represent more complex information. For instance, a&#xA;set of three bits can represent $2^3=8$ distinct states, ranging from&#xA;$000$ to $111$.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</title>
+      <link>http://localhost:1313/chapter2/2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter2/2/</guid>
+      <description>&lt;p&gt;To process quantum states, we need to introduce quantum computation, a&#xA;fundamental model of which is the quantum circuit model. In this&#xA;section, we will begin with classical computation and transit to details about the&#xA;quantum circuit model, including quantum gates, quantum channel,&#xA;and quantum measurements.&lt;/p&gt;&#xA;&lt;h3 id=&#34;cha2:sec2:classical&#34;&gt;Classical digital logical circuit&lt;/h3&gt;&#xA;&lt;p&gt;Digital logic circuits are the foundational building blocks of classical&#xA;computing systems. They process classical bits by performing logical&#xA;operations through logic gates. In this subsection, we introduce the&#xA;essential components of digital logic circuits and their functionality,&#xA;followed by a discussion of how these classical circuits relate to&#xA;quantum circuits.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 2.3 Quantum Read-in and Read-out protocols</title>
+      <link>http://localhost:1313/chapter2/3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter2/3/</guid>
+      <description>&lt;p&gt;The terms &lt;strong&gt;quantum read-in&lt;/strong&gt; and &lt;strong&gt;read-out&lt;/strong&gt; refer to the processes of&#xA;transferring information between classical systems and quantum systems.&#xA;These are fundamental steps in the workflow of quantum machine learning, responsible for loading&#xA;data and extracting results.&lt;/p&gt;&#xA;&lt;p&gt;Quantum read-in and read-out pose significant bottlenecks in leveraging&#xA;quantum computing to address classical computational tasks. As&#xA;emphasized in [@aaronson2015read], while quantum algorithms can offer&#xA;exponential speed-ups in specific problem domains, these advantages can&#xA;be negated if the processes of loading classical data into quantum&#xA;systems (read-in) or extracting results from quantum systems (read-out)&#xA;are inefficient. Specifically, the high-dimensional nature of quantum&#xA;states and the constraints on measurement precision often lead to&#xA;overheads that scale poorly with problem size. These challenges&#xA;underscore the importance of optimizing quantum read-in and read-out&#xA;protocols to realize the full potential of quantum computing. Below is a&#xA;detailed introduction to quantum read-int and read-out protocols,&#xA;including the basic concept and several typical algorithms.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 2.4 Quantum Linear Algebra</title>
+      <link>http://localhost:1313/chapter2/4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter2/4/</guid>
+      <description>&lt;p&gt;We next introduce quantum linear algebra, a potent toolbox for designing&#xA;various FTQC-based algorithms. For clarity, we start with the&#xA;definition of block encoding, which is about how to implement&#xA;a matrix on the quantum computer. Based on this, we introduce some basic&#xA;arithmetic rules for block encodings, like the&#xA;multiplication, linear combination, and the Hadamard product. Finally, we introduce the quantum singular value&#xA;transformation method, which enables one to implement functions onto&#xA;singular values of block-encoded matrices.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 2.5 Recent Advancements</title>
+      <link>http://localhost:1313/chapter2/5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter2/5/</guid>
+      <description>&lt;p&gt;We end this chapter by discussing the recent advancements in efficiently&#xA;implementing fundamental components of quantum computing. For clarity,&#xA;we begin with a brief discussion of advanced quantum read-in and&#xA;read-out protocols, which are crucial for efficiently loading and&#xA;extracting classical data in the pipeline of quantum machine learning.&#xA;Next, we review the latest progress in quantum linear algebra.&lt;/p&gt;&#xA;&lt;h3 id=&#34;advanced-quantum-read-in-protocols&#34;&gt;Advanced quantum read-in protocols&lt;/h3&gt;&#xA;&lt;p&gt;Although conventional read-in protocols offer feasible solutions for&#xA;encoding classical data into quantum computers, they typically face two&#xA;key challenges that limit their broad applicability for solving&#xA;practical learning problems. To address these limitations, initial&#xA;efforts have been made to develop more advanced quantum read-in&#xA;protocols.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

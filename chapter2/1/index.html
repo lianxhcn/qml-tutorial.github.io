@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 2.1 From Classical Bits to Quantum Bits - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter2/1/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter2/1/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 2.1 From Classical Bits to Quantum Bits">
+  <meta property="og:description" content="In this section, we define quantum bits (qubits) and present the mathematical tools used to describe quantum states. We begin by discussing classical bits and then transition to their quantum counterparts.
+Classical bits In classical computing, a bit is the basic unit of information, which can exist in one of two distinct states: $0$ or $1$. Each bit holds a definite value at any given time. When multiple classical bits are used together, they can represent more complex information. For instance, a set of three bits can represent $2^3=8$ distinct states, ranging from $000$ to $111$.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter2">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 2.1 From Classical Bits to Quantum Bits">
+  <meta name="twitter:description" content="In this section, we define quantum bits (qubits) and present the mathematical tools used to describe quantum states. We begin by discussing classical bits and then transition to their quantum counterparts.
+Classical bits In classical computing, a bit is the basic unit of information, which can exist in one of two distinct states: $0$ or $1$. Each bit holds a definite value at any given time. When multiple classical bits are used together, they can represent more complex information. For instance, a set of three bits can represent $2^3=8$ distinct states, ranging from $000$ to $111$.">
+
+  <meta itemprop="name" content="Chapter 2.1 From Classical Bits to Quantum Bits">
+  <meta itemprop="description" content="In this section, we define quantum bits (qubits) and present the mathematical tools used to describe quantum states. We begin by discussing classical bits and then transition to their quantum counterparts.
+Classical bits In classical computing, a bit is the basic unit of information, which can exist in one of two distinct states: $0$ or $1$. Each bit holds a definite value at any given time. When multiple classical bits are used together, they can represent more complex information. For instance, a set of three bits can represent $2^3=8$ distinct states, ranging from $000$ to $111$.">
+  <meta itemprop="wordCount" content="1762">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 2.1 From Classical Bits to Quantum Bits</h1>
+<p>In this section, we define quantum bits (qubits) and present the
+mathematical tools used to describe quantum states. We begin by
+discussing classical bits and then transition to their quantum
+counterparts.</p>
+<h3 id="classical-bits">Classical bits</h3>
+<p>In classical computing, a bit is the basic unit of information, which
+can exist in one of two distinct states: $0$ or $1$. Each bit holds a
+definite value at any given time. When multiple classical bits are used
+together, they can represent more complex information. For instance, a
+set of three bits can represent $2^3=8$ distinct states, ranging from
+$000$ to $111$.</p>
+<h3 id="subsec:qubit">Quantum bits (Qubits)</h3>
+<p>Analogous to the role of <code>bit</code> in classical computation, the basic
+element in quantum computation is the quantum bit (<em>qubit</em>). We start by
+introducing the representation of single-qubit states and then extend
+this to two-qubit and multi-qubit states.</p>
+<p><strong>Single-qubit state</strong>. A single-qubit state can be represented by a
+two-dimensional vector with unit length. Mathematically, a qubit state
+can be written as $$\bm{a} =
+\begin{bmatrix}
+\bm{a}_1 \\
+\bm{a}_2
+\end{bmatrix}\in \mathbb{C}^2~,$$
+where $|\bm{a}_1|^2+|\bm{a}_2|^2=1$
+satisfies the <em>normalization constraint</em>. Following conventions in
+quantum theory, we use Dirac notation to represent vectors, i.e., $\bm{a}$ is denoted by $\ket{\bm{a}}$
+(named <em>ket</em>) with
+$$\ket{\bm{a}} =\bm{a}_1\ket{0}+\bm{a}_2\ket{1}~,$$</p>
+<p>where
+$\ket{0}\equiv \bm{e}_0\equiv \begin{bmatrix}
+1 \ 0
+\end{bmatrix}$ and $\ket{1}\equiv \bm{e}_1\equiv \begin{bmatrix}
+0 \ 1
+\end{bmatrix}$ are two computational (unit) basis states. In this
+representation, the coefficients $\bm{a}_1$ and $\bm{a}_2$ are referred
+to as <em>amplitudes</em>. The probabilities of obtaining the outcomes $0$ or
+$1$ upon measurement of the qubit are given by $|\bm{a}_1|^2$ and
+$|\bm{a}_2|^2$, respectively. The normalization constraint ensures that
+these probabilities always sum to one, as required by the probabilistic
+nature of quantum mechanics. In addition, the conjugated transpose of
+$\bm{a}$, i.e. $\bm{a}^{\dagger}$, is denoted by $\bra{\bm{a}}$ (named
+<em>bra</em>) with</p>
+<p>$$\bra{\bm{a}} = \bm{a}_1^*\bra{0}+\bm{a}_2^*\bra{1} \in \mathbb{C}^2~,$$</p>
+<p>where $\bra{0}\equiv \bm{e}_0^\top \equiv [1, 0]$ and
+$\bra{1}\equiv \bm{e}_1^\top\equiv [0, 1]$.</p>
+<p>The physical interpretation of coefficients ${\bm{a}_i}$ is
+<em>probability amplitudes</em>. Namely, when we intend to extract information
+from the qubit state $\ket{\bm{a}}$ into the classical form, quantum
+measurements are applied to this state, where the probability of
+sampling the basis $\ket{0}$ ($\ket{1}$) is $|\bm{a}_1|^2$
+$(|\bm{a}_2|^2)$. Recall that the classical bit only permits the
+deterministic status with $0$ or $1$, while the qubit state is the <em>superposition</em> of the two status
+$\ket{0}$ and $\ket{1}$.</p>
+<p>::: tcolorbox
+The <em>quantum superposition</em> leads to a distinct power between quantum
+and classical computation, where the former can accomplish certain tasks
+with provable advantages.
+:::</p>
+<p><strong>Two-qubit state</strong>. The two qubits obey the tensor product rule, i.e.,</p>
+<p>$$\left[\begin{matrix}
+\bm{x}_1 \\ \bm{x}_2
+\end{matrix} \right] \otimes \left[\begin{matrix}
+\bm{y}_1 \\ \bm{y}_2
+\end{matrix} \right] = \left[\begin{matrix}
+\bm{x}_1 \left[\begin{matrix}
+\bm{y}_1 \\ \bm{y}_2
+\end{matrix} \right] \\ \bm{x}_2 \left[\begin{matrix}
+\bm{y}_1 \\ \bm{y}_2
+\end{matrix} \right]
+\end{matrix} \right] = \left[\begin{matrix}
+\bm{x}_1 \bm{y}_1  \\ \bm{x}_1 \bm{y}_2  \\ \bm{x}_2 \bm{y}_1  \\ \bm{y}_2 \bm{y}_2
+\end{matrix} \right],$$</p>
+<p>which differs from the classical bits yielding
+the Cartesian product rule.</p>
+<p>For instance, let the first qubit is $\ket{\bm{a}}$ and the second qubit state be
+$\ket{\bm{b}}=\bm{b}_1\ket{0}+\bm{b}_2\ket{1}$ with
+$|\bm{b}_1|^2+|\bm{b}_2|^2=1$. The two-qubit state formed by
+$\ket{\bm{a}}$ and $\ket{\bm{b}}$ is defined as
+$$\ket{\bm{a}}\otimes \ket{\bm{b}} = \bm{a}_1\bm{b}_1 \ket{0}\otimes\ket{0} + \bm{a}_1\bm{b}_2 \ket{0}\otimes\ket{1}  + \bm{a}_2\bm{b}_1 \ket{1}\otimes\ket{0}  + \bm{a}_2\bm{b}_2 \ket{1}\otimes\ket{1} \in \mathbb{C}^4~,$$</p>
+<p>where the computational basis follows
+$\ket{0}\otimes\ket{0}\equiv \left[\begin{smallmatrix}
+1 \ 0 \ 0 \ 0
+\end{smallmatrix} \right]$,
+$\ket{0}\otimes\ket{1}\equiv \left[\begin{smallmatrix}
+0 \ 1 \ 0 \ 0
+\end{smallmatrix} \right]$ ,
+$\ket{1}\otimes\ket{0}\equiv \left[\begin{smallmatrix}
+0 \ 0 \ 1 \ 0
+\end{smallmatrix} \right]$ ,
+$\ket{1}\otimes\ket{1}\equiv \left[\begin{smallmatrix}
+0 \ 0 \ 0 \ 1
+\end{smallmatrix} \right]$, and the coefficients satisfy
+$\sum_{i=1}^2\sum_{j=1}^2 |\bm{a}_i\bm{b}_j|^2 = 1$.</p>
+<blockquote>
+<p>For ease of notations, the state $\ket{\bm{a}}\otimes \ket{\bm{b}}$ can
+be simplified as $\ket{\bm{a}\bm{b}}$, $\ket{\bm{a},\bm{b}}$, or
+$\ket{\bm{a}}\ket{\bm{b}}$. We will <em>interchangeably</em> use these
+notations throughout the tutorial.</p>
+</blockquote>
+<p>A typical example of a two-qubit state is the <em>Bell state</em>, which
+represents a maximally entangled quantum state of two qubits. There are
+four types of Bell states, expressed as: $$\begin{aligned}
+\ket{\phi^+} &amp;= \frac{1}{\sqrt{2}} \left( \ket{00} + \ket{11} \right), \nonumber \
+\ket{\phi^-} &amp;= \frac{1}{\sqrt{2}} \left( \ket{00} - \ket{11} \right), \nonumber \
+\ket{\psi^+} &amp;= \frac{1}{\sqrt{2}} \left( \ket{01} + \ket{10} \right), \nonumber \
+\ket{\psi^-} &amp;= \frac{1}{\sqrt{2}} \left( \ket{01} - \ket{10} \right).
+\end{aligned}$$ Each Bell state is a superposition of two computational
+basis states in the four-dimensional Hilbert space.</p>
+<p><strong>Multi-qubit state</strong>. We now generalize the above two-qubit case to the
+$N$-qubit case with $N&gt;2$. In particular, an $N$-qubit state
+$\ket{\psi}$ is a $2^N$-dimensional vector with
+$$\ket{\psi} = \sum_{i=1}^{2^N} \bm{c}_i \ket{i}\in \mathbb{C}^{2^N} ~,$$</p>
+<p>where the coefficients satisfy the normalization constraint
+$\sum_{i=1}^{2^N} |\bm{c}_i|^2 = 1$ and the symbol &lsquo;$i$&rsquo; of the
+computational basis $\ket{i}$ refers to a bit-string with
+$i\in {0, 1}^{N}$. As with the single-qubit case, the physical
+interpretation of coefficients ${\bm{c}_i}$ is probability amplitudes,
+where the probability to sample the bit-string &lsquo;$i$&rsquo; is $|\bm{c}_i|^2$.
+When the number of nonzero entries in
+$\bm{c}$
+is larger than
+one, which implies that different bit-strings are coexisting coherently,
+the state $\ket{\psi}$ is called <em>in superposition</em>.</p>
+<blockquote>
+<p>In quantum computing, a basis state $\ket{i}$ refers to a computational
+basis state in the Hilbert space of a quantum system. For an $N$-qubit
+system, the computational basis states are represented as
+$\ket{i}\in {\ket{0\cdots 0},\ket{0\cdots 1},&hellip;,\ket{1\cdots 1}}$,
+where $i$ is the binary representation of the state index. These states
+form an orthonormal basis of the $2^N$-dimensional Hilbert space,
+satisfying $$\braket{i|j}=\delta_{ij}, \forall i,j\in [2^N].$$ These
+basis states are fundamental for representing and analyzing quantum
+states, as any arbitrary quantum state can be expressed as a linear
+combination of these basis states.</p>
+</blockquote>
+<p>Moreover, the size of $\bm{c}$ exponentially scales with the number of
+qubits $N$, attributed to the tensor product rule. This exponential
+dependence is an indispensable factor to achieve quantum supremacy, since it is extremely expensive and even
+intractable to record all information of $\bm{c}$ by classical devices
+for the modest number of qubits, e.g., $N&gt;100$.</p>
+<p><strong>Entangled multi-qubit state</strong>. A fundamental phenomenon in multi-qubit
+quantum systems is <em>entanglement</em>, which represents a non-classical
+correlation between quantum systems that cannot be explained by
+classical physics. As proved in Ref. [@jozsa2003role], quantum
+entanglement is an indispensable component to offer an exponential
+speed-up over classical computation. A representative example is Shor&rsquo;s
+algorithm, which utilizes entanglement to attain an exponential speed-up
+over any classical factoring algorithm. In an entangled quantum state,
+the state of one qubit cannot be fully described independently of the
+other qubits, even if they are spatially separated. The formal
+definition of entanglement for states in Dirac notation is as follows:</p>
+<p><em>Definition of Entanglement for States in Dirac Notation</em>: A quantum state
+$\ket{\psi}\in \mathbb{C}^{2^N}$ is <em>entangled</em> if it cannot be
+expressed as the tensor product of states of its subsystems $A$ and $B$:
+$$\ket{\psi} \neq \ket{\psi_a} \otimes \ket{\psi_b}, \quad \forall \ket{\psi_a} \in \mathbb{C}^{2^{N_A}}, \ket{\psi_b} \in \mathbb{C}^{2^{N_B}}, N_A+N_B=N.$$
+If the state can be expressed in this form, it is referred to as
+<em>seperable</em>.</p>
+<p>A typical example of an entangled $N$-qubit state is the
+Greenberger-Horne-Zeilinger (GHZ) state, which
+is a generalization of the two-qubit Bell state to a
+maximally entangled $N$-qubit state. The general form of an $N$-qubit
+GHZ state is:</p>
+<p>$$\ket{\text{GHZ}_N} = \frac{1}{\sqrt{2}} \left( \ket{0}^{\otimes N} + \ket{1}^{\otimes N} \right).$$</p>
+<p>For $N = 3$, the GHZ state is:</p>
+<p>$$\ket{\text{GHZ}_3} = \frac{1}{\sqrt{2}} \left( \ket{000} + \ket{111} \right).$$</p>
+<p>A key property of the entangled states (e.g., Bell states and GHZ
+states) is that measuring one qubit determines the outcome of measuring
+the other qubit, reflecting their strong quantum correlation.</p>
+<h3 id="density-matrix">Density matrix</h3>
+<p>Another description of quantum states is through <em>density matrix</em> or
+<em>density operators</em>. The reason for establishing density operators
+instead of Dirac notations arises from the imperfection of physical
+systems. Specifically, Dirac notations are used to describe &lsquo;ideal&rsquo;
+quantum states (i.e., <em>pure states</em>), where the operated qubits are
+isolated from the environment. Alternatively, when the operated qubits
+interact with the environment unavoidably, the density operators are
+employed to describe the behavior of quantum states living in this open
+system. As such, density operators describe more general quantum states.</p>
+<p>Mathematically, an $N$-qubit density operator, denoted by
+$\rho\in\mathbb{C}^{2^N\times 2^N}$, presents a mixture of $m$ quantum
+pure states $\ket{\psi_i}\in\mathbb{C}^{2^N}$ with probability
+$p_i\in [0,1]$ and $\sum_{i=1}^m p_i =1$, i.e.,
+$$\rho = \sum_{i=1}^m p_i\rho_i~,$$
+where
+$\rho_i =\ket{\psi_i}\bra{\psi_i}\in\mathbb{C}^{2^N\times 2^N}$ is the
+outer product of the pure state $\ket{\psi_i}$. The outer product of two
+vectors $\ket{u},\ket{v}\in\mathbb{C}^n$ is expressed as
+$$\ket{u}\bra{v} = \begin{bmatrix}
+u_1 \
+u_2 \
+\vdots \
+u_n \end{bmatrix} \begin{bmatrix} v_1^* &amp; v_2^* &amp; \cdots &amp; v_n^* \end{bmatrix} = \begin{bmatrix} u_1 v_1^* &amp; u_1 v_2^* &amp; \cdots &amp; u_1 v_n^* \
+u_2 v_1^* &amp; u_2 v_2^* &amp; \cdots &amp; u_2 v_n^* \
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \
+u_n v_1^* &amp; u_n v_2^* &amp; \cdots &amp; u_n v_n^* \end{bmatrix},$$
+where $u_i$ and $v_i^*$ are the element of $\ket{u}$ and the conjugate
+transpose $\bra{v}$, respectively.</p>
+<p>From the perspective of computer science, the density operator $\rho$ is
+just a <em>positive semi-definite matrix</em> with trace-preserving, i.e.,
+$\bm{0}\preceq \rho$ and $\text{Tr}(\rho)=1$.</p>
+<p><em>Definition of Positive semi-definite matrix</em>: A matrix
+$A \in \mathbb{C}^{n \times n}$ is positive semi-definite (PSD) if it
+satisfies the following conditions:</p>
+<ol>
+<li>
+<p>$A$ is Hermitian: $A = A^\dagger$</p>
+</li>
+<li>
+<p>For any nonzero vector $\ket{v} \in \mathbb{C}^n$,
+$\bra{v}A\ket{v} \geq 0$, where $\bra{v}A\ket{v}$ represents the
+quadratic form of $A$ with respect to $\ket{v}$.</p>
+</li>
+</ol>
+<p>When $m=1$, the density operator $\rho$ amounts to a pure state with
+$\rho = \ket{\psi_1}\bra{\psi_1}$. When $m&gt;1$, the density operator
+$\rho$ describes a &lsquo;mixed&rsquo; quantum state, where the rank of $\rho$ is
+larger than $1$. A simple criterion to discriminate the pure states with
+the mixed states is as follows: the pure state with $m=1$ yields
+$\text{Tr}(\rho^n)=\text{Tr}(\rho)=1$ for any $n&gt;0$; the mixed state
+with $m&gt;1$ satisfies $\text{Tr}(\rho^n)&lt;\text{Tr}(\rho)=1$ for any $n\in \mathbb{N}_+\setminus {1}$. Similar to the
+Definition for entanglement of pure states, we
+can define the entanglement of mixed states.</p>
+<p><em>Definition of Entanglement for Mixed States</em>: Let $\rho$ be a density operator acting
+on a composite Hilbert space $\mathcal{H}_A \otimes \mathcal{H}_B$. The
+state $\rho$ is said to be <em>entangled</em> if it cannot be expressed as:</p>
+<p>$$\rho = \sum_{i} p_i , \rho_A^{(i)} \otimes \rho_B^{(i)},$$</p>
+<p>where
+$p_i \geq 0$, $\sum_{i} p_i = 1$, and $\rho_A^{(i)}$ and $\rho_B^{(i)}$
+are density operators on $\mathcal{H}_A$ and $\mathcal{H}_B$,
+respectively. If $\rho$ can be written in this form, it is called
+<em>separable</em>.</p>
+<p>Example of Density matrix representations.<br>
+(i). Consider the single-qubit pure state
+$\ket{\psi} = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1})$. The corresponding
+density operator is:
+$$\rho = \ket{\psi}\bra{\psi} = \frac{1}{2} \begin{bmatrix}
+1 &amp; 1 \
+1 &amp; 1
+\end{bmatrix}.$$
+Here, $\text{Tr}(\rho^2) = \text{Tr}(\rho) = 1$, confirming
+that it is a pure state.<br>
+(ii). Consider the classical probabilistic mixture of $\ket{0}$ and
+$\ket{1}$, each with equal probability $p = 0.5$. The density operator
+is:
+$$\rho = 0.5 \ket{0}\bra{0} + 0.5 \ket{1}\bra{1} = \frac{1}{2} \begin{bmatrix}
+1 &amp; 0 \
+0 &amp; 1
+\end{bmatrix}.$$
+In this case,
+$\text{Tr}(\rho^2) = 0.5 &lt; \text{Tr}(\rho) = 1$, indicating it is a mixed state.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter2/1.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter2/" title="Chapter 2 Basis of Quantum Computing"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 2 Basis of Quantum Computing</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter2/2/" title="Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model">Next - Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class="active"><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 2.3 Quantum Read-in and Read-out protocols - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter2/3/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter2/3/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 2.3 Quantum Read-in and Read-out protocols">
+  <meta property="og:description" content="The terms quantum read-in and read-out refer to the processes of transferring information between classical systems and quantum systems. These are fundamental steps in the workflow of quantum machine learning, responsible for loading data and extracting results.
+Quantum read-in and read-out pose significant bottlenecks in leveraging quantum computing to address classical computational tasks. As emphasized in [@aaronson2015read], while quantum algorithms can offer exponential speed-ups in specific problem domains, these advantages can be negated if the processes of loading classical data into quantum systems (read-in) or extracting results from quantum systems (read-out) are inefficient. Specifically, the high-dimensional nature of quantum states and the constraints on measurement precision often lead to overheads that scale poorly with problem size. These challenges underscore the importance of optimizing quantum read-in and read-out protocols to realize the full potential of quantum computing. Below is a detailed introduction to quantum read-int and read-out protocols, including the basic concept and several typical algorithms.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter2">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 2.3 Quantum Read-in and Read-out protocols">
+  <meta name="twitter:description" content="The terms quantum read-in and read-out refer to the processes of transferring information between classical systems and quantum systems. These are fundamental steps in the workflow of quantum machine learning, responsible for loading data and extracting results.
+Quantum read-in and read-out pose significant bottlenecks in leveraging quantum computing to address classical computational tasks. As emphasized in [@aaronson2015read], while quantum algorithms can offer exponential speed-ups in specific problem domains, these advantages can be negated if the processes of loading classical data into quantum systems (read-in) or extracting results from quantum systems (read-out) are inefficient. Specifically, the high-dimensional nature of quantum states and the constraints on measurement precision often lead to overheads that scale poorly with problem size. These challenges underscore the importance of optimizing quantum read-in and read-out protocols to realize the full potential of quantum computing. Below is a detailed introduction to quantum read-int and read-out protocols, including the basic concept and several typical algorithms.">
+
+  <meta itemprop="name" content="Chapter 2.3 Quantum Read-in and Read-out protocols">
+  <meta itemprop="description" content="The terms quantum read-in and read-out refer to the processes of transferring information between classical systems and quantum systems. These are fundamental steps in the workflow of quantum machine learning, responsible for loading data and extracting results.
+Quantum read-in and read-out pose significant bottlenecks in leveraging quantum computing to address classical computational tasks. As emphasized in [@aaronson2015read], while quantum algorithms can offer exponential speed-ups in specific problem domains, these advantages can be negated if the processes of loading classical data into quantum systems (read-in) or extracting results from quantum systems (read-out) are inefficient. Specifically, the high-dimensional nature of quantum states and the constraints on measurement precision often lead to overheads that scale poorly with problem size. These challenges underscore the importance of optimizing quantum read-in and read-out protocols to realize the full potential of quantum computing. Below is a detailed introduction to quantum read-int and read-out protocols, including the basic concept and several typical algorithms.">
+  <meta itemprop="wordCount" content="2977">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 2.3 Quantum Read-in and Read-out protocols</h1>
+<p>The terms <strong>quantum read-in</strong> and <strong>read-out</strong> refer to the processes of
+transferring information between classical systems and quantum systems.
+These are fundamental steps in the workflow of quantum machine learning, responsible for loading
+data and extracting results.</p>
+<p>Quantum read-in and read-out pose significant bottlenecks in leveraging
+quantum computing to address classical computational tasks. As
+emphasized in [@aaronson2015read], while quantum algorithms can offer
+exponential speed-ups in specific problem domains, these advantages can
+be negated if the processes of loading classical data into quantum
+systems (read-in) or extracting results from quantum systems (read-out)
+are inefficient. Specifically, the high-dimensional nature of quantum
+states and the constraints on measurement precision often lead to
+overheads that scale poorly with problem size. These challenges
+underscore the importance of optimizing quantum read-in and read-out
+protocols to realize the full potential of quantum computing. Below is a
+detailed introduction to quantum read-int and read-out protocols,
+including the basic concept and several typical algorithms.</p>
+<h3 id="quantum-read-in-protocols">Quantum read-in protocols</h3>
+<p>Quantum read-in refers to the process of encoding classical information
+into quantum systems that can be manipulated by a quantum computer,
+which can be regarded as the <strong>classical-to-quantum mapping</strong>. It acts
+as a bridge to utilize quantum algorithms to solve classical problems in
+quantum computing. Here, we will introduce several typical encoding
+methods, including basis encoding, amplitude encoding, angle encoding,
+and quantum random access memory.</p>
+<h4 id="basis-encoding">Basis encoding</h4>
+<p>Basis encoding is a basic method for processing classical data that can
+be represented in binary form. Given a classical binary vector
+$\bm{x}  \in \{0, 1\}^N$,
+this encoding technique maps the vector directly into a quantum
+computational basis state as follows:</p>
+<p>$$\ket{\psi} = \ket{\bm{x}_1,&hellip;,\bm{x}_N}.$$</p>
+<p>In this process,
+$N$ qubits are required to represent a binary vector of length $N$. To
+prepare the corresponding quantum state $\ket{\psi}$, an $X$ gate is
+applied to each qubit where the corresponding bit value is 1. The
+overall quantum state preparation can be expressed as:
+$$\ket{\psi} = \bigotimes_{i=1}^{N} X^{\bm{x}_i} \ket{0}^{\otimes N},$$
+where $\ket{0}^{\otimes N}$ represents an initial state of all qubits
+set to $\ket{0}$, and $X^{\bm{x}_i}$ means applying the $X$ gate only
+if $\bm{x}_i = 1$.</p>
+<p><em>Example of Basis encoding</em>. Consider encoding the integer $6$, which has the
+binary representation $\bm{x} = (1, 1, 0)$. The corresponding quantum
+state is $\ket{110}$. This state can be implemented by applying $X$
+gates to the first and second qubits.</p>
+<h4 id="amplitude-encoding">Amplitude encoding</h4>
+<p>Amplitude encoding is a technique that maps classical data into the
+amplitudes of a quantum state. Given a vector
+$\bm{x} \in \mathbb{C}^{2^N}$
+containing complex values, we first apply $L_2$ normalization to obtain
+a normalized vector $$
+\hat{\bm{x}} = \frac{\bm{x}}{|\bm{x}|_2},$$</p>
+<p>where $|\bm{x}|_2$
+is the Euclidean norm. This ensures that the normalized vector
+$\hat{\bm{x}}$ satisfies</p>
+<p>$$\sum_{i=0}^{2^N-1} |\hat{\bm{x}}_i|^2 = 1$$.</p>
+<p>The corresponding quantum state is then expressed as
+$$\ket{\psi} = \sum_{i=0}^{2^N-1} \hat{\bm{x}}_i \ket{i},$$
+where $\ket{i}$ representing the $N$-qubit computational basis states.</p>
+<p><em>Example of Amplitude encoding</em>. Consider encoding a normalized vector
+$\bm{x} = (\bm{x}_0, \bm{x}_1) \in \mathbb{C}^2$ into the quantum state
+$\ket{\psi} = \bm{x}_0 \ket{0} + \bm{x}_1 \ket{1}$. This can be achieved
+by applying a rotation gate $U=R_Y(\theta)$ to the initial state
+$\ket{0}$, where $\theta = 2 \arccos(\bm{x}_0)$.</p>
+<p>Amplitude encoding is highly efficient because it allows an
+exponentially large vector of length $2^N$ to be represented using only
+$N$ qubits. However, preparing this quantum state requires constructing
+a unitary transformation $U$ such that
+$\ket{\psi} = U \ket{0}^{\otimes N}$. Efficiently finding such
+transformations can be challenging and is an active area of research.</p>
+<h4 id="angle-encoding">Angle encoding</h4>
+<p>Basis encoding and amplitude encoding are fundamental techniques for
+mapping classical data to quantum states, but each comes with distinct
+resource costs. Basis encoding requires a number of qubits equal to the
+dimensionality of the binary representation of classical data and
+necessitates minimal gate operations for state preparation. In contrast,
+amplitude encoding is highly compact in terms of qubits, using only the
+logarithmic of the data dimensionality, but it involves a significant
+gate complexity.</p>
+<p>To address this limitation, an alternative is <em>angle encoding</em>. The core
+idea of angle encoding is to embed classical data into a quantum state
+through rotation angles.</p>
+<p>Given a real-valued vector
+$\bm{x} \in \mathbb{R}^{N}$,
+the encoded quantum state can be represented as:</p>
+<p>$$\ket{\psi} = \bigotimes_{i=0}^{N-1} R_{\sigma}(\bm{x}_i) \ket{0}^{\otimes N},$$</p>
+<p>where $\sigma \in \{X, Y, Z\}$ denotes a Pauli operator. Since Pauli rotation gates are
+$2\pi$-periodic, it is essential to scale each element $\bm{x}_i$ into
+the range $[0, \pi)$ to ensure that different values are encoded into
+distinct quantum states.</p>
+<p>A key advantage of angle encoding is its ability to introduce
+nonlinearity. By mapping classical data into the parameters of quantum
+rotation gates, angle encoding leverages trigonometric functions to
+naturally capture non-linear relationships. This property is
+particularly important in quantum machine learning, where nonlinearity
+is essential for models to learn complex patterns in data, such as
+non-linearly separable decision boundaries.</p>
+<h4 id="quantum-random-access-memory-qram">Quantum Random Access Memory (QRAM)</h4>
+<p>Basis encoding, amplitude encoding, and angle encoding are generally
+designed to encode a single item of data at one time, which makes it
+challenging to process complicated classical datasets. The QRAM
+[@giovannetti2008quantum], analogous to classical RAM, aims to
+simultaneously store, address, and access multiple quantum states.</p>
+<p>QRAM consists of two types of qubits: data qubits for storing classical
+data and address qubits for addressing. Given a classical dataset
+$\mathcal{D}={\bm{x}^{(j)}}_{j=0}^{M-1}$ with $M$ training examples,
+assume we separately encode each data item into a quantum state
+$\ket{\bm{x}^{(j)}}_d$ using one of the encoding methods above. The QRAM
+can be constructed as follows: (1) Prepare an $N_a$-qubit address
+register where $N_a=\lceil \log_2(M) \rceil$; (2) Associate each data
+state $\ket{\bm{x}^{(j)}}_d$ with corresponding address state
+$\ket{j}_a$. The whole dataset is therefore encoded into a quantum state
+of the form</p>
+<p>$$\ket{\mathcal{D}}=\sum_{j=0}^{M-1}\frac{1}{\sqrt{M}}\ket{j}_a\ket{\bm{x}^{(j)}}_d.$$</p>
+<blockquote>
+<p>The subscript $d$ in $\ket{\bm{x}^{(j)}}_d$ indicates that this quantum
+state resides in the data register, differentiating it from address
+qubits, which are denoted with the subscript $a$ (e.g., $\ket{j}_a$).
+This convention helps to distinguish between the roles of data and
+address qubits in QRAM operations.</p>
+</blockquote>
+<p><em>Example of QRAM Encoding</em>. Consider a dataset $\mathcal{D} = {2, 3}$. Using basis
+encoding, each sample is first converted into a two-qubit quantum state:
+${\ket{10}_d, \ket{11}_d}$. Each data state is then assigned an
+address state, $\ket{0}_a$ for the first state $\ket{10}_d$ and
+$\ket{1}_a$ for the second state $\ket{11}_d$. The resulting
+QRAM-encoded state is:
+$$\ket{\mathcal{D}} = \frac{1}{\sqrt{2}} \left( \ket{0}_a \ket{10}_d + \ket{1}_a \ket{11}_d \right).$$</p>
+<p>QRAM allows the dataset $\mathcal{D}$ to be stored in a coherent quantum
+superposition, enabling simultaneous access to all data items through
+the entanglement of address and data qubits. While QRAM is theoretically
+powerful, its practical implementation remains a significant challenge
+due to the need for a large number of qubits and quantum operations.</p>
+<h3 id="chapter2:Sec-2.3.2-readout">Quantum read-out protocols</h3>
+<p>Quantum read-out refers to the process of translating the quantum state
+resulting from a quantum computation into classical data, enabling
+further processing, interpretation, or optimization in classical
+systems. This process can be considered the inverse operation of quantum
+read-in, representing a quantum-to-classical mapping.</p>
+<p>Based on the completeness of the information obtained during the
+read-out process, quantum read-out protocols can be broadly categorized
+into two types, i.e., <strong>full information and partial information
+read-out protocols</strong>. These protocols enable tailored read-out processes
+that match the requirements of different quantum applications, ranging
+from tomography to optimization and machine learning tasks.</p>
+<h4 id="full-information-read-out-protocol">Full information read-out protocol</h4>
+<p>The full information read-out protocol is used to completely reconstruct
+the quantum state, which is used to fully understand the quantum
+system&rsquo;s behavior. The most general approach to implementing this
+protocol is through quantum state tomography (QST).</p>
+<p>QST involves performing quantum measurements, gathering measurement
+statistics, and using classical post-processing to reconstruct the
+quantum state. In what follows, we introduce two reconstruction
+techniques broadly used in QST, i.e., linear inversion and maximum
+likelihood estimation (MLE).</p>
+<p><em>QST with linear inversion.</em> Linear inversion is a straightforward
+method to reconstruct the quantum state from measurement data by
+directly solving linear systems of equations. Let $\rho$ be the explored
+quantum state and ${E_i}$ be a set of measurements. According to the
+Born rule, the probability of measurement outcome $i$ is given by
+$$P(E_i|\rho) = \text{Tr}(\rho E_i).$$
+In practice, $P(E_i|\rho)$ is not
+directly accessible but is approximated by the frequency $p_i$ of
+measurement outcome $i$ over multiple measurements. By the law of large
+numbers, as the number of measurements increases, $p_i$ converges to the
+true probability $P(E_i|\rho)$. Collecting measurements across all
+bases, we obtain a linear system $$\begin{bmatrix}
+\text{Tr}(\rho E_0) \
+\text{Tr}(\rho E_1) \
+\vdots
+\end{bmatrix} =
+\begin{bmatrix}
+\vec{E}_0^\dagger \cdot \vec{\rho} \
+\vec{E}_1^\dagger \cdot \vec{\rho} \
+\vdots
+\end{bmatrix} = A\vec{\rho} \approx \bm{p} = \begin{bmatrix}
+p_0 \
+p_1 \
+\vdots
+\end{bmatrix},$$ where $\vec{E}$ and $\vec{\rho}$ refer to the
+vector representations of matrices $E_i$ and $\rho$, respectively. The
+vector representation of a matrix is obtained by stacking its columns
+into a single-column vector. For example, the vector representation of a
+$2\times 2$ identity matrix is $\vec{\mathbb{I}}_2=[1,0,0,1]^T$. The
+matrix $A$ is constructed such that each row corresponds to the vector
+representation of the measurement operator, i.e.,
+$A=[\vec{E}_0^\dagger;\vec{E}_1^\dagger;&hellip;]$. The vector $\bm{p}$
+contains the measured frequencies $p_i$.</p>
+<p>Assuming the measurements are tomographically complete, i.e., ${E_i}$
+forms a basis for the system&rsquo;s Hilbert space, we can reconstruct $\rho$
+by solving the following linear systems of equations, i.e.,
+$$\vec{\rho} = (A^T A)^{-1} A^T \bm{p}.$$</p>
+<p>A common strategy is to use Pauli operators as measurement bases
+${E_i}$. The density matrix $\rho$ of an $N$-qubit system can be
+expanded in terms of the Pauli basis as:
+$$\rho = \frac{1}{2^N} \sum_{i=0}^{4^N - 1} c_i P_i, \quad c_i \in \mathbb{R}, \quad P_i \in {I, X, Y, Z}^{\otimes N},$$
+where the coefficients $c_i$ represent projections of $\rho$ onto the
+Pauli basis, calculated as: $$c_i = \text{Tr}(\rho P_i).$$ To fully
+reconstruct $\rho$, the quantum state must theoretically be measured in
+all $4^N - 1$ Pauli bases to estimate each $c_i$.</p>
+<p>::: tcolorbox
+The Pauli basis consists of four Hermitian matrics $I$, $X$, $Y$ and $Z$
+introduced in Figure <a href="#tab:Q-gates">1.1</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;tab:Q-gates&rdquo;}. These operators form a complete basis for the
+space of $2\times 2$ complex matrices. For $N$-qubit systems, the tensor
+products of these single-qubit operators span the space of
+$2^N \times 2^N$ complex matrics. This makes the Pauli basis essential
+for representing quantum states, observables, and their transformations.
+:::</p>
+<p>A key limitation of linear inversion is that it does not guarantee a
+valid density matrix, as the estimated quantum state may lack properties
+such as positive semi-definiteness, especially with limited measurements.</p>
+<p><em>Maximum Likelihood Estimation (MLE).</em> To ensure physical constraints on
+the quantum state during reconstruction, MLE is introduced. MLE
+reconstructs $\rho$ by maximizing the likelihood of observing the
+measurement outcomes, subject to the constraints that $\rho$ is
+Hermitian, positive semi-definite, and trace one. The likelihood
+function is given by $$L(\rho) = \prod_i \text{Tr}(\rho E_i)^{p_i}.$$
+Reconstructing $\rho$ then reduces to solving the following optimization
+problem
+$$\argmax_{\rho&rsquo;} L(\rho&rsquo;), \quad \text{s.t.} \quad \rho&rsquo; \succeq 0, \quad \rho&rsquo; = \rho&rsquo;^\dagger, \quad \text{Tr}(\rho&rsquo;) = 1.$$
+Solving this typically requires iterative numerical optimization, which
+can be computationally intensive.</p>
+<blockquote>
+<p>A common challenge across all quantum state tomography (QST) methods,
+including linear inversion and MLE, is the <em>exponential computational
+cost</em> with respect to the number of qubits. Specifically, the number of
+parameters to reconstruct grows exponentially with the system size,
+making QST methods feasible only for small-qubit systems in practice.
+This limitation underscores the need for scalable approaches to quantum
+state characterization in larger quantum systems.</p>
+</blockquote>
+<h4 id="partial-information-read-out-protocol">Partial information read-out protocol</h4>
+<p>The partial information read-out protocol focuses on extracting
+specific, task-relevant information from a quantum state without
+reconstructing the entire density matrix. This protocol is efficient and
+can be applied to comprehend large-qubit systems. According to the type
+of collected information, current partial read-out protocols can be
+categorized into three classes, i.e., sampling, expectation value
+estimation, and shadow tomography.</p>
+<p><em>Sampling.</em> Sampling involves repeatedly measuring the quantum state in
+the computational basis to estimate the probability distribution over
+bit-strings. Given a state $\ket{\psi}$, the probability of observing a
+specific computational basis $\ket{i}$ is given by
+$$P(i) = \left| \braket{\psi|i}\right|^2.$$
+The empirical frequency of
+each outcome from repeated measurements provides an estimate of $P(i)$.
+Sampling is particularly useful in the following applications</p>
+<ul>
+<li>
+<p><strong>Sampling over complicated distributions.</strong> Quantum states can
+represent complex probability distributions that are difficult to
+sample classically. Quantum sampling allows efficient exploration of
+these distributions for specific applications, such as probabilistic
+modeling and Markov chain Monte Carlo.</p>
+</li>
+<li>
+<p><strong>Optimization problems.</strong> Sampling can identify high-probability
+bitstrings in quantum algorithms, such as the Quantum Approximate
+Optimization Algorithm [@farhi2014quantum] and Grover search
+[@grover1996fast], where these bitstrings often correspond to
+optimal or near-optimal solutions.</p>
+</li>
+<li>
+<p><strong>Verification.</strong> Sampling facilitates the comparison of a quantum
+circuit&rsquo;s output with theoretical expectations or desired
+distributions, helping to verify the quantum systems.</p>
+</li>
+</ul>
+<p><em>Expectation value estimation.</em> For a wide class of quantum computation
+problems, such as quantum chemistry and quantum many-body physics, the
+computation outcome refers to the estimation of the expectation values
+of certain observables on the evolved quantum state.</p>
+<p>An observable $O\in \mathbb{C}^{2^N \times 2^N}$ mentioned here is a
+Hermitian operator that represents a measurable physical quantity. For
+an $N$-qubit system, $O$ can be expressed in terms of a Pauli basis
+expansion, i.e.,
+$$O = \sum_{i=1}^{4^N} \alpha_i P_i, \quad P_i \in \{I, X, Y, Z\}^{\otimes N}, \quad \alpha_i \in \mathbb{R}.$$
+where $P_i$ is the tensor product of Pauli operators.</p>
+<p>The expectation value of an observale $O$ with respect to an $N$-qubit
+state $\rho$ is $$
+\braket{O} = \text{Tr}(\rho O).$$</p>
+<p>Substituting the Pauli expansion of $O$, the expectation value is
+expressed as the weighted sum of the expectation values of each Pauli
+basis term due to the linearity of the trace operation, i.e.,
+$$\braket{O} = \sum_{i=1}^{4^N} \alpha_i \text{Tr}(\rho P_i) = \sum_{i=1}^{4^N} \alpha_i \braket{P_i}.$$</p>
+<p>To estimate the expectation value of each individual Pauli term $P_i$,
+the quantum state $\rho$ must be measured in the basis of the
+eigenstates of $P_i$. The measurement outcome is then associated with
+the corresponding eigenvalue of $P_i$. Fortunately, the eigenstates and
+eigenvalues of $P_i$ can be derived from the eigenstates and eigenvalues
+of its constituent single-qubit Pauli operators $P_{ij}$. Specifically:</p>
+<ul>
+<li>
+<p><strong>Eigenvalues:</strong> The eigenvalues of $P_i$ are the product of the
+eigenvalues of each single-qubit Pauli operator $P_{ij}$. For
+example, if the eigenvalues of $P_{ij}$ are $\pm 1$, then the
+eigenvalues of $P_i$ are products of these individual eigenvalues
+and remain in ${ \pm 1 }$.</p>
+</li>
+<li>
+<p><strong>Eigenstates:</strong> The eigenstates of $P_i$ are the tensor products of
+the eigenstates of the single-qubit Pauli operators $P_{ij}$. If
+$\ket{\lambda_{ijk}}$ is one of the eigenstate of $P_{ij}$, then one
+eigenstate of $P_i$ is $\bigotimes_{j=1}^N \ket{\lambda_{ijk}}$.</p>
+</li>
+</ul>
+<p>This structure allows $P_i$ to be analyzed in terms of its simpler
+single-qubit components, significantly simplifying the process of
+determining the measurement basis for expectation value estimation. By
+repeating the measurements $M$ times and obtaining the corresponding
+measurement results ${r_j}_{j=1}^{M}$, the statistical value of
+$\braket{P_i}$ can be estimated by</p>
+<p>$$\braket{\hat{P}<em>i} = \frac{1}{M} \sum</em>{j=1}^{M} r_j.$$
+The expectation
+value of the observable $O$ is therefore statistically estimated by
+$\braket{\hat{O}}=\sum_{i=0}^{K-1}\alpha_i \braket{\hat{P}_i}$.</p>
+<blockquote>
+<p>A key step in the process is to measure the quantum system in the basis
+of the eigenstates of $P_i$. If $P_i$ is diagonal in the computational
+basis (e.g., a tensor product of Pauli-Z operators), we can directly
+measure the state without additional operations. Otherwise (e.g., for
+Pauli-X or Pauli-Y operators), we need to apply a unitary transformation
+to rotate the quantum state into the desired basis. Specifically, when
+measuring in the Pauli-X basis (i.e., $\ket{+}$ and $\ket{-}$), a
+Hadamard gate $H$ is applied to the state $\rho$, i.e.,
+$$\rho&rsquo; = H \rho H.$$</p>
+</blockquote>
+<p>When measuring in the Pauli-Y basis (i.e.,
+$\frac{\ket{0} + i\ket{1}}{\sqrt{2}}$ and
+$\frac{\ket{0} - i\ket{1}}{\sqrt{2}}$), a phase gate $S = \sqrt{Z}$
+followed by a Hadamard gate $H$ is applied, i.e.,
+$$\rho&rsquo; = S^\dagger H \rho H S.$$
+Measuring the state $\rho&rsquo;$ in the
+computational basis is equivalent to measuring the state $\rho$ in the
+corresponding Pauli basis.</p>
+<p><em>Shadow tomography.</em> Performing full QST requires an exponential number
+of copies of the quantum state, making it impractical for systems beyond
+a small number of qubits. Instead of reconstructing the complete density
+matrix, shadow tomography focuses on efficiently obtaining specific
+properties of a quantum state, such as the expectation values of many
+observables.</p>
+<p><em>Definition.</em> Given an unknown
+$D$-dimensional quantum state $\rho$, as well as $M$ observables
+$O_1,&hellip;,O_M$, output real numbers $b_1,&hellip;,b_M$ such that
+$\left|b_i-\text{Tr}(O_i\rho)\right|\leq\epsilon$ for all $i$, with success
+probability at least $1-\delta$. Do this via a measurement of
+$\rho^{\otimes k}$, where $k=k(D,M,\epsilon,\delta)$ is as small as
+possible.</p>
+<p>@aaronson2018shadow proved that the shadow tomography problem can be
+solved using a <em>polylogarithmic</em> number of copies of states in terms of
+the dimension $D$ and number $M$ of observables. This result
+demonstrates that it is possible to estimate the expectation values of
+exponentially many observables for a quantum state of exponential
+dimension using only a polynomial number of measurements.</p>
+<p>The central idea of shadow tomography is to create a compact measurement
+classical representation, or &ldquo;shadow,&rdquo; of a quantum state that encodes
+sufficient information to estimate many properties of the state.
+Building on this concept, @huang2020predicting proposed a more practical
+and efficient approach, termed <em>classical shadow</em>, which uses randomized
+measurements to construct this classical representation. The classical
+shadow approach consists of the following steps:</p>
+<ol>
+<li>
+<p><strong>Randomized measurements:</strong> Perform random unitary transformations
+on the quantum state and measure the transformed state in the
+computational basis. These random transformations can be drawn from
+specific ensembles, such as Clifford gates or local random
+rotations, which ensure that the measurement outcomes capture the
+essential properties of the quantum state.</p>
+</li>
+<li>
+<p><strong>Classical shadow construction:</strong> Using the measurement results,
+construct a classical shadow of the quantum state. This compact
+representation encodes the quantum state in a way that allows for
+the efficient estimation of properties.</p>
+</li>
+<li>
+<p><strong>Property estimation:</strong> Use the classical shadow to compute the
+desired properties of the quantum state, such as expectation values
+of specific observables, subsystem entropies, or fidelities with
+known states.</p>
+</li>
+</ol>
+<p>Shadow tomography requires exponentially fewer measurements compared to
+full quantum state tomography, making it a practical solution for
+large-scale quantum systems. Moreover, the shadow of a quantum state
+serves as a versatile representation, enabling the efficient estimation
+of various properties such as expectation values, entanglement measures,
+and subsystem correlations.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter2/3.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter2/2/" title="Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter2/4/" title="Chapter 2.4 Quantum Linear Algebra">Next - Chapter 2.4 Quantum Linear Algebra <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class="active"><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

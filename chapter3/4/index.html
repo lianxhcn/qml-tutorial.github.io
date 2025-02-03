@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 3.4 Recent Advancements - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter3/4/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter3/4/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 3.4 Recent Advancements">
+  <meta property="og:description" content="The foundational concept of using quantum computers to evaluate kernel functions, namely the concept of quantum kernels, was first explored by @schuld2017implementing, who highlighted the fundamental differences between quantum kernels and quantum support vector machines. Building on this, @havlivcek2019supervised and @schuld2019quantum established a connection between quantum kernels and parameterized quantum circuits (PQCs), demonstrating their practical implementation. These works emphasized the parallels between quantum feature maps and the classical kernel trick. Since then, a large number of studies delved into figuring out the potential of quantum kernels for solving practical real-world problems.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter3">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 3.4 Recent Advancements">
+  <meta name="twitter:description" content="The foundational concept of using quantum computers to evaluate kernel functions, namely the concept of quantum kernels, was first explored by @schuld2017implementing, who highlighted the fundamental differences between quantum kernels and quantum support vector machines. Building on this, @havlivcek2019supervised and @schuld2019quantum established a connection between quantum kernels and parameterized quantum circuits (PQCs), demonstrating their practical implementation. These works emphasized the parallels between quantum feature maps and the classical kernel trick. Since then, a large number of studies delved into figuring out the potential of quantum kernels for solving practical real-world problems.">
+
+  <meta itemprop="name" content="Chapter 3.4 Recent Advancements">
+  <meta itemprop="description" content="The foundational concept of using quantum computers to evaluate kernel functions, namely the concept of quantum kernels, was first explored by @schuld2017implementing, who highlighted the fundamental differences between quantum kernels and quantum support vector machines. Building on this, @havlivcek2019supervised and @schuld2019quantum established a connection between quantum kernels and parameterized quantum circuits (PQCs), demonstrating their practical implementation. These works emphasized the parallels between quantum feature maps and the classical kernel trick. Since then, a large number of studies delved into figuring out the potential of quantum kernels for solving practical real-world problems.">
+  <meta itemprop="wordCount" content="1494">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 3.4 Recent Advancements</h1>
+<p>The foundational concept of using quantum computers to evaluate kernel
+functions, namely the concept of quantum kernels, was first explored by
+@schuld2017implementing, who highlighted the fundamental differences
+between quantum kernels and quantum support vector machines. Building on
+this, @havlivcek2019supervised and @schuld2019quantum established a
+connection between quantum kernels and parameterized quantum circuits
+(PQCs), demonstrating their practical implementation. These works
+emphasized the parallels between quantum feature maps and the classical
+kernel trick. Since then, a large number of studies delved into figuring
+out the potential of quantum kernels for solving practical real-world
+problems.</p>
+<p>The recent advancements in quantum kernel machines can be roughly
+categorized into three key areas: <em>kernel design</em>, <em>theoretical
+findings</em>, and <em>applications</em>. Specifically, the advances in kernel
+design focus on addressing challenges such as vanishing similarity and
+kernel concentration by exploring innovative frameworks. Theoretical
+studies delve into the limitations and capabilities of quantum kernels,
+examining factors such as generalization error bounds, noise resilience,
+and their capacity to demonstrate quantum advantage. Finally,
+applications of quantum kernels showcase their potential across diverse
+domains. In the rest of this section, we separately review the existing
+developments within each of these three branches.</p>
+<h3 id="chapt3:subsec:qk_design">Quantum kernel design</h3>
+<p>A crucial research line in this field focuses on constructing <em>trainable
+quantum kernels</em> to maximize performance for specific datasets and
+problem domains. In particular, traditional quantum kernels, with fixed
+data embedding schemes, are limited to specific feature representation
+spaces and often fail to capture the complex and diverse patterns
+inherent in real-world data. To address this limitation,
+@lloyd2020quantum explored the construction of task-specific quantum
+feature maps using measurement theory. Building on this idea,
+@hubregtsen2022training introduced a method to optimize quantum feature
+maps variationally within quantum kernels, linking this approach to the
+concept of data re-uploading techniques
+[@perez2020data; @schuld2021effect]. Additionally, @vedaie2020quantum
+and @lei2024neural proposed leveraging multiple kernel learning and
+architecture search to construct quantum kernels, respectively. Last,
+@glick2024covariant proposed the covariant quantum kernels for
+efficiently solving the problems with group structure.</p>
+<p>An orthogonal research direction is addressing the issue of exponential
+kernel concentration, also known as vanishing similarity, in quantum
+kernels [@thanasilp2022exponential]. Specifically, quantum kernels,
+which are defined as the inner product between quantum feature mappings,
+often suffer from the phenomenon of vanishing similarity. This issue was
+first highlighted by @huang2021power, who found that quantum feature
+mappings are typically &ldquo;far&rdquo; from one another in high-dimensional
+feature spaces, leading to vanishing similarity and, consequently, poor
+generalization performance.</p>
+<p>To mitigate this issue, @huang2021power introduced projected quantum
+kernels, which store feature vectors in classical memory and evaluate a
+Gaussian kernel. This approach replaces the reliance on the inner
+product of quantum states, as seen in traditional quantum embedding
+kernels. Moreover, @suzuki2022quantum proposed the anti-symmetric
+logarithmic derivative quantum Fisher kernel, which avoids the
+exponential kernel concentration problem by encoding geometric
+information of the input data. Beyond developing new types of quantum
+kernels, @shaydulin2022importance and @canatar2022bandwidth explored
+strategies to mitigate the exponential concentration issue for quantum
+embedding kernels by scaling input data with carefully chosen
+hyperparameters. This approach clusters the data-encoded quantum states
+closer together in feature space, reducing the risk of vanishing
+similarity at the cost of slightly lowering expressivity.</p>
+<h3 id="theoretical-studies-of-quantum-kernels">Theoretical studies of quantum kernels</h3>
+<p>The theoretical studies of quantum kernels aim to rigorously understand
+their performance potential and limitations under realistic conditions,
+enabling the design of more effective, robust, and generalizable quantum
+kernel methods. Prior literature in this context focuses on exploring
+two aspects of quantum kernels, namely, expressivity and generalization
+ability.</p>
+<h4 id="expressivity-of-quantum-kernels">Expressivity of quantum kernels</h4>
+<p>The expressivity of quantum kernels refers to their capacity to capture
+complex data relationships and represent intricate patterns in the
+feature space. A common approach to studying this is through the
+analysis of the reproducing kernel Hilbert space (RKHS), which provides
+insights into the underlying feature representations of quantum kernels.</p>
+<p>@schuld2021supervised rigorously analyzed the RKHS of embedding-based
+quantum kernels and established the universality approximation theorem,
+demonstrating that quantum kernels can approximate a wide class of
+functions. Building on this, @jerbi2023quantum extended the analysis by
+investigating parameterized quantum embedding kernels, introducing a
+data-reuploading structure and proving a corresponding universality
+approximation theorem. These results underscore the expressive power of
+quantum kernels in representing complex data structures.</p>
+<p>Despite these advances, the studies on expressive power and universality
+approximation often overlook the efficiency of constructing quantum
+kernels. Specifically, if the computational cost of constructing a
+universal quantum kernel is comparable to that of classical methods, the
+practical advantages of quantum kernels become questionable.</p>
+<p>To narrow this gap, @gil2024expressivity examined the expressive power
+of efficient quantum kernels that can be implemented on quantum
+computers within polynomial time. Their work provides a detailed
+analysis of the types of kernels that are achievable with a polynomial
+number of qubits and within polynomial time, offering insights into the
+feasibility and practical utility of quantum kernels in real-world
+scenarios.</p>
+<p>However, alongside the exploration of expressive power, a significant
+challenge-known as exponential kernel concentration-has been identified.
+@thanasilp2022exponential identified four key factors contributing to
+this issue: high expressivity of data embeddings, global measurements,
+entanglement, and noise. To address this limitation, substantial
+research has focused on designing advanced quantum kernels to mitigate
+exponential kernel concentration, as discussed in
+Chapter <a href="#chapt3:subsec:qk_design">1.5.1</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;chapt3:subsec:qk_design&rdquo;}.</p>
+<h4 id="generalization-of-quantum-kernels">Generalization of quantum kernels</h4>
+<p>The generalization ability of a learning model&mdash;its capacity to perform
+well on unseen data&mdash;is a critical factor in evaluating its
+effectiveness. In this context, a considerable body of research has
+investigated the generalization ability of quantum kernels.
+@huang2021power established a data-dependent generalization error bound
+for quantum kernels and demonstrated that, for certain types of data
+(such as those generated by quantum circuits), quantum kernels can
+achieve a generalization advantage over classical learning models.</p>
+<p>In addition, @wang2021towards explored the generalization performance of
+quantum kernels in the noisy scenario, where practical limitations such
+as finite measurements and quantum noise are taken into account. Their
+work rigorously showed that the generalization performance of quantum
+kernels could be significantly degraded in scenarios involving large
+training datasets, limited measurement repetitions, or high levels of
+system noise. To address these challenges, they proposed an effective
+method based on indefinite kernel learning to help preserve
+generalization performance under such constraints.</p>
+<p>Beyond quantum data, @liu2021rigorous examined the generalization error
+of quantum kernels using artificial classical datasets, such as those
+based on the discrete logarithm problem. Their results demonstrated that
+quantum kernels could achieve accurate predictions in polynomial time
+for such problems, whereas classical learning models require exponential
+time, highlighting the potential computational advantages of quantum
+kernels.</p>
+<p>Despite these promising results, @kubler2021inductive studied the
+generalization ability of quantum kernels from the perspective of
+inductive bias. They argued that quantum kernels, lacking inductive
+bias, often fail to outperform classical models in practical scenarios.
+This underscores the importance of carefully designing embeddings and
+aligning kernels to achieve meaningful and practical quantum advantages.</p>
+<h4 id="provable-advantages-of-quantum-kernels">Provable advantages of quantum kernels</h4>
+<p>The potential for quantum kernels to demonstrate quantum advantage has
+been a central focus of research. For instance, @huang2021power provided
+evidence of generalization advantages for quantum kernels on quantum
+data. Similarly, @liu2021rigorous presented a rigorous framework showing
+that quantum kernels can efficiently solve problems like the discrete
+logarithm problem, which is believed to be intractable for classical
+computers under standard cryptographic assumptions. Moreover,
+@sweke2021quantum demonstrated quantum advantage in distribution
+learning tasks, offering some of the earliest theoretical evidence of
+quantum advantage in machine learning.</p>
+<p>However, many of these tasks are artificial, designed specifically to
+showcase quantum advantages. This raises the question of how these
+theoretical benefits can be translated to real-world applications. In
+this regard, the next significant challenge is to demonstrate that
+quantum models can consistently outperform classical models in solving
+practical, real-world problems.</p>
+<h3 id="applications-of-quantum-kernels">Applications of quantum kernels</h3>
+<p>Motivated by the potential of quantum kernels to recognize complex data
+patterns, numerous studies have explored their practical applications
+across diverse fields, including classification, drug discovery, anomaly
+detection, and financial modeling.</p>
+<p>For instance, @beaulieu2022quantum investigate the use of quantum
+kernels for image classification, specifically in identifying real-world
+manufacturing defects. Similarly, @rodriguez2024satellite apply quantum
+kernels to satellite image classification, a task of particular
+importance in the earth observation industry. In the field of quantum
+physics, @sancho2022quantum and @wu2023quantum leverage quantum kernels
+to recognize phases of quantum matter, where quantum kernels outperform
+classical learning models in solving certain problems. In drug
+discovery, @batra2021quantum explore the potential of quantum kernels to
+accelerate and improve the identification of promising compounds.</p>
+<p>Quantum kernels have also been explored in anomaly detection.
+@liu2018quantum demonstrate their superior performance over classical
+methods in detecting anomalies within quantum data. Furthermore,
+@grossi2022mixed employ quantum kernel methods for fraud classification
+tasks, showing improvements when benchmarked against classical methods.
+@miyabe2023quantum expand their application to the financial domain by
+proposing a quantum multiple-kernel learning methodology. This approach
+broadens the scope of quantum kernels to include credit scoring and
+directional forecasting of asset price movements, highlighting their
+potential utility in financial services.</p>
+<p>Despite the promise shown in these applications, the realization of
+quantum advantage in practical tasks remains an ongoing area of
+research, with current efforts directed toward identifying real-world
+problems where quantum kernels outperform classical alternatives.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter3/4.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter3/3/" title="Chapter 3.3 Theoretical Foundations"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 3.3 Theoretical Foundations</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter4/" title="Chapter 4 Quantum Neural Networks">Next - Chapter 4 Quantum Neural Networks <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class="active"><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

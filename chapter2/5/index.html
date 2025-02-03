@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 2.5 Recent Advancements - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter2/5/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter2/5/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 2.5 Recent Advancements">
+  <meta property="og:description" content="We end this chapter by discussing the recent advancements in efficiently implementing fundamental components of quantum computing. For clarity, we begin with a brief discussion of advanced quantum read-in and read-out protocols, which are crucial for efficiently loading and extracting classical data in the pipeline of quantum machine learning. Next, we review the latest progress in quantum linear algebra.
+Advanced quantum read-in protocols Although conventional read-in protocols offer feasible solutions for encoding classical data into quantum computers, they typically face two key challenges that limit their broad applicability for solving practical learning problems. To address these limitations, initial efforts have been made to develop more advanced quantum read-in protocols.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter2">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 2.5 Recent Advancements">
+  <meta name="twitter:description" content="We end this chapter by discussing the recent advancements in efficiently implementing fundamental components of quantum computing. For clarity, we begin with a brief discussion of advanced quantum read-in and read-out protocols, which are crucial for efficiently loading and extracting classical data in the pipeline of quantum machine learning. Next, we review the latest progress in quantum linear algebra.
+Advanced quantum read-in protocols Although conventional read-in protocols offer feasible solutions for encoding classical data into quantum computers, they typically face two key challenges that limit their broad applicability for solving practical learning problems. To address these limitations, initial efforts have been made to develop more advanced quantum read-in protocols.">
+
+  <meta itemprop="name" content="Chapter 2.5 Recent Advancements">
+  <meta itemprop="description" content="We end this chapter by discussing the recent advancements in efficiently implementing fundamental components of quantum computing. For clarity, we begin with a brief discussion of advanced quantum read-in and read-out protocols, which are crucial for efficiently loading and extracting classical data in the pipeline of quantum machine learning. Next, we review the latest progress in quantum linear algebra.
+Advanced quantum read-in protocols Although conventional read-in protocols offer feasible solutions for encoding classical data into quantum computers, they typically face two key challenges that limit their broad applicability for solving practical learning problems. To address these limitations, initial efforts have been made to develop more advanced quantum read-in protocols.">
+  <meta itemprop="wordCount" content="1444">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 2.5 Recent Advancements</h1>
+<p>We end this chapter by discussing the recent advancements in efficiently
+implementing fundamental components of quantum computing. For clarity,
+we begin with a brief discussion of advanced quantum read-in and
+read-out protocols, which are crucial for efficiently loading and
+extracting classical data in the pipeline of quantum machine learning.
+Next, we review the latest progress in quantum linear algebra.</p>
+<h3 id="advanced-quantum-read-in-protocols">Advanced quantum read-in protocols</h3>
+<p>Although conventional read-in protocols offer feasible solutions for
+encoding classical data into quantum computers, they typically face two
+key challenges that limit their broad applicability for solving
+practical learning problems. To address these limitations, initial
+efforts have been made to develop more advanced quantum read-in
+protocols.</p>
+<p><em>Challenge I: high demand for quantum resources</em>. Encoding methods like
+amplitude encoding and basis encoding generally suffer from high
+quantum resource requirements. While amplitude encoding is highly
+compact in terms of qubit requirements, the trade-off is the requirement
+of an exponential number of quantum gates with the data size to prepare
+an exact amplitude-encoded state. In contrast, while basis encoding can
+be implemented with a small number of quantum gates, it requires a large
+number of qubits proportional to the input size. The high demand for
+either quantum gates or qubit counts makes these basic encoding
+strategies infeasible for practical use.</p>
+<p><em>Challenge II: insufficient nonliearity</em>. While quantum mechanics is
+inherently linear, most practical machine learning models require
+nonlinearity to capture complex data patterns effectively. Conventional
+encoding methods like angle encoding introduce some degree of
+nonlinearity; however, the representational power remains limited due to
+the linear nature of quantum operations and limited circuit depth.</p>
+<p>For Challenge I, a practical alternative is the approximate amplitude
+encoding (AAE) [@nakaji2022approximate]. Instead of implementing exact
+amplitude encoding, AAE trains a parameterized quantum circuit with a
+constrained depth to approximate the desired quantum state with high
+fidelity. The training process optimizes the fidelity between the target
+state and the approximate state, ensuring that the representation error
+remains within a small bound.</p>
+<p>For Challenge II, techniques like <em>data re-uploading</em> [@perez2020data]
+have been developed. <em>Data re-uploading</em> involves feeding the same
+classical data into the quantum circuit multiple times, interspersed
+with trainable quantum operations. By alternating data encoding with
+trainable transformations, this approach allows the quantum model to
+capture non-linear relationships more effectively without requiring
+additional qubits. Additionally, neural quantum embedding
+[@hur2024neural] has been proposed, which leverages classical deep
+learning techniques to learn optimal quantum embeddings, effectively
+separating non-linearly separable classes of data.</p>
+<p>To address both Challenges I &amp; II, hybrid encoding strategies have been
+introduced to leverage the respective advantages of each encoding
+method. For instance, basis-amplitude encoding combines basis encoding
+for discrete random variables with amplitude encoding for high-precision
+probabilities, effectively encoding both categorical and continuous
+features without requiring additional qubits [@schuld2018information].
+Another widely used strategy involves classical preprocessing methods
+for high-dimensional data, such as principal component analysis (PCA)
+[@abdi2010principal], to reduce input dimensionality before applying
+quantum encoding. This preprocessing step reduces the overall quantum
+resource requirements while preserving relevant information.</p>
+<p>In addition to fixed encoding strategies, learning-based approaches have
+emerged to dynamically adjust data encoding for specific tasks. For
+example, @lloyd2020quantum achieves task-specific quantum embeddings by
+incorporating learnable parameters into the encoding layers, which are
+optimized to maximize class separability in Hilbert space. This
+technique is analogous to classical metric learning. Following this
+routine, a quantum few-shot embedding framework [@liu2022embedding] has
+been proposed to encode classical data into quantum states, which can be
+generalized to the downstream quantum machine learning tasks. These
+methods enable quantum circuits to adapt their encodings dynamically,
+improving efficiency and performance.</p>
+<h3 id="advanced-quantum-read-out-protocols">Advanced quantum read-out protocols</h3>
+<p>Conventional quantum read-out protocols often face significant
+challenges, including high computational overhead and resource
+inefficiencies. Below, we discuss the primary challenges and discuss
+solutions in two quantum read-out protocols: QST and observable
+estimation.</p>
+<p><em>Challenge I: High computational overhead of QST.</em> QST aims to
+reconstruct the density matrix of a quantum state, but this becomes
+computationally infeasible as the system size increases. This is because
+the required number of measurements and the classical memory grows
+exponentially with the number of qubits.</p>
+<p><em>Challenge II: Resource inefficiency in observable estimation.</em> The
+required number of measurements for observable estimation grows linearly
+with the number of Pauli terms in the observable. For observables where
+the number of Pauli terms substantially increases with the system size,
+the measurement cost becomes prohibitive.</p>
+<p>For Challenge I, the key idea is to focus on representing only a
+subspace of the quantum space, effectively capturing task-relevant
+properties while reducing the computational cost. For example, in many
+QML algorithms, such as the HHL algorithm for solving linear
+systems [@harrow2009quantum] and quantum singular value
+decomposition [@rebentrost2018quantum], the solution state exists within
+the row or column space of the input matrix. When the input matrix is
+low-rank, state tomography can be obtained
+efficiently [@zhang2021quantum] as the linear combination of a complete
+basis chosen from the input matrix. Besides, an effective technique is
+matrix product state (MPS) tomography
+[@lanyon2017efficient; @orus2019tensor], which leverages the fact that
+many practical quantum states, such as those in Ising models or
+low-entanglement systems, can be efficiently represented with a reduced
+number of parameters. By focusing on states with limited entanglement,
+MPS tomography reconstructs the state using only a polynomial number of
+measurements with the qubit counts.</p>
+<p>Another promising approach is the use of neural networks to parameterize
+quantum states. Neural quantum states allow for the efficient
+representation and reconstruction of density matrices, particularly for
+complex or high-dimensional quantum systems. For instance, Restricted
+Boltzmann Machines [@fischer2012introduction] and Transformer
+[@vaswani2017attention] have been applied to approximate the probability
+of measurement outcome and density matrices
+[@torlai2018neuralnetwork; @schmale2022efficient; @wang2022predicting; @zhao2023provable].
+These approaches are particularly effective for systems that are
+difficult to capture using traditional methods.</p>
+<p>For Challenge II, a measurement reduction technique can be applied by
+exploiting the commutativity of Pauli operators. When multiple Pauli
+terms commute, they can be measured simultaneously within the same
+measurement basis, significantly reducing the total measurement cost
+[@kandalaHardwareefficientVariationalQuantum2017a; @verteletskyi2020measurement].
+This approach has been widely adopted in hybrid quantum-classical
+algorithms, such as variational quantum Eigensolvers (VQE)
+[@cerezo2021variational], where Hamiltonians are decomposed into sums of
+Pauli terms. Grouping commuting terms into clusters allows for efficient
+measurement strategies while preserving accuracy.</p>
+<p>In addition to measurement grouping, adaptive measurement strategies
+further improve resource allocation during expectation value estimation.
+The key observation is that not all Pauli terms contribute equally to
+the total observable&mdash;terms with higher variance require more
+measurement shots for reliable estimation, while low-variance terms can
+be measured with fewer shots. Building on this insight, adaptive shot
+allocation techniques
+[@rubin2018application; @arrasmith2020operator; @qian2024shuffle]
+dynamically distribute measurement resources across Pauli terms based on
+their statistical properties and achieve more accurate estimations with
+a finite measurement budget.</p>
+<h3 id="advanced-quantum-linear-algebra">Advanced quantum linear algebra</h3>
+<p>Quantum linear algebra, based on the block encoding and quantum singular
+value transformation framework, has proven its power for the design of
+quantum algorithms. Compared to the traditional subroutines like quantum
+phase estimation and quantum arithmetics
+[@kitaev1995quantum; @perez2017quantumarithmetic], quantum linear
+algebra can exponentially improve the dependency on precision
+[@gilyenquantum2019]. However, a major drawback is that it can only deal
+with the singular values of block-encoded matrices.</p>
+<p>A natural consideration is to generalize the singular value
+transformation to the eigenvalue transformation. One strong motivation
+from the application aspect for this is to solve the differential
+equations on the quantum computer
+[@liu2021efficient; @childs2021highprecision; @an2021quantumaccelerated; @jin2022partialdifferential; @shang2024design].
+This remains an active research field. Quantum eigenvalue processing,
+proposed by [@low2024quantumeigen], focuses on matrices with real
+spectra and Jordan forms, in which they prepare the Faber history state
+to achieve efficient eigenvalue transformation over the complex plane.
+[@an2023linearcombination; @an2024laplacetransform] shows that
+simulating a general class of non-unitary dynamics can be achieved by
+the linear combination of Hamiltonian simulation (LCHS).</p>
+<p>Another approach is to broaden the range of functions that can be
+implemented by quantum linear algebra. Quantum phase processing,
+proposed by [@wang2023phaseprocessing], can directly apply arbitrary
+trigonometric transformations to eigenphases of a unitary operator.
+Similar results have been independently obtained by
+@motlagh2024generalized. In addition, @rossi2022multivariable
+investigates how to implement multivariate functions. For the
+application, a representative example is the multivariate state
+preparation achieved by [@mori2024efficient], enabling the amplitude
+encoding of classical multivariate data.</p>
+<p>In previous section, we introduce the
+concept of diagonal block encoding, which can convert a state
+preparation unitary into a block encoding. As the efficient construction
+of block encodings is a prerequisite for achieving end-to-end quantum
+advantage, an important research direction is to investigate which types
+of matrices can be efficiently prepared. By leveraging state-of-the-art
+techniques in quantum state preparation
+[@zhang2022quantum; @sun2023asymptotically] and the linear combination
+of unitaries [@childs2012hamiltonian], it is possible to efficiently
+construct block encodings for certain classes of matrices
+[@guseynov2024efficient; @guseynov2024explicitgate]. Additionally,
+explicit constructions have been explored for specific types of sparse
+matrices [@camps2023explicit].</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter2/5.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter2/4/" title="Chapter 2.4 Quantum Linear Algebra"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 2.4 Quantum Linear Algebra</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter3/" title="Chapter 3 Quantum Kernel Methods">Next - Chapter 3 Quantum Kernel Methods <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class="active"><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

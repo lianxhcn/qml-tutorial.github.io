@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 2.4 Quantum Linear Algebra - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter2/4/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter2/4/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 2.4 Quantum Linear Algebra">
+  <meta property="og:description" content="We next introduce quantum linear algebra, a potent toolbox for designing various FTQC-based algorithms. For clarity, we start with the definition of block encoding, which is about how to implement a matrix on the quantum computer. Based on this, we introduce some basic arithmetic rules for block encodings, like the multiplication, linear combination, and the Hadamard product. Finally, we introduce the quantum singular value transformation method, which enables one to implement functions onto singular values of block-encoded matrices.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter2">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 2.4 Quantum Linear Algebra">
+  <meta name="twitter:description" content="We next introduce quantum linear algebra, a potent toolbox for designing various FTQC-based algorithms. For clarity, we start with the definition of block encoding, which is about how to implement a matrix on the quantum computer. Based on this, we introduce some basic arithmetic rules for block encodings, like the multiplication, linear combination, and the Hadamard product. Finally, we introduce the quantum singular value transformation method, which enables one to implement functions onto singular values of block-encoded matrices.">
+
+  <meta itemprop="name" content="Chapter 2.4 Quantum Linear Algebra">
+  <meta itemprop="description" content="We next introduce quantum linear algebra, a potent toolbox for designing various FTQC-based algorithms. For clarity, we start with the definition of block encoding, which is about how to implement a matrix on the quantum computer. Based on this, we introduce some basic arithmetic rules for block encodings, like the multiplication, linear combination, and the Hadamard product. Finally, we introduce the quantum singular value transformation method, which enables one to implement functions onto singular values of block-encoded matrices.">
+  <meta itemprop="wordCount" content="1122">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 2.4 Quantum Linear Algebra</h1>
+<p>We next introduce quantum linear algebra, a potent toolbox for designing
+various FTQC-based algorithms. For clarity, we start with the
+definition of block encoding, which is about how to implement
+a matrix on the quantum computer. Based on this, we introduce some basic
+arithmetic rules for block encodings, like the
+multiplication, linear combination, and the Hadamard product. Finally, we introduce the quantum singular value
+transformation method, which enables one to implement functions onto
+singular values of block-encoded matrices.</p>
+<h3 id="block-encoding">Block encoding</h3>
+<p>For many computational problems, such as solving linear equations, we
+need to deal with a non-unitary matrix $A$. However, remember that
+quantum gates are unitaries. Therefore, if we want to
+solve these problems on quantum computers, it is essential to consider
+how to encode the matrix $A$ into a unitary. This challenge can be
+addressed by the block encoding technique.</p>
+<p><em>Definition.</em>
+Suppose that $A$ is an $N$-qubit operator, $\alpha, \varepsilon\geq 0$
+and $a\in \mathbb{N}$. Then we say that the $(a+ N)$-qubit unitary $U$
+is an $(\alpha,a,\varepsilon)$-block-encoding of $A$ if</p>
+<p>$$|A-\alpha(\bra{0}^{\otimes a} \otimes \mathbb{I})U(\ket{0}^{\otimes a}\otimes \mathbb{I})|\leq \varepsilon.
+$$</p>
+<p>Here, $|\cdot|$ represents the spectral norm, i.e.,
+the largest singular value of the matrix.</p>
+<p><em>Fact.</em> (Block encoding via the linear
+combination of unitaries (LCU) method, [@gilyenquantum2019]). Suppose
+that $A$ can be written in the form $$\begin{aligned}
+A=\sum_{k} \alpha_k U_k,
+\end{aligned}$$ where $\{\alpha_k\}$ are real numbers and $U_k$ are some
+easily prepared unitaries such as Pauli strings. Then, the LCU method
+allows us to have the access to two unitaries, i.e.,</p>
+<p>$$U_{\text{SEL}}=\sum_{k} \ket{k} \bra{k}\otimes U_k,$$</p>
+<p>$$U_{\text{PREP}}:\ket{0}\rightarrow \frac{1}{\sqrt{|\vec{\alpha}|_1}}\sum_k \sqrt{\alpha_k}\ket{k},$$</p>
+<p>where $\vec{\alpha}=(\alpha_1,\alpha_2,\dots)$.</p>
+<p>After simple mathematical analysis, one can obtain
+$$U=(U^\dagger_{\text{PREP}}\otimes \mathbb{I})U_{\text{SEL}}(U_{\text{PREP}}\otimes \mathbb{I})$$</p>
+<p>which is a $(|\vec{\alpha}|_1,m,0)$-block-encoding of $A$. Here,
+$\mathbb{I}$ is the identity operator of $N$-qubit size.</p>
+<p>Similar to the definition of block encoding, we can also define the
+state preparation encoding.</p>
+<p><em>Definition.</em>
+We say a unitary $U_{\psi}$ is an $(\alpha,a,\epsilon)$-state-encoding
+of an $N$-qubit quantum state $\ket{\psi}$ if $$\begin{aligned}
+\left|\ket{\psi}-\alpha (\bra{0^{a}}\otimes I)U_{\psi}\ket{0^{a+N}}\right|_{\infty} \leq \epsilon.
+\end{aligned}$$
+:::</p>
+<p>More straightforwardly, the $(\alpha,a,\epsilon)$-state-encoding
+$U_\psi$ prepares the state $$\begin{aligned}
+U_{\psi}\ket{0}\ket{0}= \frac{1}{\alpha}\ket{0}\ket{\psi&rsquo;}+\sqrt{1-\alpha^2}\ket{1}\ket{\mathrm{bad}},\notag
+\end{aligned}$$ where
+$\left|\ket{\psi&rsquo;}-\ket{\psi}\right|_{\infty}\leq \epsilon$ and
+$\ket{\mathrm{bad}}$ is an arbitrary quantum state. One can further
+prepare the state $\ket{\psi&rsquo;}$ by using $\mathcal{O}(\alpha)$ times of
+amplitude amplification [@brassard2002quantum]. The state preparation
+encoding can be understood as a specific case of the block encoding,
+i.e., it is the block encoding of a $\mathbb{C}^{2^N \times 1}$ matrix.</p>
+<h3 id="basic-arithmetics-for-block-encodings">Basic arithmetics for block encodings</h3>
+<p>Now we introduce some arithmetic rules for block encoding unitaries. The
+following two facts describe the product and linear combination rules of
+block encoding unitaries, respectively.</p>
+<p><em>Fact.</em> If $U$ is an
+$(\alpha,a,\delta)$-block encoding of an $N$-qubit operator $A$, and $V$
+is a $(\beta,b,\varepsilon)$-block encoding of an $N$-qubit operator
+$B$, then $(\mathbb{I}\otimes U)(\mathbb{I}\otimes V)$ is an
+$(\alpha\beta,a+b,\alpha\varepsilon+\beta\delta)$-block-encoding of
+$AB$. Here, $\mathbb{I}$ is the identity operator of $a(b)$-qubit
+size.</p>
+<p><em>Fact.</em> Let
+$A=\sum_k \alpha_k A_k$ be an $s$-qubit operator with
+$\beta\geq |\vec{x}|_1$ and $\varepsilon_1&gt;0$. Suppose we have access
+to</p>
+<p>$$P_L\ket{0}=\sum_k c_k\ket{k},$$</p>
+<p>$$P_R\ket{0}=\sum_k d_k\ket{k},$$</p>
+<p>$$ W=\sum_k \ket{k}\bra{k}\otimes U_k+\left(\bigl(\mathcal{I}_s-\sum_k \ket{k}\bra{k}\bigl)\otimes \mathcal{I}_a\otimes \mathcal{I}_b\right),$$</p>
+<p>where
+$\sum_k |\beta c_k^*d_k-\alpha_k|\leq \varepsilon_1$ and $U_k$ is an
+$(\alpha,a,\varepsilon_2)$-block-encoding of $A_k$. Then we can
+implement an
+$(\alpha\beta, a+b,\alpha\varepsilon_1+\beta\varepsilon_2)$-block-encoding
+of $A$ by using one time of $W,P_R$, and $P_L$.</p>
+<p>These results can be verified via direct computation. Another arithmetic
+rule broadly employed in quantum machine learning is the Hadamard
+product, a.k.a, the element-wise product. The following lemma exhibits
+how to achieve this operation via the block encoding framework.</p>
+<p><em>Lemma.</em> With
+$N \in \mathbb{N}$, consider two matrices
+$A, B\in \mathbb{C}^{2^N\times 2^N}$, and assume that we have an
+$(\alpha,a,\delta)$-encoding $U_{A}$ of matrix $A$ and
+$(\beta,b,\epsilon)$-encoding $U_{B}$ of matrix $B$, then we can
+construct an $(\alpha\beta,a+b+N,\alpha\epsilon+\beta\delta)$-encoding
+of matrix $A \circ B$.</p>
+<h3 id="quantum-singular-value-transformation">Quantum singular value transformation</h3>
+<p>Now we understand how to implement matrices on the quantum computer and
+some arithmetic methods among these matrices, here we further introduce
+how one can implement matrix functions on the quantum computer. The
+method is called the quantum singular value transformation (QSVT), which
+is a powerful framework that can unify most known quantum algorithms.</p>
+<p>For machine learning applications, we mostly deal with the real
+matrices. The computational cost of QSVT for the real matrix case is
+summarized in the following theorem. For a matrix $A$, consider its
+singular value decompostision
+$A=\sum_{i}\sigma_i |\psi_i\rangle\langle \phi_i|$. Given a function
+$P(x)$, we use $P^{(SV)}(A)$ to represent
+$P^{(SV)}(A)=\sum_{i} P(\sigma_i) |\psi_i\rangle\langle \phi_i|$.</p>
+<p><em>Fact.</em> Suppose that $U_A$ is an
+$(\alpha, a, \varepsilon)$-block-encoding of a real matrix $A$. If
+$\delta \geq 0$ and $P:\mathbb{R}\rightarrow \mathbb{C}$ is a d-degree
+polynomial satisfying that $$
+\mathrm{for\ all}\ x \in[-1,1]:\left|P(x)\right| \leq \frac{1}{4},
+$$ then there is a quantum circuit $\tilde{U}$, which is an
+$(1, a+3, 4d \sqrt{\varepsilon / \alpha}+\delta)$-block-encoding of
+$P^{(SV)}(A / \alpha)$, and consists of d applications of $U_A$ and
+$U^{\dagger}_A$ gates. Further, the description of such a circuit can be
+computed classically in time
+$\mathcal{O}(\operatorname{poly}(d, \log (1 / \delta)))$.</p>
+<p>Notice that if the block-encoded matrix $A$ is Hermitian, the singular
+value transformation is equivalent to the eigenvalue transformation. In
+this case, we can directly implement the matrix function via QSVT.</p>
+<p>In the following, we introduce some applications of QSVT method. There
+are several important applications, however, in this tutorial, we focus
+on introducing some applications that can be applied in the machine
+learning related tasks. The first is matrix inversion, which has been
+widely used in traditional machine learning methods such as principal
+component analysis. Note that for a general matrix, we actually mean to
+implement the Moore-Penrose pseudoinverse, i.e., the inverse of all
+singular values.</p>
+<p><em>Lemma.</em>
+Let $U_A$ be a $(1,a,0)$-block encoding of matrix $A$. Further, for
+simplicity, assume the nonzero singular values of $A$ are lower bounded
+by $\delta&gt;0$. Let $0\leq \epsilon\leq \delta \leq \frac{1}{2}$. One can
+construct a $(1/\delta,a+2,\epsilon)$-block encoding of $A^{-1}$ by
+using $\mathcal{\tilde{O}}(\frac{1}{\delta}\log(\frac{1}{\epsilon}))$
+times of $U_A$ and $U_A^\dagger$.</p>
+<p><em>Proof sketch of this
+Lemma.</em> This can be achieved by
+finding a good polynomial approximation for the function $1/x$. One can
+not find such a polynomial on the whole interval $[-1,1]$, however, such
+a polynomial exists on the interval $[-1,-\delta]\cup [\delta,1]$ for
+some $\delta&gt;0$.</p>
+<p>The second application of QSVT is the nonlinear amplitude
+transformation. To deal with classical data, there
+are several ways to encode them into quantum. Here, we focus on the
+amplitude encoding case, especially for the real
+amplitudes. The nonlinear transformation is achieved by combining the
+diagonal block encoding and QSVT.</p>
+<p>::: fact
+Given a state preparation unitary $U_{\psi}$ of an $N$-qubit state
+$\ket{\psi}=\sum_{j=1}^{2^N} \psi_j \ket{j}$, where $\{\psi_j\}$ are
+real, $\left|\psi\right|_2=1$, one can construct an
+$(1,N+2,\epsilon)$-encoding of the diagonal matrix
+$A=\text{diag}(\psi_1,&hellip;,\psi_d)$ with $\mathcal{O}(N)$ circuit
+depth and $\mathcal{O}(1)$ times of controlled-$U$ and
+controlled-$U^\dagger$.</p>
+<p>As a straightforward generalization, one can replace the state
+preparation unitary with the general state preparation encoding. By constructing the block encoding of
+amplitudes, one can implement many functions onto these amplitudes via
+QSVT. A direct application is performing the neural network on the
+quantum computer.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter2/4.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter2/3/" title="Chapter 2.3 Quantum Read-in and Read-out protocols"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 2.3 Quantum Read-in and Read-out protocols</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter2/5/" title="Chapter 2.5 Recent Advancements">Next - Chapter 2.5 Recent Advancements <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class="active"><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chapter 4 Quantum Neural Networks on Quantum Machine Learning Tutorial</title>
+    <link>http://localhost:1313/chapter4/</link>
+    <description>Recent content in Chapter 4 Quantum Neural Networks on Quantum Machine Learning Tutorial</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/chapter4/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Chapter 4.1 Classical Neural Networks</title>
+      <link>http://localhost:1313/chapter4/1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter4/1/</guid>
+      <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 4.1 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Neural&#xA;networks [@mcculloch1943logical; @gardner1998artificial; @vaswani2017attention]&#xA;are computer models inspired by the structure of the human brain,&#xA;designed to process and analyze complex patterns in data. Originally&#xA;developed from the concept of neurons connected by weighted pathways,&#xA;neural networks have become one of the most powerful tools in artificial&#xA;intelligence [@lecun2015deep]. Each neuron processes its inputs by&#xA;applying weights and non-linear activations, producing an output that&#xA;feeds into the next layer of neurons. This structure enables neural&#xA;networks to learn complex functions during training [@hornik1993some].&#xA;For example, given a dataset of images and their labels, a neural&#xA;network can learn to classify categories, such as distinguishing between&#xA;cats and dogs, by adjusting its parameters during training. Guided by&#xA;optimization algorithms such as gradient&#xA;descent [@amari1993backpropagation], the learning process allows the&#xA;network to gradually reduce the error between the predicted and actual&#xA;outputs, allowing it to learn the best parameters for the given task.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 4.2 Fault-tolerant Quantum Perceptron</title>
+      <link>http://localhost:1313/chapter4/2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter4/2/</guid>
+      <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 4.2 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;The primary aim of advancing quantum machine learning is to harness the&#xA;computational advantages of quantum mechanics to enhance performance&#xA;across various learning tasks. These advantages manifest&#xA;in several ways, including reduced runtime, lower query complexity, and&#xA;improved sample efficiency compared to classical models. A notable&#xA;example of this is the quantum perceptron model [@kapoor2016quantum]. As&#xA;a [FTQC]{.sans-serif}-based QML algorithm grounded in the Grover search,&#xA;quantum perceptron offers a quadratic improvement in the query&#xA;complexity during the training over its classical counterpart. For&#xA;comprehensiveness, we first introduce the Grover search algorithm,&#xA;followed by a detailed explanation of the quantum perceptron model.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 4.3 Near-term quantum neural networks</title>
+      <link>http://localhost:1313/chapter4/3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter4/3/</guid>
+      <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 4.3 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Following recent experimental breakthroughs in superconducting quantum&#xA;hardware&#xA;architectures [@arute2019quantum; @acharya2024quantum; @abughanem2024ibm; @gao2024establishing],&#xA;researchers have devoted considerable effort to developing and&#xA;implementing quantum machine learning algorithms optimized for current&#xA;and near-term quantum devices [@wang2024comprehensive]. Compared to&#xA;fault-tolerant quantum computers, these devices face two primary&#xA;limitations: quantum noise and circuit connectivity constraints.&#xA;Regarding quantum noise, state-of-the-art devices have single-qubit gate&#xA;error rates of $10^{-4} \sim 10^{-3}$ and two-qubit gate error rates of&#xA;approximately&#xA;$10^{-3} \sim 10^{-2}$ [@abughanem2024ibm; @gao2024establishing]. The&#xA;coherence time is around&#xA;$10^2 \mu s$ [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing],&#xA;primarily limited by decoherence in noisy quantum channels. Regarding&#xA;circuit connectivity, most superconducting quantum processors employ&#xA;architectures that exhibit two-dimensional connectivity patterns and&#xA;their&#xA;variants [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing].&#xA;Gate operations between non-adjacent qubits must be executed through&#xA;intermediate relay operations, leading to additional error accumulation.&#xA;To address these inherent limitations, the near-term quantum neural&#xA;network (QNN) framework has been proposed. Specifically, near-term QNNs&#xA;are designed to perform meaningful computations using quantum circuits&#xA;of limited depth.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 4.4 Theoretical Foundations of QNNs</title>
+      <link>http://localhost:1313/chapter4/4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter4/4/</guid>
+      <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 4.4 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;As a machine learning (ML) model, the primary goal of quantum neural&#xA;networks (QNNs) is to make accurate predictions on unseen data.&#xA;Achieving this goal depends on three key factors: expressivity,&#xA;generalization ability, and trainability. A thorough understanding of&#xA;these factors is crucial for evaluating the potential advantages and&#xA;limitations of QNNs compared to classical ML models. Instead of&#xA;providing an exhaustive review of all theoretical results, this section&#xA;focuses on near-term QNNs, emphasizing key conceptual insights into&#xA;their capabilities and limitations.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chapter 4.5 Recent Advancements</title>
+      <link>http://localhost:1313/chapter4/5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/chapter4/5/</guid>
+      <description>&lt;p&gt;Quantum neural networks (QNNs) have emerged as a prominent paradigm in&#xA;quantum machine learning, demonstrating potential in both discriminative&#xA;and generative learning tasks. For discriminative tasks, QNNs utilize&#xA;high-dimensional Hilbert spaces to efficiently capture and represent&#xA;complex intrinsic relationships. In generative tasks, QNNs leverage&#xA;variational quantum circuits to generate complex probability&#xA;distributions that may exceed the capabilities of classical models.&#xA;While these approaches share common learning strategies, they each&#xA;introduce unique challenges and opportunities in terms of model design,&#xA;theoretical exploration, and practical implementation. In the remainder&#xA;of this section, we briefly review recent advances in QNNs. Interested&#xA;readers can refer to @ablayev2019quantum&#xA;[@li2022recent; @massoli2022leap] for a more comprehensive review.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

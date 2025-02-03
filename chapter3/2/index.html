@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 3.2 Quantum Kernel Machines - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter3/2/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter3/2/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 3.2 Quantum Kernel Machines">
+  <meta property="og:description" content="This content of this section corresponds to the Chapter 3.2 of our paper. Please refer to the original paper for more details.
+Motivations for quantum kernel machines To effectively introduce quantum kernel machines, it is essential to recognize the limitations of classical kernel machines. As discussed before, classical kernel machines rely on manually tailored feature mappings, such as polynomials or radial basis functions. However, these mappings may fail to capture the complex patterns behind the dataset. Quantum kernel machines emerge as a promising alternative, as they perform feature mapping using quantum circuits, enabling them to explore exponentially larger feature spaces that are otherwise infeasible for classical computation.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter3">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 3.2 Quantum Kernel Machines">
+  <meta name="twitter:description" content="This content of this section corresponds to the Chapter 3.2 of our paper. Please refer to the original paper for more details.
+Motivations for quantum kernel machines To effectively introduce quantum kernel machines, it is essential to recognize the limitations of classical kernel machines. As discussed before, classical kernel machines rely on manually tailored feature mappings, such as polynomials or radial basis functions. However, these mappings may fail to capture the complex patterns behind the dataset. Quantum kernel machines emerge as a promising alternative, as they perform feature mapping using quantum circuits, enabling them to explore exponentially larger feature spaces that are otherwise infeasible for classical computation.">
+
+  <meta itemprop="name" content="Chapter 3.2 Quantum Kernel Machines">
+  <meta itemprop="description" content="This content of this section corresponds to the Chapter 3.2 of our paper. Please refer to the original paper for more details.
+Motivations for quantum kernel machines To effectively introduce quantum kernel machines, it is essential to recognize the limitations of classical kernel machines. As discussed before, classical kernel machines rely on manually tailored feature mappings, such as polynomials or radial basis functions. However, these mappings may fail to capture the complex patterns behind the dataset. Quantum kernel machines emerge as a promising alternative, as they perform feature mapping using quantum circuits, enabling them to explore exponentially larger feature spaces that are otherwise infeasible for classical computation.">
+  <meta itemprop="wordCount" content="589">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 3.2 Quantum Kernel Machines</h1>
+<p><em>This content of this section corresponds to the Chapter 3.2 of our paper. Please refer to the original paper for more details.</em></p>
+<h3 id="motivations-for-quantum-kernel-machines">Motivations for quantum kernel machines</h3>
+<p>To effectively introduce quantum kernel machines, it is essential to
+recognize the limitations of classical kernel machines. As discussed before, classical kernel machines rely on
+manually tailored feature mappings, such as polynomials or radial basis
+functions. However, these mappings may fail to capture the complex
+patterns behind the dataset. Quantum kernel machines emerge as a
+promising alternative, as they perform feature mapping using quantum
+circuits, enabling them to explore exponentially larger feature spaces
+that are otherwise infeasible for classical computation.</p>
+<!-- ![**The paradigm of classical and quantum kernels.**](../../images/chapter3/QK_CK.png) -->
+<figure style="text-align:center;">
+  <img src="../../images/chapter3/QK_CK.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>Another crucial characteristic of quantum kernels is that they can be
+effectively implemented on noisy intermediate-scale quantum (NISQ)
+devices, making them a practical tool for exploring the utility of
+near-term quantum technologies.</p>
+<h3 id="quantum-feature-maps-and-quantum-kernel-machines">Quantum feature maps and quantum kernel machines</h3>
+<p>The key difference between quantum kernel machines and classical kernel
+machines lies in how the feature mapping is performed. In the quantum
+context, a feature map refers to the injective encoding of classical
+data $\bm{x} \in \mathbb{R}^d$ into a quantum state
+$\ket{\bm{\phi}(\bm{x})}=U(\bm{x})\ket{\phi}$ on an $N$-qubit quantum
+register, where $U(\bm{x})$ refers to the physical operation or quantum
+circuit that depends on the data $\bm{x}$. This feature map is
+implemented on a quantum computer and produces quantum states, which are
+referred to as quantum feature maps.</p>
+<p><em>Definition.</em> Given an
+$N$-qubit quantum system initialized in state $\ket{\psi}$, let
+$\bm{x}\in \mathcal{X} \subset \mathbb{R}^d$ be classical data. The
+quantum feature map is defined as the mapping</p>
+<p>$$ \phi:\mathcal{X} \to \mathcal{F},$$</p>
+<p>$$\phi(\bm{x}) = \ket{\bm{\phi}(\bm{x})}\bra{\bm{\phi}(\bm{x})} = \rho(\bm{x}),$$</p>
+<p>where $\mathcal{F}$ is the space of complex-valued
+$2^N \times 2^N$ matrices equipped with the Hilbert-Schmidt inner
+product $\braket{\rho, \sigma} = \text{Tr}(\rho \sigma)$ for
+$\rho, \sigma \in \mathcal{F}$. In addition, the state
+$\ket{\bm{\phi}(\bm{x})}$ can be implemented by applying a data-encoding
+quantum circuit $U(\bm{x})$ on an initial state $\ket{\psi}$.</p>
+<p>Recall that one way of constructing kernels is adopting the inner
+product of the defined feature mappings. Using the Hilbert-Schmidt inner
+product, the quantum kernel is defined as
+follows.</p>
+<p><em>Definition.</em> Let $\phi$ be a
+quantum feature map over the domain $\mathcal{X}$. The quantum kernel is
+the inner product between two quantum feature maps
+$\rho(\bm{x}), \rho(\bm{x}&rsquo;)$ for data points
+$\bm{x}, \bm{x}&rsquo; \in \mathcal{X}$,</p>
+<p>$$k_Q: \mathcal{X} \times \mathcal{X} \to \mathbb{R},$$</p>
+<p>$$k_Q(\bm{x}, \bm{x}&rsquo;) = \text{Tr}(\rho(\bm{x}) \rho(\bm{x}&rsquo;)) = \left|\braket{\bm{\phi}(\bm{x})|\bm{\phi}(\bm{x}&rsquo;)}\right|^2.$$</p>
+<p>The inner product between quantum states can be efficiently estimated on
+quantum computers using techniques such as Loschmidt echo test
+[@kusumoto2021experimental] and SWAP test [@blank2020quantum]. Both
+methods correspond to distinct quantum circuit architectures, as
+illustrated in Figure 3.3.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter3/QK_test.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>One key merit of quantum kernels is that their derivation does not
+require the explicit representation of the quantum feature maps.
+Instead, it relies only on the construction of the associated quantum
+circuits. This aligns with the essence of kernel methods: while feature
+mappings can be computationally complex, the kernel function itself must
+remain efficient to evaluate.</p>
+<p>Below, we outline the core steps for constructing a quantum kernel:</p>
+<ol>
+<li>
+<p><strong>Quantum feature map construction:</strong> Design a data-dependent
+quantum circuit $U(\bm{x})$ to encode classical input data $\bm{x}$
+into the amplitudes or parameters of a quantum state
+$\ket{\bm{\phi}(\bm{x})}=U(\bm{x})\ket{\bm{\psi}}$ where the initial
+state $\ket{\bm{\psi}}$ is typically $\ket{0}^{\otimes N}$.</p>
+</li>
+<li>
+<p><strong>Kernel evaluation:</strong> The quantum kernel is typically defined as
+the inner product of quantum states corresponding to two data
+points. Mathematically, this can be expressed as
+$k_Q(\bm{x},\bm{x}&rsquo;)= \left| \braket{\bm{\phi}(\bm{x})|\bm{\phi}(\bm{x}&rsquo;)}\right|^2$.</p>
+</li>
+<li>
+<p><strong>Post-processing:</strong> After executing the quantum circuit for
+different input pairs, measure the output and calculate the kernel
+matrix. This matrix will then be used in machine learning models,
+such as SVM.</p>
+</li>
+</ol>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter3/2.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter3/1/" title="Chapter 3.1 Classical Kernel"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 3.1 Classical Kernel</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter3/3/" title="Chapter 3.3 Theoretical Foundations">Next - Chapter 3.3 Theoretical Foundations <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class="active"><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Quantum Classifier - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="An introduction to implement a quantum neural network for classification.">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/code/classifier/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/code/classifier/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Quantum Classifier">
+  <meta property="og:description" content="An introduction to implement a quantum neural network for classification.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="code">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Quantum Classifier">
+  <meta name="twitter:description" content="An introduction to implement a quantum neural network for classification.">
+
+  <meta itemprop="name" content="Quantum Classifier">
+  <meta itemprop="description" content="An introduction to implement a quantum neural network for classification.">
+  <meta itemprop="wordCount" content="839">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png">
+  <meta itemprop="keywords" content="Quantum Neural Network"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Quantum Classifier</h1>
+<p>In this tutorial, we show how to utilize QNN to handle discriminative tasks based on PennyLane library. Specifically, we aim to implement a quantum binary classifier for the Wine dataset. The primary pipeline includes following steps:</p>
+<ol>
+<li>Load and preprocess the Wine dataset.</li>
+<li>Implement a quantum read-in protocol to load classical data into quantum states.</li>
+<li>Construct a parameterized quantum circuit model to process the input.</li>
+<li>Train the whole circuit and test.</li>
+</ol>
+<p>We begin by importing all related libraries:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> sklearn
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sklearn.datasets
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pennylane <span style="color:#66d9ef">as</span> qml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pennylane <span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pennylane.optimize <span style="color:#f92672">import</span> AdamOptimizer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span></code></pre></div><p>We then prepare the Wine dataset for classification task. For simplicity, we focus on the the first two class of the whole Wine dataset. There are 13 attributes determining the origin of wines, where the value of each attribute ranges differently. The normizalization preprocessing is applied to this dataset to re-scale the attribute value to the range of $[0, \pi]$. Meantime, the label is re-mapped from ${0,1}$ to ${-1,1}$ for alignment with value range of the read-out result of quantum circuit model, which will be introduced later. For later generation test of quantum classifier, we fairly split the dataset into training data and test data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_wine</span>(split_ratio <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>):
+</span></span><span style="display:flex;"><span>    feat, label <span style="color:#f92672">=</span> sklearn<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>load_wine(return_X_y<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># normalization</span>
+</span></span><span style="display:flex;"><span>    feat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>pi <span style="color:#f92672">*</span> (feat <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>min(feat, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, keepdims<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)) <span style="color:#f92672">/</span> np<span style="color:#f92672">.</span>ptp(feat, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, keepdims<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    index_c0 <span style="color:#f92672">=</span> label <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    index_c1 <span style="color:#f92672">=</span> label <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    label <span style="color:#f92672">=</span> label <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    n_c0 <span style="color:#f92672">=</span> sum(index_c0)
+</span></span><span style="display:flex;"><span>    n_c1 <span style="color:#f92672">=</span> sum(index_c1)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    X_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate((feat[index_c0][:int(split_ratio<span style="color:#f92672">*</span>n_c0)], feat[index_c1][:int(split_ratio<span style="color:#f92672">*</span>n_c1)]), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    y_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate((label[index_c0][:int(split_ratio<span style="color:#f92672">*</span>n_c0)], label[index_c1][:int(split_ratio<span style="color:#f92672">*</span>n_c1)]), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    X_test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate((feat[index_c0][int(split_ratio<span style="color:#f92672">*</span>n_c0):], feat[index_c1][int(split_ratio<span style="color:#f92672">*</span>n_c1):]), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    y_test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate((label[index_c0][int(split_ratio<span style="color:#f92672">*</span>n_c0):], label[index_c1][int(split_ratio<span style="color:#f92672">*</span>n_c1):]), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_train, y_train, X_test, y_test
+</span></span><span style="display:flex;"><span>X_train, y_train, X_test, y_test <span style="color:#f92672">=</span> load_wine()
+</span></span></code></pre></div><p>To see what the original distribution of Wine dataset looks like, we employ the t-SNE visualization technique:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">visualize_dataset</span>(X, y):
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">from</span> sklearn.manifold <span style="color:#f92672">import</span> TSNE
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    tsne <span style="color:#f92672">=</span> TSNE(n_components<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>, perplexity<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    wine_tsne <span style="color:#f92672">=</span> tsne<span style="color:#f92672">.</span>fit_transform(X)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> label <span style="color:#f92672">in</span> np<span style="color:#f92672">.</span>unique(y):
+</span></span><span style="display:flex;"><span>        indices <span style="color:#f92672">=</span> y <span style="color:#f92672">==</span> label
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>scatter(wine_tsne[indices, <span style="color:#ae81ff">0</span>], wine_tsne[indices, <span style="color:#ae81ff">1</span>], edgecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>, cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;coolwarm&#39;</span>, s<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Class </span><span style="color:#e6db74">{</span>label<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Add labels and legend</span>
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;t-SNE Visualization of Wine dataset (two classes)&#34;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;t-SNE Dimension 1&#34;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;t-SNE Dimension 2&#34;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>show()
+</span></span><span style="display:flex;"><span>visualize_dataset(X_train, y_train)
+</span></span></code></pre></div><p>To encode the 13 attributes in the Wine dataset into a quantum system, we use the angle embedding technique, followed by a layer of CNOT gates acting on neighboring qubits.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">data_encoding</span>(x):
+</span></span><span style="display:flex;"><span>    n_qubit <span style="color:#f92672">=</span> len(x)
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>AngleEmbedding(features <span style="color:#f92672">=</span>x , wires <span style="color:#f92672">=</span> range(n_qubit) , rotation <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;X&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n_qubit):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> n_qubit:
+</span></span><span style="display:flex;"><span>            qml<span style="color:#f92672">.</span>CNOT(wires<span style="color:#f92672">=</span>[i, i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>])
+</span></span></code></pre></div><p>With the data encoding, we construct a quantum binary classifier. Specifically, the circuit model consists multiple layers, where each layer encomposes parameterized single-qubit rotation gates with trainable angles and a block of non-parametric CNOT gate to introduce entanglement. To read-out the category information of each input sample from the prepared state, we estimate the expectation value of Pauli-Z operator with respect to the first qubit.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">classifier</span>(param, x<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    data_encoding(x)
+</span></span><span style="display:flex;"><span>    n_layer, n_qubit <span style="color:#f92672">=</span> param<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>], param<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n_layer):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(n_qubit):
+</span></span><span style="display:flex;"><span>            qml<span style="color:#f92672">.</span>Rot(param[i, j, <span style="color:#ae81ff">0</span>], param[i, j, <span style="color:#ae81ff">1</span>], param[i, j, <span style="color:#ae81ff">2</span>], wires<span style="color:#f92672">=</span>j)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(n_qubit):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> n_qubit:
+</span></span><span style="display:flex;"><span>                qml<span style="color:#f92672">.</span>CNOT(wires<span style="color:#f92672">=</span>[j, j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> qml<span style="color:#f92672">.</span>expval(qml<span style="color:#f92672">.</span>PauliZ(<span style="color:#ae81ff">0</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n_qubit <span style="color:#f92672">=</span> X_train<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>dev <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>device(<span style="color:#e6db74">&#39;default.qubit&#39;</span>, wires<span style="color:#f92672">=</span>n_qubit)
+</span></span><span style="display:flex;"><span>circuit <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>QNode(classifier, dev)
+</span></span></code></pre></div><p>We visualize the whole quantum circuit of 2 layers by drawing the diagram:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>draw_mpl(circuit)(np<span style="color:#f92672">.</span>pi <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">2</span>, n_qubit, <span style="color:#ae81ff">3</span>), X_train[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>fig<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p>With the data and circuit model ready, we now move to the optimization of the quantum classifier. In the framework of supervised learning, we employ the mean square error as the loss function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mse_loss</span>(predict, label):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>mean((predict <span style="color:#f92672">-</span> label)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cost</span>(param, circuit, X, y):
+</span></span><span style="display:flex;"><span>    exp <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(X)):
+</span></span><span style="display:flex;"><span>        pred <span style="color:#f92672">=</span> circuit(param, x<span style="color:#f92672">=</span>X[i])
+</span></span><span style="display:flex;"><span>        exp<span style="color:#f92672">.</span>append(pred)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> mse_loss(np<span style="color:#f92672">.</span>array(exp), y)
+</span></span></code></pre></div><p>To measure the classification accuracy of the quantum classifier, we define the metric of accuracy. Concretely, if the sign of the read-out result is the same as the corresponding label, we think the classifier predicts correctly. Otherwise, the classifier fails. The accuracy is counted as the proportion of the correctly classified samples.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">accuracy</span>(predicts, labels):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> len(predicts) <span style="color:#f92672">==</span> len(labels)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>sum((np<span style="color:#f92672">.</span>sign(predicts)<span style="color:#f92672">*</span>labels<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">/</span>len(predicts)
+</span></span></code></pre></div><p>We randomly initialize the parameters of the circuit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n_layer <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>param <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>pi <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>randn(n_layer, n_qubit, <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><p>We next train the quantum classifier with ADAM optimizer</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.01</span>
+</span></span><span style="display:flex;"><span>opt <span style="color:#f92672">=</span> AdamOptimizer(lr)
+</span></span><span style="display:flex;"><span>batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n_epoch <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span>cost_train, cost_test, acc_train, acc_test <span style="color:#f92672">=</span> [], [], [], []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n_epoch):
+</span></span><span style="display:flex;"><span>    index <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>permutation(len(X_train))
+</span></span><span style="display:flex;"><span>    feat_train, label_train <span style="color:#f92672">=</span> X_train[index], y_train[index]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(X_train), batch_size):
+</span></span><span style="display:flex;"><span>        feat_train_batch <span style="color:#f92672">=</span> feat_train[j<span style="color:#f92672">*</span>batch_size:(j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>batch_size]
+</span></span><span style="display:flex;"><span>        label_train_batch <span style="color:#f92672">=</span> label_train[j<span style="color:#f92672">*</span>batch_size:(j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>batch_size]
+</span></span><span style="display:flex;"><span>        param <span style="color:#f92672">=</span> opt<span style="color:#f92672">.</span>step(<span style="color:#66d9ef">lambda</span> v: cost(v, circuit, feat_train_batch, label_train_batch), param)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># compute cost</span>
+</span></span><span style="display:flex;"><span>    cost_train<span style="color:#f92672">.</span>append(cost(param, circuit, X_train, y_train))
+</span></span><span style="display:flex;"><span>    cost_test<span style="color:#f92672">.</span>append(cost(param, circuit, X_test, y_test))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># compute accuracy</span>
+</span></span><span style="display:flex;"><span>    pred_train <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(len(X_train)):
+</span></span><span style="display:flex;"><span>        pred_train<span style="color:#f92672">.</span>append(circuit(param, x<span style="color:#f92672">=</span>X_train[j]))
+</span></span><span style="display:flex;"><span>    acc_train<span style="color:#f92672">.</span>append(accuracy(np<span style="color:#f92672">.</span>array(pred_train), y_train))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    pred_test <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(len(X_test)):
+</span></span><span style="display:flex;"><span>        pred_test<span style="color:#f92672">.</span>append(circuit(param, x<span style="color:#f92672">=</span>X_test[j]))
+</span></span><span style="display:flex;"><span>    acc_test<span style="color:#f92672">.</span>append(accuracy(np<span style="color:#f92672">.</span>array(pred_test), y_test))
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">6</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>epochs <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(n_epoch) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(epochs, cost_train, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Training Cost&#39;</span>, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(epochs, cost_test, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Test Cost&#39;</span>, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Cost Over Epochs&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Epochs&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Cost&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>grid()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plot training and test accuracy</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(epochs, acc_train, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Training Accuracy&#39;</span>, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(epochs, acc_test, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Test Accuracy&#39;</span>, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Accuracy Over Epochs&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Epochs&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Accuracy&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>grid()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/code/classifier.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/code/kernel-mnist/" title="Classification on MNIST"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Classification on MNIST</a>
+<a class="nav nav-next" href="http://localhost:1313/code/patch-qgan/" title="Quantum Patch GAN">Next - Quantum Patch GAN <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class="active"><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

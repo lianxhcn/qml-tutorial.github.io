@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 1 Introduction of QML - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter1/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter1/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 1 Introduction of QML">
+  <meta property="og:description" content="Introduction The advancement of computational power has always been a driving force behind every major industrial revolution. The invention of the modern computer, followed by the central processing unit (CPU), led to the “digital revolution”, transforming industries through process automation and the rise of information technology. More recently, the development of graphical processing units (GPUs) has powered the era of artificial intelligence (AI) and big data, enabling breakthroughs in areas such as intelligent transportation systems, autonomous driving, scientific simulations, and complex data analysis. However, as we approach the physical and practical limits of Moore’s law—the principle that the number of transistors on a chip doubles approximately every two years—traditional computing devices like CPUs and GPUs are nearing the end of their scaling potential. The ever-growing demand for computational power, driven by the exponential increase in data and the complexity of modern applications, necessitates new computing paradigms. Among the leading candidates to meet these challenges are quantum computers [@feynman2017quantum], which leverage the unique principles of quantum mechanics such as superposition and entanglement to process information in ways that classical systems cannot, with the potential to revolutionize diverse aspects of daily life.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 1 Introduction of QML">
+  <meta name="twitter:description" content="Introduction The advancement of computational power has always been a driving force behind every major industrial revolution. The invention of the modern computer, followed by the central processing unit (CPU), led to the “digital revolution”, transforming industries through process automation and the rise of information technology. More recently, the development of graphical processing units (GPUs) has powered the era of artificial intelligence (AI) and big data, enabling breakthroughs in areas such as intelligent transportation systems, autonomous driving, scientific simulations, and complex data analysis. However, as we approach the physical and practical limits of Moore’s law—the principle that the number of transistors on a chip doubles approximately every two years—traditional computing devices like CPUs and GPUs are nearing the end of their scaling potential. The ever-growing demand for computational power, driven by the exponential increase in data and the complexity of modern applications, necessitates new computing paradigms. Among the leading candidates to meet these challenges are quantum computers [@feynman2017quantum], which leverage the unique principles of quantum mechanics such as superposition and entanglement to process information in ways that classical systems cannot, with the potential to revolutionize diverse aspects of daily life.">
+
+  <meta itemprop="name" content="Chapter 1 Introduction of QML">
+  <meta itemprop="description" content="Introduction The advancement of computational power has always been a driving force behind every major industrial revolution. The invention of the modern computer, followed by the central processing unit (CPU), led to the “digital revolution”, transforming industries through process automation and the rise of information technology. More recently, the development of graphical processing units (GPUs) has powered the era of artificial intelligence (AI) and big data, enabling breakthroughs in areas such as intelligent transportation systems, autonomous driving, scientific simulations, and complex data analysis. However, as we approach the physical and practical limits of Moore’s law—the principle that the number of transistors on a chip doubles approximately every two years—traditional computing devices like CPUs and GPUs are nearing the end of their scaling potential. The ever-growing demand for computational power, driven by the exponential increase in data and the complexity of modern applications, necessitates new computing paradigms. Among the leading candidates to meet these challenges are quantum computers [@feynman2017quantum], which leverage the unique principles of quantum mechanics such as superposition and entanglement to process information in ways that classical systems cannot, with the potential to revolutionize diverse aspects of daily life.">
+  <meta itemprop="wordCount" content="4952">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 1 Introduction of QML</h1><h1 id="c-intro">Introduction</h1>
+<p>The advancement of computational power has always been a driving force
+behind every major industrial revolution. The invention of the modern
+computer, followed by the central processing unit (CPU), led to the
+&ldquo;digital revolution&rdquo;, transforming industries through process automation
+and the rise of information technology. More recently, the development
+of graphical processing units (GPUs) has powered the era of artificial
+intelligence (AI) and big data, enabling breakthroughs in areas such as
+intelligent transportation systems, autonomous driving, scientific
+simulations, and complex data analysis. However, as we approach the
+physical and practical limits of Moore&rsquo;s law&mdash;the principle that the
+number of transistors on a chip doubles approximately every two
+years&mdash;traditional computing devices like CPUs and GPUs are nearing the
+end of their scaling potential. The ever-growing demand for
+computational power, driven by the exponential increase in data and the
+complexity of modern applications, necessitates new computing paradigms.
+Among the leading candidates to meet these challenges are <strong>quantum
+computers</strong> [@feynman2017quantum], which leverage the unique principles
+of quantum mechanics such as superposition and entanglement to process
+information in ways that classical systems cannot, with the potential to
+revolutionize diverse aspects of daily life.</p>
+<p>One of the most concrete and direct ways to understand the potential of
+quantum computers is through the framework of complexity theory
+[@watrous2008quantum]. Theoretical computer scientists have demonstrated
+that quantum computers can efficiently solve problems within the
+$\mathop{\mathrm{\mathsf{BQP}}}$ (Bounded-Error Quantum Polynomial Time)
+complexity class, meaning these problems can be solved in polynomial
+time by a quantum computer. In contrast, classical computers are limited
+to efficiently solving problems within the
+$\mathop{\mathrm{\mathsf{P}}}$ (Polynomial Time) complexity class. While
+it is widely believed, though not proven, that
+$\mathop{\mathrm{\mathsf{P}}}\subseteq \mathop{\mathrm{\mathsf{BQP}}}$,
+this suggests that quantum computers can provide exponential speedups
+for certain problems in $\mathop{\mathrm{\mathsf{BQP}}}$ that are
+intractable for classical machines.</p>
+<p>A prominent example of such a problem is large-number factorization,
+which forms the basis of RSA cryptography. Shor&rsquo;s algorithm
+[@shor1999polynomial], a quantum algorithm, can factor large numbers in
+polynomial time, while the most efficient known classical factoring
+algorithm requires super-polynomial time. For instance, breaking an
+RSA-2048 bit encryption key would take a classical computer
+approximately 300 trillion years, whereas an <em>ideal</em> quantum computer
+could complete the task in around 10 seconds. However, constructing
+&lsquo;ideal&rsquo; quantum computers remains a significant challenge. As will be
+discussed in later chapters, based on current fabrication techniques,
+this task could potentially be completed in approximately 8 hours using
+a noisy quantum computer with a sufficient number of <strong>qubits</strong>&mdash;the
+fundamental units of quantum computation [@gidney2021factor].</p>
+<p>The convergence of the computational power offered by quantum machines
+and the limitations faced by AI models has led to the rapid emergence of
+the field: <strong>quantum machine learning</strong> (QML) [@biamonte2017quantum]. In
+particular, the challenges in modern AI stem from the neural scaling law
+[@kaplan2020scaling], which posits that &ldquo;bigger is often better.&rdquo; Since
+2020, this principle has driven the development of increasingly colossal
+models, featuring more complex architectures and an ever-growing number
+of parameters. However, this progress comes at an immense cost. For
+instance, training a model like ChatGPT on a single GPU would take
+approximately 355 years, while the cloud computing costs for training
+such large models can reach tens of thousands of dollars.</p>
+<p>These staggering costs present a critical barrier to the future growth
+of AI. Quantum computing, celebrated for its extraordinary computational
+capabilities, holds the potential to overcome these limitations. It
+offers the possibility of advancing models like generative pre-trained
+transformers (GPTs) and accelerating progress toward artificial general
+intelligence (AGI). Quantum computing, and more specifically QML,
+represents a paradigm shift, moving from the classical &ldquo;it from bit&rdquo;
+framework to the quantum &ldquo;it from qubit&rdquo; era, with the potential to
+reshape the landscape of AI and computational science.</p>
+<h2 id="a-first-glimpse-of-quantum-machine-learning">A First Glimpse of Quantum Machine Learning</h2>
+<p>So, what exactly is quantum machine learning (QML)? In its <em>simplest</em>
+terms, the focus of this tutorial on QML can be summarized as follows
+(see Chapter <a href="#chapter1:explored-task-QML">1.1.3</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;chapter1:explored-task-QML&rdquo;} for the systematic overview).</p>
+<blockquote>
+<p>QML explores learning algorithms that can be executed on <strong>quantum computers</strong> to accomplish <strong>specified tasks</strong> with <strong>potential advantages</strong> over classical implementations.</p>
+</blockquote>
+<p>The three key elements in the above interpretation are: <em>quantum
+processors</em>, <em>specified tasks</em>, and <em>advantages</em>. In what follows, let
+us elucidate the specific meaning of each of these terms, providing the
+necessary foundation for a deeper understanding of the mechanisms and
+potential of QML.</p>
+<h3 id="chapt1-sec1-1-1">Quantum computers</h3>
+<p>The origins of quantum computing can be traced back to 1980 when Paul
+Benioff introduced the <em>quantum Turing machine</em> [@benioff1982quantum], a
+quantum analog of the classical Turing machine designed to describe
+computational models through the lens of quantum theory. Since then,
+several models of quantum computation have emerged, including
+<em>circuit-based quantum computation</em> [@nielsen2010quantum], <em>one-way
+quantum computation</em> [@raussendorf2001one], <em>adiabatic quantum
+computation</em> [@albash2018adiabatic], and <em>topological quantum
+computation</em> [@kitaev2003fault]. All of them have been shown to be
+computationally equivalent to the quantum Turing machine, meaning that a
+perfect implementation of any one of these models can simulate the
+others with no more than polynomial overhead. Given the prominence of
+<strong>circuit-based quantum computers</strong> in both the research and industrial
+communities and their rapid advancement, this tutorial will focus
+primarily on this model of quantum computing.</p>
+<p>Quantum computing gained further momentum in the early 1980s when
+physicists faced an exponential increase in computational overhead while
+simulating quantum dynamics, particularly as the number of particles in
+a system grew. This &ldquo;curse of dimensionality&rdquo; prompted Yuri Manin and
+Richard Feynman to independently propose leveraging quantum phenomena to
+build quantum computers, arguing that such devices would be far more
+efficient for simulating quantum systems than classical computers.</p>
+<p>However, as a universal computing device, the potential of quantum
+computers extends well beyond quantum simulations. In the 1990s,
+@shor1999polynomial developed a groundbreaking quantum algorithm for
+large-number factorization, posing a serious threat to widely used
+encryption protocols such as RSA and Diffie&ndash;Hellman. In 1996, Grover&rsquo;s
+algorithm demonstrated a quadratic speedup for unstructured search
+problems [@grover1996fast], a task with broad applications. Since then,
+the influence of quantum computing has expanded into a wide range of
+fields, with new quantum algorithms being developed to achieve runtime
+speedups in areas such as finance [@herman2023quantum], drug design
+[@santagati2024drug], optimization [@abbas2024challenges], and, most
+relevant to this tutorial, machine learning.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter1/fig1-1.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>An intuitive way to understand why quantum computers can outperform
+classical computers is by comparing their fundamental components. As
+illustrated in
+Figure 1.1, both types of computers
+consist of three fundamental components: input, the computational
+process, and the output. The implementation of these three components in
+classical and quantum computing is summarized in Table
+1.1.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter1/tab1-1.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>The advantages of quantum computers stem primarily from the key
+distinctions between classical bits and quantum bits (<strong>qubits</strong>), as
+well as between digital logic circuits and <strong>quantum circuits</strong>, as
+outlined below:</p>
+<ul>
+<li>
+<p><em>Bits versus Qubits</em>. A classical bit is a binary unit that takes on
+a value of either $0$ or $1$. In contrast, a quantum bit, or qubit,
+can exist in a superposition of both $0$ and $1$ simultaneously,
+represented by a <em>two-dimensional vector</em> where the entries
+correspond to the <em>probabilities</em> of the qubit being in each state.</p>
+<p>Furthermore, while classical bits follow the Cartesian product rule,
+qubits adhere to the tensor product rule. This distinction implies
+that an $N$-qubit system is described by a $2^N$-dimensional vector,
+allowing quantum systems to encode information exponentially with
+$N$&mdash;far surpassing the capacity of classical bits.
+Table <a href="#tab:chapt1-math-single-multi-qubits">1.4</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;tab:chapt1-math-single-multi-qubits&rdquo;} summarizes the
+mathematical expressions of classical and quantum bits.</p>
+<figure style="text-align:center;">
+</li>
+</ul>
+  <img src="../../images/chapter1/tab1-2.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<ul>
+<li>
+<p><em>Digital logic circuits versus quantum circuits</em>. Classical
+computers rely on digital logic circuits composed of logic gates
+that perform operations on bits in a deterministic manner, as
+illustrated in
+Figure 1.1. In contrast, quantum
+circuits consist of <strong>quantum gates</strong>, which act on single or
+multiple qubits to modify their states&mdash;the probability amplitudes
+$a_1,&hellip;, a_{2^N}$, as shown in
+Table 1.2. Owing to the
+universality of quantum gates, for any given input qubit state,
+there always exists a specific quantum circuit capable of
+transforming the input state into one corresponding to the target
+solution&mdash;a particular probability distribution. For certain
+probability distributions, a quantum computer can use a polynomial
+number of quantum gates relative to the qubit count $N$ to generate
+the distribution, whereas classical computers require an exponential
+number of gates with $N$ to achieve the same result. This difference
+underpins the quantum advantage.</p>
+</li>
+<li>
+<p>The readout process in quantum computing differs fundamentally from
+that in classical computing, as it involves <strong>quantum
+measurements</strong>, which extract information from a quantum system and
+translate it into a form that can be interpreted by classical
+systems. For problems in quantum physics and chemistry, quantum
+measurements can reveal far more useful information than classical
+simulations of the same systems, enabling significant runtime
+speedups in obtaining the desired physical properties.</p>
+</li>
+</ul>
+<p>The formal definitions of quantum computing are presented in
+Chapter 2. As we will see, the power of quantum
+computers is primarily determined by two factors: the number of qubits
+and the quantum gates, as well as their respective qualities. The term
+&ldquo;qualities&rdquo; refers to the fact that fabricating quantum computers is
+highly challenging, as both qubits and quantum gates are prone to
+errors. These qualities are measured using various physical metrics. One
+commonly used metric is <em>quantum volume</em> $V_Q$ [@cross2019validating],
+which quantifies a quantum computer&rsquo;s capabilities by accounting for
+both its error rates and overall performance. Mathematically, the
+quantum volume represents the maximum size of square quantum circuits
+that the computer can successfully implement to achieve the <em>heavy
+output generation problem</em>, i.e.,
+$$\log_2(V_Q) = \arg\max_{m} \min(m, d(m)),$$ where $m\leq N$ is a
+number of qubits selected from the given $N$-qubit quantum computer, and
+$d(m)$ is the number of qubits in the largest square circuits for which
+we can reliably sample heavy outputs with probability greater than
+$2/3$. The heavy output generation problem discussed here stems from
+proposals aimed at demonstrating quantum advantage. That is, if a
+quantum computer is of sufficiently high quality, we should expect to
+observe heavy outputs frequently across a range of random quantum
+circuit families. For illustration,
+Table 1.3 summarizes the progress of
+quantum computers as of 2024.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter1/tab1-3.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<blockquote>
+<p>Note that quantum volume is not the unique metric for evaluating the
+performance of quantum computers. There are several other metrics that
+assess the power of quantum processors from different perspectives. For
+instance, <em>Circuit Layer Operations Per Second</em> (CLOPS)
+[@wack2021quality] measures the computing speed of quantum computers,
+reflecting the feasibility of running practical calculations that
+involve a large number of quantum circuits. Additionally, <em>effective
+quantum volume</em> [@kechedzhi2024effective] provides a more nuanced
+comparison between noisy quantum processors and classical computers,
+considering factors such as error rates and noise levels. These metrics,
+among others, offer a more comprehensive understanding of the strengths
+and limitations of quantum computers across various applications.
+:::</p>
+</blockquote>
+<h3 id="chapt1:subsec:diff_quantum_adv">Different measures of quantum advantages</h3>
+<p>What do we mean when we refer to quantum advantage? Broadly, quantum
+advantage is demonstrated when quantum computers can solve a problem
+<em>more efficiently</em> than classical computers. However, the notion of
+&ldquo;efficiency&rdquo; in this context is not uniquely defined.</p>
+<p>The most common measure of efficiency is <em>runtime complexity</em>. By
+harnessing quantum effects, certain computations can be accelerated
+significantly&mdash;sometimes even exponentially&mdash;enabling tasks that are
+otherwise infeasible for classical computers. A prominent example is
+Shor&rsquo;s algorithm, which achieves an exponential speedup in large-number
+factorization relative to the best classical algorithms. In terms of
+runtime complexity, the quantum advantage is achieved when the upper
+bound of a quantum algorithm&rsquo;s runtime for a given task is <em>lower than</em>
+the theoretical lower bound of all possible classical algorithms for the
+same task.</p>
+<p>In quantum learning theory [@arunachalam2017guest], efficiency can also
+be measured by <em>sample complexity</em>, particularly within the Probably
+Approximately Correct ($\mathop{\mathrm{\mathsf{PAC}}}$) learning
+framework, which is central to this tutorial. In this context, sample
+complexity is defined as the number of interactions (e.g., quires of
+target quantum systems or measurements) required for a learner to
+achieve a desired prediction accuracy below a specified threshold. Here,
+the quantum advantage is realized when the upper bound on the sample
+complexity of a quantum learning algorithm for a given task is <em>lower
+than</em> the lower bound of all classical learning algorithms. While low
+sample complexity is a necessary condition for efficient learning, it
+does not guarantee practical efficiency alone; for example, identifying
+useful training examples within a small sample size may still require
+substantial computational time.</p>
+<p><em>Difference of sample complexity in classical and quantum ML</em>. In
+classical ML, sample complexity typically refers to the number of
+training examples required for a model to generalize effectively, such
+as the number of labeled images needed to train an image classifier. In
+quantum ML, however, sample complexity can take on varied meanings
+depending on the context, as shown below.</p>
+<ul>
+<li>
+<p>Quantum state tomography (see
+Chapter 2.3). Here the sample complexity
+refers to the number of measurements required to accurately
+reconstruct the quantum state of a system.</p>
+</li>
+<li>
+<p>Evaluation of the generalization ability of quantum neural networks
+(see Chapter 4.4). Here the sample complexity
+refers to the number of input-output pairs needed to train the
+network to approximate a target function, similar to classical ML.</p>
+</li>
+<li>
+<p>Quantum system learning. Here the sample complexity often refers to
+the number of queries to interact with the target quantum system,
+such as the number of times a system must be probed to learn its
+Hamiltonian dynamics.</p>
+</li>
+</ul>
+<p>In addition to sample complexity, another commonly used measure in
+quantum learning theory is <em>quantum query complexity</em>, particularly
+within the frameworks of quantum statistical learning and quantum exact
+learning. As these frameworks are not the primary focus of this
+tutorial, interested readers are referred to [@anshu2024survey] for a
+more detailed discussion.</p>
+<p>Quantum advantage can be pursued through <em>two main approaches</em>. The
+first involves identifying problems with quantum circuits that
+demonstrate provable advantages over classical counterparts in the
+aforementioned measures [@harrow2017quantum]. Such findings deepen our
+understanding of quantum computing&rsquo;s potential and expand its range of
+applications. However, these quantum circuits often require substantial
+quantum resources, which are currently beyond the reach of near-term
+quantum computers. Additionally, for many tasks, analytically
+determining the upper bound of classical algorithm complexities is
+challenging.</p>
+<p>These challenges have motivated a second approach: demonstrating that
+current quantum devices can perform accurate computations on a scale
+that exceeds brute-force classical simulations&mdash;a milestone known as
+&ldquo;quantum utility.&rdquo; Quantum utility refers to quantum computations that
+yield reliable, accurate solutions to problems beyond the reach of
+brute-force classical methods and otherwise accessible only through
+classical approximation techniques [@kim2023evidence]. This approach
+represents a step toward practical computational advantage with
+noise-limited quantum circuits. Reaching the era of quantum utility
+signifies that quantum computers have attained a level of scale and
+reliability enabling researchers to use them as effective tools for
+scientific exploration, potentially leading to groundbreaking new
+insights.</p>
+<h3 id="chapter1:explored-task-QML">Explored tasks in quantum machine learning</h3>
+<figure style="text-align:center;">
+  <img src="../../images/chapter1/fig1-2.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>What are the main areas of focus in QML? QML research is extensive and
+can be broadly divided into four primary sectors, each defined by the
+nature of the computing resources (whether the computing device is
+quantum (<strong>[Q]</strong>) or classical (<strong>[C]</strong>)) and
+the type of data involved (whether generated by a quantum
+(<strong>[Q]</strong>) or classical (<strong>[C]</strong>) system). The
+explanations of these four sectors are as follows.</p>
+<ul>
+<li>
+<p><strong>[CC] Sector</strong>. The <strong>[CC]</strong> sector
+refers to classical data processed on classical systems,
+representing traditional machine learning. Here, classical ML
+algorithms run on classical processors (e.g., CPUs and GPUs) and are
+applied to classical datasets. A typical example is using neural
+networks to classify images of cats and dogs.</p>
+</li>
+<li>
+<p><strong>[CQ] Sector</strong>: The <strong>[CQ]</strong> sector
+involves using classical ML algorithms on classical processors to
+analyze quantum data collected from quantum systems. Typical
+examples include applying classical neural networks to classify
+quantum states, estimating properties of quantum systems from
+measurement data, and employing classical regression models to
+predict outcomes of quantum experiments.</p>
+</li>
+<li>
+<p><strong>[QC] Sector</strong>. The <strong>[QC]</strong> sector
+involves developing QML algorithms that run on quantum processors
+(QPUs) to process classical data. In this context, quantum computing
+resources are leveraged to enhance or accelerate the analysis of
+classical datasets. Typical examples include applying QML
+algorithms, such as quantum neural networks and quantum kernels, to
+improve pattern recognition in image analysis.</p>
+</li>
+<li>
+<p><strong>[QQ] Sector</strong>. The <strong>[QQ]</strong> sector
+involves developing QML algorithms executed on QPUs to process
+quantum data. In this context, quantum computing resources are
+leveraged to reduce the computational cost of analyzing and
+understanding complex quantum systems. Typical examples include
+using quantum neural networks for quantum state classification and
+applying quantum-enhanced algorithms to simulate quantum many-body
+systems.</p>
+</li>
+</ul>
+<p>The classification above is not exhaustive. As illustrated in
+Figure 1.2, each sector can be further subdivided
+based on various learning paradigms, such as discriminative vs.
+generative learning or supervised, unsupervised, and semi-supervised
+learning. Additionally, each sector can be further categorized according
+to different application domains, such as finance, healthcare, and
+logistics.</p>
+<blockquote>
+<p>The primary focus of this tutorial is on the <strong>[QC]</strong> and
+<strong>[QQ]</strong> sectors. For more details on
+<strong>[CQ]</strong>, interested readers can refer to
+[@schuld2015introduction; @dunjko2018machine; @carleo2019machine].</p>
+</blockquote>
+<h2 id="progress-of-quantum-machine-learning">Progress of Quantum Machine Learning</h2>
+<p>Huge efforts have been made to the <strong>[QC]</strong> and
+<strong>[QQ]</strong> sectors to determine which tasks and conditions
+allow QML to offer computational advantages over classical machine
+learning. In this regard, to provide a clearer understanding of QML&rsquo;s
+progress, it is essential to first review recent advancements in quantum
+computers, the foundational substrate for quantum algorithms.</p>
+<h3 id="progress-of-quantum-computers">Progress of quantum computers</h3>
+<p>The novelty and inherent challenges of utilizing quantum physics for
+computation have driven the development of various computational
+architectures, giving rise to the formalized concept of circuit-based
+quantum computers. In pursuit of this goal, numerous
+companies and organizations are striving to establish their architecture
+as the leading approach and to be the first to demonstrate practical
+utility or quantum advantage on a large-scale quantum device.</p>
+<p>Common architectures currently include superconducting qubits (employed
+by IBM and Google), ion-trap systems (pioneered by IonQ), and Rydberg
+atom systems (developed by QuEra), each offering distinct advantages
+[@cheng2023noisy]. Specifically, superconducting qubits excel in
+scalability and fast gate operations [@huang2020superconducting], while
+ion-trap systems are known for their high coherence times, precise
+control over individual qubits, and full connectivity of all qubits
+[@bruzewicz2019trapped]. Moreover, Rydberg atom systems enable flexible
+qubit connectivity through highly controllable interactions
+[@morgado2021quantum]. Besides these architectures, integrated photonic
+quantum computers are emerging as promising alternatives for robust and
+scalable quantum computation.</p>
+<p>Despite recent advances, today&rsquo;s quantum computers remain highly
+sensitive to environmental noise and prone to quantum decoherence,
+lacking the stability needed for fault-tolerant operation. This results
+in qubits, quantum gates, and quantum measurements that are inherently
+imperfect, introducing errors that can lead to incorrect outputs. To
+capture this stage in quantum computing, John Preskill coined the term
+&ldquo;noisy intermediate-scale quantum&rdquo; ([NISQ]) era
+[@preskill2018quantum], which describes the current generation of
+quantum processors. These processors feature up to thousands of qubits,
+but their capabilities are restricted with error-prone gates and limited
+coherence times.</p>
+<p>In the [NISQ] era, notable achievements have been made
+alongside new challenges. Industrial and academic teams, such as those
+at Google and USTC, have demonstrated quantum advantages on specific
+sampling tasks, where the noisy quantum computers they fabricated
+outperform classical computers in computational efficiency
+[@arute2019quantum; @wu2021strong]. However, most quantum algorithms
+that theoretically offer substantial runtime speedups depend on
+fault-tolerant, error-free quantum systems&mdash;capabilities that remain
+beyond the reach of current technology.</p>
+<p>At this pivotal stage, the path forward in quantum computing calls for
+progress on both hardware and algorithmic fronts.</p>
+<p>On the hardware side, it is essential to continuously improve qubit
+count, coherence times, gate fidelities, and the accuracy of quantum
+measurements across various quantum architectures. Once the number and
+quality of qubits surpass certain thresholds, <em>quantum error correction</em>
+codes can be implemented [@nielsen2010quantum], paving the way for
+fault-tolerant quantum computing ([FTQC]). Broadly, quantum
+error correction uses redundancy and entanglement to detect and correct
+errors without directly measuring the quantum state, thus preserving
+coherence. Advancements in quantum processors will enable a progression
+from the [NISQ] era to the early [FTQC] era,
+ultimately reaching the fully [FTQC] era.</p>
+<p>On the algorithmic side, two key questions must be addressed:</p>
+<ul>
+<li>
+<p>How can [NISQ] devices be utilized to perform
+meaningful computations with practical utility?</p>
+</li>
+<li>
+<p>What types of quantum algorithms can be executed on early
+fault-tolerant and fully fault-tolerant quantum computers to realize
+the potential of quantum computing in real-world applications?</p>
+</li>
+</ul>
+<p>Progress on either question could have broad implications. A positive
+answer to (Q1) would suggest that [NISQ] quantum computers
+have immediate practical applicability, while advancements in (Q2) would
+expand the scope and impact of quantum computing as more robust,
+fault-tolerant systems become feasible. In the following two sections,
+we examine recent progress in QML concerning these two questions.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter1/fig1-3.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<h3 id="chapt1-sec-progress-FTQC">Progress of quantum machine learning under FTQC</h3>
+<p>A key milestone in [FTQC]-based QML algorithms is the
+quantum linear equations solver introduced by @harrow2009quantum. Many
+machine learning models rely on solving linear equations, a
+computationally intensive task that often dominates the overall runtime
+due to the polynomial scaling of complexity with matrix size. The HHL
+algorithm provides a breakthrough by reducing runtime complexity to
+poly-logarithmic scaling with matrix size, given that the matrix is
+well-conditioned and sparse. This advancement is highly significant for
+AI, where datasets frequently reach sizes in the millions or even
+billions.</p>
+<p>The exponential runtime speedup achieved by the HHL algorithm has
+garnered significant attention from the research community, highlighting
+the potential of quantum computing in AI. Following this milestone, a
+body of work has emerged that employs the quantum matrix inversion
+techniques developed in HHL (or its variants) as subroutines in the
+design of various [FTQC]-based QML algorithms, offering
+runtime speedups over their classical counterparts
+[@montanaro2016quantum; @dalzell2023quantum]. Notable examples include
+quantum principal component analysis [@lloyd2014quantum] and quantum
+support vector machines [@rebentrost2014quantum].</p>
+<p>Another milestone in [FTQC]-based QML algorithms is the
+quantum singular value transformation (QSVT), proposed by
+@gilyenquantum2019. QSVT enables polynomial transformations of the
+singular values of a linear operator embedded within a unitary matrix,
+offering a unifying framework for various quantum algorithms. It has
+connected and enhanced a broad range of quantum techniques, including
+amplitude amplification, quantum linear system solvers, and quantum
+simulation methods. Compared to the HHL algorithm for solving linear
+equations, QSVT provides improved scaling factors, making it a more
+efficient tool for addressing these problems in the context of QML.</p>
+<p>In addition to advancements in linear equation solving, another
+promising line of research in [FTQC]-based QML focuses on
+leveraging quantum computing to enhance deep neural networks (DNNs)
+rather than traditional machine learning models. This research track has
+two main areas of focus. The first is the acceleration of DNN
+optimization, with notable examples including the development of
+efficient quantum algorithms for dissipative differential equations to
+expedite (stochastic) gradient descent, as well as Quantum Langevin
+dynamics for optimization [@chen2023quantum; @liu2024towards]. The
+second area centers on advancing Transformers using quantum computing.
+In Chapter 5, we will discuss in detail how quantum
+computing can be employed to accelerate Transformers during the
+inference stage.</p>
+<blockquote>
+<p>However, there are several critical caveats of the HHL-based QML
+algorithms. First, the assumption of efficiently preparing the quantum
+states corresponding to classical data runtime is very strong and may be
+impractical in the dense setting. Second, the obtained result $\bm{x}$
+is still in the quantum form $\ket{\bm{x}}$. Note that extracting one
+entry of $\ket{\bm{x}}$ into the classical form requires $O(\sqrt{N})$
+runtime, which collapses the claimed exponential speedups. The above two
+issues amount to the read-in and read-out bottlenecks in QML
+[@aaronson2015read]. The last caveat is that the employed strong quantum
+input model such as quantum random access memory (QRAM)
+[@giovannetti2008quantum] leads to an inconclusive comparison. Through
+exploiting a classical analog of QRAM as the input model, there exist
+efficient classical algorithms to solve recommendation systems in
+poly-logarithmic time in the size of input data.</p>
+</blockquote>
+<h3 id="chapt1-sec-progress-NISQ">Progress of quantum machine learning under NISQ</h3>
+<p>The work conducted by @havlivcek2019supervised marked a pivotal moment
+for QML in the [NISQ] era. This study demonstrated the
+implementation of quantum kernel methods and quantum neural networks
+(QNNs) on a 5-qubit superconducting quantum computer, highlighting
+potential quantum advantages from the perspective of complexity theory.
+Unlike the aforementioned [FTQC] algorithms, quantum kernel
+methods and QNNs are flexible and can be effectively adapted to the
+limited quantum resources available in the [NISQ] era.
+These demonstrations, along with advancements in quantum hardware,
+sparked significant interest in exploring QML applications using
+[NISQ] quantum devices. We will delve into quantum kernel
+methods and QNNs in Chapter 3 and
+Chapter 4,
+respectively.</p>
+<blockquote>
+<p>A quantum neural network (QNN) is a hybrid model that leverages quantum
+computers to implement trainable models similar to classical neural
+networks, while using classical optimizers to complete the training
+process.</p>
+</blockquote>
+<p>As shown in Figure 1.4, the mechanisms of QNNs and deep
+neural networks (DNNs) are almost the same, whereas the only difference
+is the way of implementing the trainable model. This difference gives
+the potential of quantum learning models to solve complex problems
+beyond the reach of classical neural networks, opening new frontiers in
+many fields. Roughly speaking, research in QNNs and quantum kernel
+methods has primarily focused on three key areas: (I) <em>quantum learning
+models and applications</em>, (II) <em>the adaptation of advanced AI topics to
+QML</em>, and (III) <em>theoretical foundations of quantum learning models</em>. A
+brief overview of each category is provided below.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter1/fig1-4.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>(I) [Quantum learning models and applications]. This
+category focuses on implementing various DNNs on [NISQ]
+quantum computers to tackle a wide range of tasks.</p>
+<p>From a model architecture perspective, quantum analogs of popular
+classical machine learning models have been developed, including quantum
+versions of multilayer perceptrons (MLPs), autoencoders, convolutional
+neural networks (CNNs), recurrent neural networks (RNNs), extreme
+learning machines, generative adversarial networks (GANs), diffusion
+models, and Transformers. Some of these QNN structures have even been
+validated on real quantum platforms, demonstrating the feasibility of
+applying quantum algorithms to tasks traditionally dominated by
+classical deep learning
+[@cerezo2021variational; @li2022recent; @tian2023recent].</p>
+<p>From an application perspective, QML models implemented on
+[NISQ] devices have been explored across diverse fields,
+including fundamental science, image classification, image generation,
+financial time series prediction, combinatorial optimization,
+healthcare, logistics, and recommendation systems. These applications
+demonstrate the broad potential of QML in the [NISQ] era,
+though achieving full quantum advantage in these areas remains an
+ongoing challenge [@bharti2022noisy; @cerezo2022challenges].</p>
+<p>(II) [Adaptation of advanced AI topics to QML]. Beyond
+model design, advanced topics from AI have been extended to QML, aiming
+to enhance the performance and robustness of different QML models.
+Examples include quantum architecture search [@du2022quantum] (the
+quantum equivalent of neural architecture search), advanced optimization
+techniques [@stokes2020quantum], and pruning methods to reduce the
+complexity of quantum models [@sim2021adaptive; @wang2023symmetric].
+Other areas of active research include adversarial learning
+[@Lu2020Quantum], continual learning [@Jiang_2022Quantum], differential
+privacy [@du2021quantum; @Watkins2023Quantum], distributed learning
+[@du2022distributed], federated learning [@ren2023towards], and
+interpretability within the context of QML [@pira2024interpretability].
+These techniques have the potential to significantly improve the
+efficiency and effectiveness of QML models, addressing some of the
+current limitations of [NISQ] devices.</p>
+<p>(III) [Theoretical foundations]. Quantum learning theory
+[@banchi2023statistical] has garnered increasing attention, aiming to
+compare the capabilities of different QML models and to identify the
+theoretical advantages of QML over classical machine learning models. As
+shown in Figure <a href="#fig:chapter1-QLT-overview">1.4</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;fig:chapter1-QLT-overview&rdquo;}, the learnability of QML models
+can be evaluated across three key dimensions: expressivity,
+trainability, and generalization capabilities. Below, we provide a brief
+overview of each measure.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter1/fig1-5.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<ul>
+<li>
+<p>Trainability. This area examines how the design of QNNs influences
+their convergence properties, including the impact of system noise
+and measurement errors on the ability to converge to local or global
+minima.</p>
+</li>
+<li>
+<p>Expressivity. Researchers investigate how the number of parameters
+and the structure of QNNs affect the size of the hypothesis space
+they can represent. A central question is whether QNNs and quantum
+kernels can efficiently represent functions or patterns that
+classical neural networks cannot, thereby offering potential quantum
+advantage.</p>
+</li>
+<li>
+<p>Generalization. This focuses on understanding how the gap between
+training and test error evolves with the size of the dataset, the
+structure of QNNs or quantum kernels, and the number of parameters.
+The goal is to determine whether QML models can generalize more
+effectively than classical models, particularly in the presence of
+noisy data or when training data is limited.</p>
+</li>
+</ul>
+<p>The combination of advancements in model design, application domains,
+and theoretical understanding is driving the progress of QML in the NISQ
+era. Although the field is still in its early stages, the progress
+achieved thus far provides promising insights into the potential of
+quantum computing to enhance conventional AI. As quantum hardware
+continues to evolve, further breakthroughs are expected, potentially
+unlocking new possibilities for practical QML applications.</p>
+<blockquote>
+<p>It is important to note that QNNs and quantum kernel methods can also be
+considered [FTQC] algorithms when executed on fully
+fault-tolerant quantum computers. The reason these algorithms are
+discussed in the context of [NISQ] devices is their
+flexibility and robustness, making them well-suited to the limitations
+of current quantum hardware.</p>
+</blockquote>
+<h3 id="a-brief-review-of-quantum-machine-learning">A brief review of quantum machine learning</h3>
+<p>Unlike quantum hardware, where the number of qubits has rapidly scaled
+from zero to thousands, the development of QML algorithms&mdash;and quantum
+algorithms more broadly&mdash;has taken an inverse trajectory, transitioning
+from [FTQC] to [NISQ] devices. This shift
+reflects the move from idealized theoretical frameworks to practical
+implementations. The convergence of quantum hardware and QML algorithms,
+where the quantum resources required by these algorithms become
+attainable on real quantum computers, enables researchers to
+experimentally evaluate the power and limitations of various quantum
+algorithms.</p>
+<p>Based on the minimum quantum resources required to complete learning
+tasks, we distinguish between [FTQC] algorithms, and [NISQ]
+algorithms, including QNNs and quantum kernel methods. [FTQC]-based QML
+algorithms necessitate error-corrected quantum computers with tens of
+billions of qubits&mdash;an achievement that remains far from realization.
+In contrast, QNNs and quantum kernels are more flexible and can be
+executed on both [NISQ] and [FTQC] devices,
+depending on the available resources.</p>
+<p>As quantum hardware continues to progress, the development of QML
+algorithms must evolve in tandem. A promising direction is to integrate
+[FTQC] algorithms with QNNs and quantum kernel methods,
+creating new QML algorithms that can be run on current quantum
+processors while offering enhanced quantum advantages across various
+tasks.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter1/_index.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/getting-started/" title="Getting Started"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Getting Started</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter2/" title="Chapter 2 Basis of Quantum Computing">Next - Chapter 2 Basis of Quantum Computing <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=" active"><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

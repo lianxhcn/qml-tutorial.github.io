@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 4.1 Classical Neural Networks - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter4/1/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter4/1/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 4.1 Classical Neural Networks">
+  <meta property="og:description" content="This content of this section corresponds to the Chapter 4.1 of our paper. Please refer to the original paper for more details.
+Neural networks [@mcculloch1943logical; @gardner1998artificial; @vaswani2017attention] are computer models inspired by the structure of the human brain, designed to process and analyze complex patterns in data. Originally developed from the concept of neurons connected by weighted pathways, neural networks have become one of the most powerful tools in artificial intelligence [@lecun2015deep]. Each neuron processes its inputs by applying weights and non-linear activations, producing an output that feeds into the next layer of neurons. This structure enables neural networks to learn complex functions during training [@hornik1993some]. For example, given a dataset of images and their labels, a neural network can learn to classify categories, such as distinguishing between cats and dogs, by adjusting its parameters during training. Guided by optimization algorithms such as gradient descent [@amari1993backpropagation], the learning process allows the network to gradually reduce the error between the predicted and actual outputs, allowing it to learn the best parameters for the given task.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter4">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 4.1 Classical Neural Networks">
+  <meta name="twitter:description" content="This content of this section corresponds to the Chapter 4.1 of our paper. Please refer to the original paper for more details.
+Neural networks [@mcculloch1943logical; @gardner1998artificial; @vaswani2017attention] are computer models inspired by the structure of the human brain, designed to process and analyze complex patterns in data. Originally developed from the concept of neurons connected by weighted pathways, neural networks have become one of the most powerful tools in artificial intelligence [@lecun2015deep]. Each neuron processes its inputs by applying weights and non-linear activations, producing an output that feeds into the next layer of neurons. This structure enables neural networks to learn complex functions during training [@hornik1993some]. For example, given a dataset of images and their labels, a neural network can learn to classify categories, such as distinguishing between cats and dogs, by adjusting its parameters during training. Guided by optimization algorithms such as gradient descent [@amari1993backpropagation], the learning process allows the network to gradually reduce the error between the predicted and actual outputs, allowing it to learn the best parameters for the given task.">
+
+  <meta itemprop="name" content="Chapter 4.1 Classical Neural Networks">
+  <meta itemprop="description" content="This content of this section corresponds to the Chapter 4.1 of our paper. Please refer to the original paper for more details.
+Neural networks [@mcculloch1943logical; @gardner1998artificial; @vaswani2017attention] are computer models inspired by the structure of the human brain, designed to process and analyze complex patterns in data. Originally developed from the concept of neurons connected by weighted pathways, neural networks have become one of the most powerful tools in artificial intelligence [@lecun2015deep]. Each neuron processes its inputs by applying weights and non-linear activations, producing an output that feeds into the next layer of neurons. This structure enables neural networks to learn complex functions during training [@hornik1993some]. For example, given a dataset of images and their labels, a neural network can learn to classify categories, such as distinguishing between cats and dogs, by adjusting its parameters during training. Guided by optimization algorithms such as gradient descent [@amari1993backpropagation], the learning process allows the network to gradually reduce the error between the predicted and actual outputs, allowing it to learn the best parameters for the given task.">
+  <meta itemprop="wordCount" content="983">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 4.1 Classical Neural Networks</h1>
+<p><em>This content of this section corresponds to the Chapter 4.1 of our paper. Please refer to the original paper for more details.</em></p>
+<p>Neural
+networks [@mcculloch1943logical; @gardner1998artificial; @vaswani2017attention]
+are computer models inspired by the structure of the human brain,
+designed to process and analyze complex patterns in data. Originally
+developed from the concept of neurons connected by weighted pathways,
+neural networks have become one of the most powerful tools in artificial
+intelligence [@lecun2015deep]. Each neuron processes its inputs by
+applying weights and non-linear activations, producing an output that
+feeds into the next layer of neurons. This structure enables neural
+networks to learn complex functions during training [@hornik1993some].
+For example, given a dataset of images and their labels, a neural
+network can learn to classify categories, such as distinguishing between
+cats and dogs, by adjusting its parameters during training. Guided by
+optimization algorithms such as gradient
+descent [@amari1993backpropagation], the learning process allows the
+network to gradually reduce the error between the predicted and actual
+outputs, allowing it to learn the best parameters for the given task.</p>
+<p>After nearly a century of exploration, neural networks have undergone
+remarkable advancements in both architectures and capabilities. The
+simplest model, the perceptron [@mcculloch1943logical], laid the
+foundation by showing how neural networks could learn to separate
+linearly classifiable categories. Building on this, deeper and more
+complex networks&mdash;such as multilayer perceptrons
+(MLPs) [@gardner1998artificial] and
+transformers [@vaswani2017attention]&mdash;have enabled breakthroughs in
+tasks such as autonomous driving and content generation.</p>
+<h3 id="chapt5:sec:classical_perceptron">Perceptron</h3>
+<p>The perceptron model, first introduced by [@mcculloch1943logical], is
+widely regarded as a foundational structure in artificial neural
+networks, inspiring architectures ranging from convolutional neural
+networks (CNNs) [@lecun1989handwritten] and residual neural networks
+(ResNets) [@he2016deep] to transformers [@vaswani2017attention]. Due to
+its fundamental role, we next introduce the mechanism of single-layer
+perceptrons.</p>
+<p>A single-layer perceptron comprises three fundamental components: <em>input
+neurons, a weighted layer, and an output neuron</em> as illustrated in
+Figure <a href="#chap5_figure_perceptron">1.1</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;chap5_figure_perceptron&rdquo;}. Given a $d$-dimensional input
+vector $\bm{x} \in \mathbb{R}^d$, the input layer consists of $d$
+neurons, each representing the feature $\bm{x}_{i}$ for
+$\forall i \in [d]$. This input is processed through a weighted
+summation, , $$
+z = \bm{w}^{\top} \bm{x},$$ where $\bm{w}^{\top}$ is the transpose of
+the weight vector and $z$ is the output of the weighted layer. A
+non-linear activation function is then applied to produce the output
+neuron $\hat{y}$. For the standard perceptron model, the sign function
+is typically used as the activation function:</p>
+<p>$$\hat{y} = f(z) = \left\{\begin{aligned}
+1, &amp;\quad{} \text{if} \quad z \geq 0 , \\
+-1, &amp;\quad{} \text{if} \quad z &lt; 0 .
+\end{aligned}\right.$$</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/perceptron.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>The perceptron learns from input data by iteratively adjusting its
+trainable parameters $\bm{w}$. In particular, let
+$\mathcal{D}={(\bm{x}^{(a)}, y^{(a)})}_{a=1}^n$ be the training
+dataset, where $\bm{x}^{(a)}$ represents the input features of the
+$a$-th example, and $y^{(a)} \in {-1,1}$ denotes the corresponding
+label. When the perceptron outputs an incorrect prediction
+$\hat{y}^{(s)}$, the parameters are updated accordingly,</p>
+<p>$$\begin{aligned}
+\bm{w} \leftarrow{}&amp; \bm{w} + (y^{(s)} - \hat{y}^{(s)}) \bm{x}^{(s)}.
+\end{aligned}$$</p>
+<p>The training process is repeated iteratively until the
+error reaches a predefined threshold.</p>
+<p>Since the parameters are used in an inner product operation, the single-layer perceptron can be
+considered as a basic kernel method employing the identity feature
+mapping. Consequently, the single-layer perceptron can only classify
+linearly separable data and is inadequate for handling more complex
+tasks, such as the XOR problem [@rosenblatt1958perceptron]. This
+limitation has driven the development of advanced neural networks, such
+as multilayer perceptrons (MLPs) [@gardner1998artificial], which can
+capture non-linear relationships by incorporating non-linear activation
+functions and multi-layer structures.</p>
+<h3 id="chapt5:sec:classical_mlp">Multilayer perceptron</h3>
+<p>The multilayer perceptron (MLP) is a fully connected neural network
+architecture consisting of three components: the <em>input layer, hidden
+layers, and output layer,</em> as illustrated in
+Figure 4.2. Similar to the single-layer perceptron, the neurons in the MLP are
+connected through weighted sums, followed by non-linear activation
+functions.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/mlp.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>The mathematical expression of MLP is as follows. Let $\bm{x}^{(a,1)}$
+be the $a$-th input data and $L$ be the number of total layers. The
+forward propagation is computed as follows: $$\begin{aligned}
+\bm{z}^{(a, \ell+1)}    ={}&amp; {W}^{(\ell)} \bm{x}^{(a, \ell)} + \bm{b}^{(\ell)} , \\
+\bm{x}^{(a, \ell+1)} ={}&amp; \sigma(\bm{z}^{(a, \ell+1)}) ,
+\end{aligned}$$ where $\sigma$ represents the non-linear activation
+function and $\bm{b}^{(\ell)}$ denotes the bias term. Similar to the
+notation $z$ in the perceptron in
+Chapter <a href="#chapt5:sec:classical_perceptron">1.1.1</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;chapt5:sec:classical_perceptron&rdquo;}, $\bm{z}^{(a,\ell+1)}$
+denotes the output of the linear sum in the $\ell+1$-th layer, which is
+expressed in a more generalized vector form. Therefore, the parameter
+for the weighted linear sum is represented in matrix form as
+$W^{(\ell)}$. Various methodologies have been proposed for implementing
+non-linear activations, with some common approaches summarized in
+Table 4.1.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/tab4-1.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>Finally, the output
+given by the equation below serves as the prediction to approximate the
+target label $\bm{y}^{(a)}$.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/out.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>Next, we provide a toy example of binary classification to explain the
+MLP learning procedure. Let
+${(\bm{x}^{(a)}, \bm{y}^{(a)})}_{a \in \mathcal{D}}$ be the training
+dataset $\mathcal{D}$, where $\bm{x}^{(a)}$ is the feature vector and
+$\bm{y}^{(a)} \in { (1,0)^{\top} , (0,1)^{\top} }$ is the label for
+two categories. Consider the MLP with one hidden layer. The prediction
+can be expressed as follows: $$\begin{aligned}
+\hat{\bm{y}}^{(a)} ={}&amp; { softmax}(\bm{x}^{(a,3)})= { softmax} \circ \sigma \left(\bm{z}^{(a,3)} \right) \
+={}&amp; { softmax} \circ \sigma \left({W}^{(2)} \bm{x}^{(a,2)} + \bm{b}^{(2)} \right) \
+={}&amp; { softmax} \circ \sigma \left({W}^{(2)} \sigma \left(\bm{z}^{(a,2)} \right) + \bm{b}^{(2)} \right) \
+={}&amp; { softmax} \circ \sigma \left({W}^{(2)} \sigma \left( W^{(1)} \bm{x}^{(a,1)} + \bm{b}^{(1)} \right) + \bm{b}^{(2)} \right) ,
+\end{aligned}$$ where $\circ$ denotes the function composition. We use
+$\sigma(x)=1/(1+\exp[-x])$ as the non-linear activation function.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/back_propagation.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>MLP learns from the given dataset by minimizing the loss function with
+respect to the parameters
+$\bm{\theta}=({W}^{(1)}, {W}^{(2)}, \bm{b}^{(1)}, \bm{b}^{(2)})$, which
+is defined as the L2 norm distance between the prediction and the label:</p>
+<p>$$\begin{aligned}
+\mathcal{L}(\bm{\theta} ) ={}&amp; \frac{1}{|\mathcal{D}|} \sum_{a \in \mathcal{D}} \mathcal{L}^{(a)}(\bm{\theta} ) = \frac{1}{2|\mathcal{D}|} \sum_{a \in \mathcal{D}} \left| \hat{\bm{y}}^{(a)}(\bm{\theta}) - \bm{y}^{(a)} \right|^2 .
+\end{aligned}$$</p>
+<p>We use gradient descent with learning rate $\eta$ to
+optimize the parameters:</p>
+<p>$$\bm{\theta}(t+1)=\bm{\theta}(t)-\eta \nabla_{\bm{\theta}} \mathcal{L}(\bm{\theta}(t)).$$</p>
+<p>As illustrated in
+Figure <a href="#chap5_figure_back_propagation">1.3</a>{reference-type=&ldquo;ref&rdquo;
+reference=&ldquo;chap5_figure_back_propagation&rdquo;}, the gradient is computed
+using backpropagation [@lecun1988theoretical] shown in Figure 4.3.</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter4/1.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter4/" title="Chapter 4 Quantum Neural Networks"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 4 Quantum Neural Networks</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter4/2/" title="Chapter 4.2 Fault-tolerant Quantum Perceptron">Next - Chapter 4.2 Fault-tolerant Quantum Perceptron <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class="active"><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

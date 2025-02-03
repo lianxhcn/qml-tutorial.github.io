@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 4.3 Near-term quantum neural networks - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/chapter4/3/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/chapter4/3/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Chapter 4.3 Near-term quantum neural networks">
+  <meta property="og:description" content="This content of this section corresponds to the Chapter 4.3 of our paper. Please refer to the original paper for more details.
+Following recent experimental breakthroughs in superconducting quantum hardware architectures [@arute2019quantum; @acharya2024quantum; @abughanem2024ibm; @gao2024establishing], researchers have devoted considerable effort to developing and implementing quantum machine learning algorithms optimized for current and near-term quantum devices [@wang2024comprehensive]. Compared to fault-tolerant quantum computers, these devices face two primary limitations: quantum noise and circuit connectivity constraints. Regarding quantum noise, state-of-the-art devices have single-qubit gate error rates of $10^{-4} \sim 10^{-3}$ and two-qubit gate error rates of approximately $10^{-3} \sim 10^{-2}$ [@abughanem2024ibm; @gao2024establishing]. The coherence time is around $10^2 \mu s$ [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing], primarily limited by decoherence in noisy quantum channels. Regarding circuit connectivity, most superconducting quantum processors employ architectures that exhibit two-dimensional connectivity patterns and their variants [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing]. Gate operations between non-adjacent qubits must be executed through intermediate relay operations, leading to additional error accumulation. To address these inherent limitations, the near-term quantum neural network (QNN) framework has been proposed. Specifically, near-term QNNs are designed to perform meaningful computations using quantum circuits of limited depth.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="chapter4">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Chapter 4.3 Near-term quantum neural networks">
+  <meta name="twitter:description" content="This content of this section corresponds to the Chapter 4.3 of our paper. Please refer to the original paper for more details.
+Following recent experimental breakthroughs in superconducting quantum hardware architectures [@arute2019quantum; @acharya2024quantum; @abughanem2024ibm; @gao2024establishing], researchers have devoted considerable effort to developing and implementing quantum machine learning algorithms optimized for current and near-term quantum devices [@wang2024comprehensive]. Compared to fault-tolerant quantum computers, these devices face two primary limitations: quantum noise and circuit connectivity constraints. Regarding quantum noise, state-of-the-art devices have single-qubit gate error rates of $10^{-4} \sim 10^{-3}$ and two-qubit gate error rates of approximately $10^{-3} \sim 10^{-2}$ [@abughanem2024ibm; @gao2024establishing]. The coherence time is around $10^2 \mu s$ [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing], primarily limited by decoherence in noisy quantum channels. Regarding circuit connectivity, most superconducting quantum processors employ architectures that exhibit two-dimensional connectivity patterns and their variants [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing]. Gate operations between non-adjacent qubits must be executed through intermediate relay operations, leading to additional error accumulation. To address these inherent limitations, the near-term quantum neural network (QNN) framework has been proposed. Specifically, near-term QNNs are designed to perform meaningful computations using quantum circuits of limited depth.">
+
+  <meta itemprop="name" content="Chapter 4.3 Near-term quantum neural networks">
+  <meta itemprop="description" content="This content of this section corresponds to the Chapter 4.3 of our paper. Please refer to the original paper for more details.
+Following recent experimental breakthroughs in superconducting quantum hardware architectures [@arute2019quantum; @acharya2024quantum; @abughanem2024ibm; @gao2024establishing], researchers have devoted considerable effort to developing and implementing quantum machine learning algorithms optimized for current and near-term quantum devices [@wang2024comprehensive]. Compared to fault-tolerant quantum computers, these devices face two primary limitations: quantum noise and circuit connectivity constraints. Regarding quantum noise, state-of-the-art devices have single-qubit gate error rates of $10^{-4} \sim 10^{-3}$ and two-qubit gate error rates of approximately $10^{-3} \sim 10^{-2}$ [@abughanem2024ibm; @gao2024establishing]. The coherence time is around $10^2 \mu s$ [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing], primarily limited by decoherence in noisy quantum channels. Regarding circuit connectivity, most superconducting quantum processors employ architectures that exhibit two-dimensional connectivity patterns and their variants [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing]. Gate operations between non-adjacent qubits must be executed through intermediate relay operations, leading to additional error accumulation. To address these inherent limitations, the near-term quantum neural network (QNN) framework has been proposed. Specifically, near-term QNNs are designed to perform meaningful computations using quantum circuits of limited depth.">
+  <meta itemprop="wordCount" content="1643">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Chapter 4.3 Near-term quantum neural networks</h1>
+<p><em>This content of this section corresponds to the Chapter 4.3 of our paper. Please refer to the original paper for more details.</em></p>
+<p>Following recent experimental breakthroughs in superconducting quantum
+hardware
+architectures [@arute2019quantum; @acharya2024quantum; @abughanem2024ibm; @gao2024establishing],
+researchers have devoted considerable effort to developing and
+implementing quantum machine learning algorithms optimized for current
+and near-term quantum devices [@wang2024comprehensive]. Compared to
+fault-tolerant quantum computers, these devices face two primary
+limitations: quantum noise and circuit connectivity constraints.
+Regarding quantum noise, state-of-the-art devices have single-qubit gate
+error rates of $10^{-4} \sim 10^{-3}$ and two-qubit gate error rates of
+approximately
+$10^{-3} \sim 10^{-2}$ [@abughanem2024ibm; @gao2024establishing]. The
+coherence time is around
+$10^2 \mu s$ [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing],
+primarily limited by decoherence in noisy quantum channels. Regarding
+circuit connectivity, most superconducting quantum processors employ
+architectures that exhibit two-dimensional connectivity patterns and
+their
+variants [@acharya2024quantum; @abughanem2024ibm; @gao2024establishing].
+Gate operations between non-adjacent qubits must be executed through
+intermediate relay operations, leading to additional error accumulation.
+To address these inherent limitations, the near-term quantum neural
+network (QNN) framework has been proposed. Specifically, near-term QNNs
+are designed to perform meaningful computations using quantum circuits
+of limited depth.</p>
+<h3 id="chapt5:sec:qnn_imple">General framework</h3>
+<p>In this section, we introduce the architecture of a basic near-term QNN.
+As illustrated in Figure 4.4, a basic QNN consists of three components:
+the input, the model circuit, and the measurement.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/fig4-4.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p><strong>Input</strong>. The near-term QNN uses quantum states as input data. QNNs can process both
+classical and quantum data. Specifically, the input states $\rho_{ in}$
+may be introduced from physical processes such as quantum Hamiltonian
+evolutions or be constructed to encode classical vectors using encoding
+protocols introduced in
+Chapter 2.3, such as angle encoding and amplitude
+encoding.</p>
+<p><strong>Model circuit</strong>. QNNs employ variational quantum circuits (VQCs) to
+extract and learn features from input data. A typical VQC, denoted as
+$V(\bm{\theta})$, adopts a layered architecture that consists of both
+parameterized and fixed quantum gates, with the former being trainable.
+For problem-agnostic implementations, an effective parameterization
+strategy is to use the parameters $\bm{\theta}$ as the phases of
+single-qubit rotation gates RX, RY, RZ, while quantum entanglement
+is introduced through fixed two-qubit gates, such as $CX$ and $CZ$.
+Standard circuit architectures include the hardware-efficient circuit
+(HEC) [@kandala2017hardware], shown in
+Figure 4.5, and the quantum convolutional neural
+network (QCNN) [@cong2019quantum], shown in
+Figure 4.6. For problem-specific applications, such
+as finding the ground states of molecular Hamiltonians, specialized
+circuits like the unitary coupled cluster
+<em>ansatz</em> [@peruzzo2014variational] are employed.</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/fig4-5.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/fig4-6.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p><strong>Measurement</strong>. After implementing the model circuit, the quantum state
+is measured using specific observables, denoted as $O$, to extract
+classical information. The choice of observables depends on the
+experimental objectives. In the case of a variational quantum
+eigensolver, where the goal is to find the ground state and energy of a
+given Hamiltonian, the observable is chosen to be the target Hamiltonian
+itself. In quantum machine learning applications involving classical
+data, the measurement outcomes are used to approximate label
+information, which typically lacks direct physical significance. As a
+result, the observable $O$ can, in principle, be any Hermitian operator. The measurement
+outcome of the near-term QNN can be expressed as a function of
+$\bm{\theta}$,</p>
+<p>$$\begin{aligned}
+f(\bm{\theta};\rho_{ in},V,O) ={}&amp; \text{Tr} \left[ O V(\bm{\theta}) \rho_{ in}  V(\bm{\theta})^\dag \right] .
+\end{aligned}$$</p>
+<p><strong>Training of QNNs</strong>. As a QML framework, near-term quantum neural
+networks (QNNs) learn by optimizing parameters $\bm{\theta}$ using
+gradient-based methods. Therefore, the efficient computation of
+gradients is crucial to this approach. In particular, it is desirable to
+compute these gradients via quantum circuit operations. For certain
+cases involving parameterized gates with unitary Hamiltonians, this
+computation can be elegantly performed using the parameter-shift rule.</p>
+<h3 id="chapt5:sec:qnn_dis">Discriminative learning with near-term QNNs</h3>
+<p>In this section, we present an example in which a near-term QNN is
+employed for discriminative learning. Specifically, we focus on binary
+classification, where the label $y^{(i)} = \pm 1$ corresponds to the
+input state $\rho^{(i)}$. In the case of classical data, the state
+$\rho^{(i)}=\ket{\psi(\bm{x}^{(i)})}\bra{\psi(\bm{x}^{(i)})}$ can be generated
+from the classical vector $\bm{x}^{(i)}$ using a read-in approach
+$$|\psi(\bm{x}^{(i)})&gt; = U_\phi (\bm{x}^{(i)}) \ket{0} ,$$ where a simple
+feature map $U_\phi (\bm{x}^{(i)})$ can be constructed via angle encoding.</p>
+<p>Denote by $O$ and $V(\bm{\theta})$ the quantum observable and the VQC,
+respectively. The prediction function of the near-term QNN is given by
+$$\hat{y}^{(i)}(\bm{\theta}) = \text{Tr} [ O V(\bm{\theta}) \rho^{(i)} V(\bm{\theta})^\dag ] .$$</p>
+<p>In the binary classification task, the QNN learns by training the
+parameter $\bm{\theta}$ to minimize the distance between the label
+$y^{(i)}$ and the prediction $\hat{y}^{(i)}(\bm{\theta})$. Specifically,
+the mean square error (MSE) is used as the loss function:
+$$
+\bm{\theta}^* = { argmin} \mathcal{L}(\bm{\theta}) , \ \text{where } \mathcal{L}(\bm{\theta}) = \sum_{i=1}^{|\mathcal{D}|} \ell (\bm{\theta}, \bm{x}^{(i)}, y^{(i)}) = \frac{1}{2}  \sum_{i=1}^{|\mathcal{D}|} \left( \hat{y}^{(i)} (\bm{\theta}) - y^{(i)} \right)^2 .$$
+The gradient of the loss can be calculated via
+the chain rule
+$$\nabla_{\bm{\theta}} \mathcal{L}(\bm{\theta}) = \sum_{i=1}^{|\mathcal{D}|} \left( \hat{y}^{(i)} (\bm{\theta}) - y^{(i)} \right) \nabla_{\bm{\theta}} \hat{y}^{(i)} (\bm{\theta}) ,$$
+where the gradient of the prediction $\hat{y}^{(i)}$ can be obtained by
+using the parameter-shift rule. Consequently, a variety of
+gradient-based optimization algorithms, such as stochastic gradient
+descent, Adagrad, and Adam, can be employed to train near-term QNNs.</p>
+<blockquote>
+<p>The QNN binary classification framework can be naturally extended to
+multi-label classification using the <strong>one-vs-all</strong> strategy.
+Specifically, we train $k$ QNN binary classifiers for $k$ classes, with
+each classifier distinguishing a specific class from the others.</p>
+</blockquote>
+<blockquote>
+<p>The QNN classification framework presented in this section can be
+extended to quantum regression learning by incorporating continuous
+labels.</p>
+</blockquote>
+<h3 id="chapt5:sec:qnn_gen">Generative learning with near-term QNNs</h3>
+<p>In this section, we introduce a quantum generative model based on
+near-term QNNs, namely the quantum generative adversarial network
+(QGAN) [@lloyd2018quantum]. Similar to its classical counterparts, QGAN
+learns to generate samples by employing a discriminator and a generator,
+which are engaged in a two-player minimax game. Specifically, both the
+discriminator $D$ and the generator $G$ can be implemented using
+near-term QNNs. By leveraging the expressive power of QNNs, QGAN has the
+potential to exhibit quantum advantages in certain
+tasks[@bravyi2018quantum; @zhu2022generative].</p>
+<p>To illustrate the training and sampling processes of QGAN, we present
+two examples based on the quantum patch and batch GANs proposed by
+@huang2021experimental. Let $N$ denote the number of qubits and $M$ the
+number of training samples. The patch and batch strategies are designed
+for the cases where $N &lt; \lceil \log M \rceil$ and
+$N &gt; \lceil \log M \rceil$, respectively. Specifically, the patch
+strategy enables the generation of high-dimensional images with limited
+quantum resources, while the batch strategy facilitates parallel
+training when sufficient quantum resources are available.</p>
+<h4 id="quantum-patch-gan">Quantum patch GAN</h4>
+<p>We begin by introducing the quantum patch GAN, which consists of a
+quantum generator, as illustrated in
+Figure 4.7, a classical discriminator, and a
+classical optimizer. Both the learning and sampling processes of an
+image are performed in patches, involving $T$ sub-generators. For the
+$t$-th sub-generator, the model takes a latent state $\bm{z}$ as input
+and generates a sample $G_t(\bm{z})$. Specifically, the latent state is
+prepared from the initial state $\ket{0}^{\otimes N}$ using a single-qubit
+rotation layer, where the parameters  are
+sampled from the uniform distribution over $[0,2\pi)$. The latent state
+is then processed through an $N$-qubit hardware-efficient circuit
+$U_{G_t} (\bm{\theta})$, which leads to the state
+$$\ket{\psi_t (\bm{z})} = U_{G_t} (\bm{\theta}) \ket{\bm{z}} .$$</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/fig4-7.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>To perform non-linear operations, partial measurements are conducted,
+and a subsystem $\mathcal{A}$ (ancillary qubits) is traced out from the
+state $|\psi_t&gt;$. The resulting mixed state is</p>
+<p>$$\rho_t(\bm{z}) = \frac{\text{Tr}_{\mathcal{A}} \left[ \Pi \otimes \mathbb{I} |\psi_t (\bm{z}) &gt; &lt; \psi_t (\bm{z}) | \right] }{\text{Tr} \left[ \Pi \otimes \mathbb{I} |\psi_t (\bm{z}) &gt; &lt; \psi_t (\bm{z}) | \right]} ,$$</p>
+<p>where $\Pi$ is the projective operator acting on the subsystem
+$\mathcal{A}$. Subsequently, the mixed state $\rho_t(\bm{z})$ is
+measured in the computational basis to obtain the sample $G_t(\bm{z})$.
+Specifically, let $P(J=j):=\text{Tr}[|j&gt;&lt;j|\rho_t(\bm{z})]$, where the
+probabilities of the outcomes can be estimated by the measurement. The
+sample $G_t(\bm{z})$ is then defined as $$\begin{aligned}
+G_t(\bm{z}) ={}&amp; [ P(J=0), \cdots, P(J=j), \cdots, P(J=2^{N-N_{\mathcal{A}}}-1) ],
+\end{aligned}$$ where $N_{\mathcal{A}}$ is the number of qubits in
+$\mathcal{A}$. Finally, the complete image is reconstructed by
+aggregating these samples from all sub-generators as follows:
+$$G(\bm{z}) = [G_1(\bm{z}), \cdots, G_T (\bm{z})] .$$</p>
+<p>In principle, the discriminator $D$ in a quantum patch GAN can be any
+classical neural network that takes the training data $\bm{x}$ or the
+generated sample $G(\bm{z})$ as input, with the output
+$$D(\bm{x}), \ D(G(\bm{z})) \in [0,1] .$$ Let $\bm{\gamma}$ and
+$\bm{\theta}$ denote the parameters of the discriminator $D$ and the
+generator $G$, respectively. The optimization problem for the quantum
+patch GAN can be formulated as:</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/gan_loss.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>Similar to quantum discriminative learning, the quantum
+patch GAN can be trained using gradient-based optimization algorithms.</p>
+<h4 id="quantum-batch-gan">Quantum batch GAN</h4>
+<p>As illustrated in
+Figure 4.8, the quantum batch GAN differs from
+the quantum patch GAN by employing a quantum discriminator. In a quantum
+batch GAN, all qubits are divided into two registers: the index
+register, consisting of $N_I$ qubits, and the feature register,
+consisting of $N_F$ qubits. The qubits in the feature register are
+further partitioned into three parts: $N_D$ qubits for generating
+quantum samples, $N_{A_G}$ qubits for implementing non-linear operations
+in the generator $G_{\bm{\theta}}$, and $N_{A_D}$ qubits for
+implementing non-linear operations in the discriminator
+$D_{\bm{\gamma}}$. For a batch with size $|B_k|=2^{N_I}$, two oracles
+are used to encode the information of latent vectors and training
+samples:</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/gan_oracle.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/fig4-8.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<blockquote>
+<p>For data with $M$ features, state preparation for amplitude encoding in
+$U_{\bm{x}}$ requires $\tilde{\mathcal{O}}(2^{N_I}M)$ multi-controlled
+quantum gates, which is infeasible for current NISQ devices. This
+challenge can be addressed by employing pre-trained shallow circuit
+approximations of the given oracle [@benedetti2019generative].</p>
+</blockquote>
+<p>After the encoding stage, a PQC $U_G(\bm{\theta})$ and the corresponding
+partial measurement are employed as the quantum generator. Thus, the
+generated state corresponding to $|B_k|$ fake samples is obtained as
+follows:</p>
+<figure style="text-align:center;">
+  <img src="../../images/chapter4/gen_state.png" alt="图片描述" style="max-width:80%; height:auto;">
+</figure>
+<p>where the partial measurement
+$\Pi_{A_G}=(|0&gt;&lt;0|)^{\otimes N_{A_G}}$ serves as the non-linear
+operation. In the sampling stage, the reconstructed image is generated
+similarly to the quantum patch GAN. Specifically, the $i$-th image
+$G_{\bm{\theta}}(\bm{z}^{(i)})$ in the batch is</p>
+<p>$$\begin{aligned}
+G_{\bm{\theta}}(\bm{z}^{(i)}) ={}&amp; \left[ P(J=0|I=i), \cdots, P(J=2^{N_D}-1|I=i) \right],
+\end{aligned}$$</p>
+<p>where</p>
+<p>$$\begin{aligned}
+P(J=j|I=i) ={}&amp; \text{Tr} \left[ |i&gt;_I |j&gt;_F &lt;i|_I &lt;j|_F |G(\bm{z})&gt;&lt;G(\bm{z})| \right] .
+\end{aligned}$$</p>
+<div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/chapter4/3.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/chapter4/2/" title="Chapter 4.2 Fault-tolerant Quantum Perceptron"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Chapter 4.2 Fault-tolerant Quantum Perceptron</a>
+<a class="nav nav-next" href="http://localhost:1313/chapter4/4/" title="Chapter 4.4 Theoretical Foundations of QNNs">Next - Chapter 4.4 Theoretical Foundations of QNNs <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class="active"><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

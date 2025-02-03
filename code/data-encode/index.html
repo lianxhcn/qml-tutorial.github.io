@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Data Encoding - Quantum Machine Learning Tutorial</title>
+<meta name="description" content="A Hands-on Tutorial for Machine Learning Practitioners and Researchers">
+<meta name="generator" content="Hugo 0.140.2">
+<link href="http://localhost:1313//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="http://localhost:1313/code/data-encode/">
+<link rel="stylesheet" href="http://localhost:1313/css/theme.min.css">
+<link rel="stylesheet" href="http://localhost:1313/css/chroma.min.css">
+<script defer src="http://localhost:1313//js/fontawesome6/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck=" crossorigin="anonymous"></script>
+<script src="http://localhost:1313/js/bundle.js"></script><style>
+:root {}
+</style>
+<meta property="og:url" content="http://localhost:1313/code/data-encode/">
+  <meta property="og:site_name" content="Quantum Machine Learning Tutorial">
+  <meta property="og:title" content="Data Encoding">
+  <meta property="og:description" content="Code Demonstration This section provides code implementations for key techniques introduced earlier, including quantum read-in strategies and block encoding, to give readers the opportunity to practice and deepen their understanding.
+Read-in implementations This subsection demonstrates toy examples of implementing data encoding methods in quantum computing, as discussed in earlier sections. Specifically, we cover basis encoding, amplitude encoding, and angle encoding. These examples aim to provide readers with hands-on experience in applying quantum data encoding techniques.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="code">
+    <meta property="og:image" content="http://localhost:1313/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/og-image.png">
+  <meta name="twitter:title" content="Data Encoding">
+  <meta name="twitter:description" content="Code Demonstration This section provides code implementations for key techniques introduced earlier, including quantum read-in strategies and block encoding, to give readers the opportunity to practice and deepen their understanding.
+Read-in implementations This subsection demonstrates toy examples of implementing data encoding methods in quantum computing, as discussed in earlier sections. Specifically, we cover basis encoding, amplitude encoding, and angle encoding. These examples aim to provide readers with hands-on experience in applying quantum data encoding techniques.">
+
+  <meta itemprop="name" content="Data Encoding">
+  <meta itemprop="description" content="Code Demonstration This section provides code implementations for key techniques introduced earlier, including quantum read-in strategies and block encoding, to give readers the opportunity to practice and deepen their understanding.
+Read-in implementations This subsection demonstrates toy examples of implementing data encoding methods in quantum computing, as discussed in earlier sections. Specifically, we cover basis encoding, amplitude encoding, and angle encoding. These examples aim to provide readers with hands-on experience in applying quantum data encoding techniques.">
+  <meta itemprop="wordCount" content="502">
+  <meta itemprop="image" content="http://localhost:1313/images/og-image.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+        onload="renderMathInElement(document.body,{ delimiters: [ { left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false } ] });"></script>
+</head>
+<body>
+
+<div class="container"><header>
+<h1>Quantum Machine Learning Tutorial</h1>
+<p class="description">A Hands-on Tutorial for Machine Learning Practitioners and Researchers</p>
+
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li id="home" class=""><a href="/"><i class='fa fa-heart'></i>&nbsp;Home</a></li>
+<li class=""><a href="/about/">About</a></li>
+<li class=""><a href="/resources/">Resources</a></li></ul>
+</nav>
+</div>
+
+<div class="content-container">
+<main><h1>Data Encoding</h1>
+<h2 id="Chapter2:preliminary-code">Code Demonstration</h2>
+<p>This section provides code implementations for key techniques introduced
+earlier, including quantum read-in strategies and block encoding, to
+give readers the opportunity to practice and deepen their understanding.</p>
+<h3 id="read-in-implementations">Read-in implementations</h3>
+<p>This subsection demonstrates toy examples of implementing data encoding
+methods in quantum computing, as discussed in earlier sections.
+Specifically, we cover basis encoding, amplitude encoding, and angle
+encoding. These examples aim to provide
+readers with hands-on experience in applying quantum data encoding
+techniques.</p>
+<h4 id="basis-encoding">Basis encoding</h4>
+<p>PennyLane provides built-in support for basis encoding through its
+<em>BasisEmbedding</em> function. Below is the Python code demonstrating the
+basis encoding for the integer 6.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pennylane <span style="color:#66d9ef">as</span> qml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dev <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>device(<span style="color:#e6db74">&#34;default.qubit&#34;</span>, range(<span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@qml.qnode</span>(dev)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">circuit</span>(x):
+</span></span><span style="display:flex;"><span>		qml<span style="color:#f92672">.</span>BasisEmbedding(x, range(<span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> qml<span style="color:#f92672">.</span>state()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Call the function</span>
+</span></span><span style="display:flex;"><span>circuit(<span style="color:#ae81ff">6</span>)
+</span></span></code></pre></div><h4 id="amplitude-encoding">Amplitude encoding</h4>
+<p>PennyLane offers built-in support for amplitude encoding via the
+<em>AmplitudeEmbedding</em> function. Below is a Python example demonstrating
+amplitude encoding for a randomly generated complex vector.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pennylane <span style="color:#66d9ef">as</span> qml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Number of qubits</span>
+</span></span><span style="display:flex;"><span>n_qubits <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define a quantum device with 8 qubits</span>
+</span></span><span style="display:flex;"><span>dev <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>device(<span style="color:#e6db74">&#34;default.qubit&#34;</span>, wires<span style="color:#f92672">=</span>n_qubits)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@qml.qnode</span>(dev)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">circuit</span>(x):
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>AmplitudeEmbedding(features<span style="color:#f92672">=</span>x, wires<span style="color:#f92672">=</span>range(n_qubits), normalize<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, pad_with<span style="color:#f92672">=</span><span style="color:#ae81ff">0.</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> qml<span style="color:#f92672">.</span>state()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate a random complex vector of length 2^n_qubits</span>
+</span></span><span style="display:flex;"><span>x_real <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(loc<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>n_qubits)
+</span></span><span style="display:flex;"><span>x_imag <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(loc<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>n_qubits)
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> x_real <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>j <span style="color:#f92672">*</span> x_imag
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute the circuit to encode the vector as a quantum state</span>
+</span></span><span style="display:flex;"><span>circuit(x)
+</span></span></code></pre></div><h4 id="angle-encoding">Angle encoding</h4>
+<p>PennyLane provides built-in support for angle encoding via the
+<em>AngleEmbedding</em> function. Below is a Python example demonstrating angle
+encoding for a randomly generated real vector.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pennylane <span style="color:#66d9ef">as</span> qml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Number of qubits</span>
+</span></span><span style="display:flex;"><span>n_qubits <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define a quantum device with 8 qubits</span>
+</span></span><span style="display:flex;"><span>dev <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>device(<span style="color:#e6db74">&#34;default.qubit&#34;</span>, wires<span style="color:#f92672">=</span>n_qubits)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@qml.qnode</span>(dev)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">circuit</span>(x):
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>AngleEmbedding(features<span style="color:#f92672">=</span>x, wires<span style="color:#f92672">=</span>range(n_qubits), rotation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;X&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> qml<span style="color:#f92672">.</span>state()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate a random real vector of length n_qubits</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#ae81ff">0</span>, np<span style="color:#f92672">.</span>pi, (n_qubits))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute the circuit to encode the vector as a quantum state</span>
+</span></span><span style="display:flex;"><span>circuit(x)
+</span></span></code></pre></div><h3 id="block-encoding">Block encoding</h3>
+<p>Here, we provide an example of how we may construct a block encoding. We
+construct the block encoding via the linear combination. We use PennyLane to keep
+consistency, yet there are many other platforms that are available as
+well. Please note that it is time-consuming to do the Pauli
+decomposition (for $n$-qubit matrix, it takes time $\mathcal{O}(n4^n)$),
+so we suggest not trying a large matrix with this method.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pennylane <span style="color:#66d9ef">as</span> qml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.36</span>
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.64</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># matrix to be decomposed</span>
+</span></span><span style="display:flex;"><span>A <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(
+</span></span><span style="display:flex;"><span>    [[a,  <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>,  b],
+</span></span><span style="display:flex;"><span>     [<span style="color:#ae81ff">0</span>, <span style="color:#f92672">-</span>a, b,  <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>     [<span style="color:#ae81ff">0</span>,  b, a,  <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>     [b,  <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#f92672">-</span>a]]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># decompose the matrix into sum of Pauli strings</span>
+</span></span><span style="display:flex;"><span>LCU <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>pauli_decompose(A)
+</span></span><span style="display:flex;"><span>LCU_coeffs, LCU_ops <span style="color:#f92672">=</span> LCU<span style="color:#f92672">.</span>terms()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># normalized square roots of coefficients</span>
+</span></span><span style="display:flex;"><span>alphas <span style="color:#f92672">=</span> (np<span style="color:#f92672">.</span>sqrt(LCU_coeffs) <span style="color:#f92672">/</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>norm(np<span style="color:#f92672">.</span>sqrt(LCU_coeffs)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dev <span style="color:#f92672">=</span> qml<span style="color:#f92672">.</span>device(<span style="color:#e6db74">&#34;default.qubit&#34;</span>, wires<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># unitaries</span>
+</span></span><span style="display:flex;"><span>ops <span style="color:#f92672">=</span> LCU_ops
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># relabeling wires: 0 --&gt; 1, and 1 --&gt; 2</span>
+</span></span><span style="display:flex;"><span>unitaries <span style="color:#f92672">=</span> [qml<span style="color:#f92672">.</span>map_wires(op, {<span style="color:#ae81ff">0</span>: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>: <span style="color:#ae81ff">2</span>}) <span style="color:#66d9ef">for</span> op <span style="color:#f92672">in</span> ops]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@qml.qnode</span>(dev)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lcu_circuit</span>():  <span style="color:#75715e"># block_encode</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># PREP</span>
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>StatePrep(alphas, wires<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># SEL</span>
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>Select(unitaries, control<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># PREP_dagger</span>
+</span></span><span style="display:flex;"><span>    qml<span style="color:#f92672">.</span>adjoint(qml<span style="color:#f92672">.</span>StatePrep(alphas, wires<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> qml<span style="color:#f92672">.</span>state()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(np<span style="color:#f92672">.</span>real(np<span style="color:#f92672">.</span>round(output_matrix,<span style="color:#ae81ff">2</span>)))
+</span></span></code></pre></div><div class="edit-meta">
+
+<br><a href="https://github.com/thingsym/hugo-theme-techdoc/edit/master/code/data-encode.md" class="edit-page"><i class="fas fa-pen-square"></i>&nbsp;Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="http://localhost:1313/code/" title="Code Examples"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Prev - Code Examples</a>
+<a class="nav nav-next" href="http://localhost:1313/code/kernel-mnist/" title="Classification on MNIST">Next - Classification on MNIST <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="http://localhost:1313/">Home</a></li>
+
+<li class=""><a href="http://localhost:1313/getting-started/">Getting Started</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter1/">Chapter 1 Introduction of QML</a>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter2/">Chapter 2 Basis of Quantum Computing</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter2/1/">Chapter 2.1 From Classical Bits to Quantum Bits</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/2/">Chapter 2.2 From Digital Logical Circuit to Quantum Circuit Model</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/3/">Chapter 2.3 Quantum Read-in and Read-out protocols</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/4/">Chapter 2.4 Quantum Linear Algebra</a></li>
+<li class=""><a href="http://localhost:1313/chapter2/5/">Chapter 2.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter3/">Chapter 3 Quantum Kernel Methods</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter3/1/">Chapter 3.1 Classical Kernel</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/2/">Chapter 3.2 Quantum Kernel Machines</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/3/">Chapter 3.3 Theoretical Foundations</a></li>
+<li class=""><a href="http://localhost:1313/chapter3/4/">Chapter 3.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter4/">Chapter 4 Quantum Neural Networks</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter4/1/">Chapter 4.1 Classical Neural Networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/2/">Chapter 4.2 Fault-tolerant Quantum Perceptron</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/3/">Chapter 4.3 Near-term quantum neural networks</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/4/">Chapter 4.4 Theoretical Foundations of QNNs</a></li>
+<li class=""><a href="http://localhost:1313/chapter4/5/">Chapter 4.5 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="http://localhost:1313/chapter5/">Chapter 5 Quantum Transformer</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="http://localhost:1313/chapter5/1/">Chapter 5.1 Classical Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/2/">Chapter 5.2 Fault-tolerant Quantum Transformer</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/3/">Chapter 5.3 Runtime Analysis with Quadratic Speedups</a></li>
+<li class=""><a href="http://localhost:1313/chapter5/4/">Chapter 5.4 Recent Advancements</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="http://localhost:1313/code/">Code Examples</a>
+  
+<ul class="sub-menu">
+<li class="active"><a href="http://localhost:1313/code/data-encode/">Data Encoding</a></li>
+<li class=""><a href="http://localhost:1313/code/kernel-mnist/">Classification on MNIST</a></li>
+<li class=""><a href="http://localhost:1313/code/classifier/">Quantum Classifier</a></li>
+<li class=""><a href="http://localhost:1313/code/patch-qgan/">Quantum Patch GAN</a></li>
+<li class=""><a href="http://localhost:1313/code/transformer/">Tranformer</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>
