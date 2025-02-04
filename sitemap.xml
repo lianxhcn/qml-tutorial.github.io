@@ -60,8 +60,6 @@
   </url><url>
     <loc>http://localhost:1313/code/</loc>
   </url><url>
-    <loc>http://localhost:1313/about/</loc>
-  </url><url>
     <loc>http://localhost:1313/categories/</loc>
   </url><url>
     <loc>http://localhost:1313/chapter2/5/</loc>
@@ -69,8 +67,6 @@
     <loc>http://localhost:1313/</loc>
   </url><url>
     <loc>http://localhost:1313/categories/quantum-neural-network/</loc>
-  </url><url>
-    <loc>http://localhost:1313/resources/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
   </url>

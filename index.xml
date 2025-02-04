@@ -162,20 +162,6 @@
       <description>&lt;p&gt;Quantum neural networks (QNNs) have emerged as a prominent paradigm in&#xA;quantum machine learning, demonstrating potential in both discriminative&#xA;and generative learning tasks. For discriminative tasks, QNNs utilize&#xA;high-dimensional Hilbert spaces to efficiently capture and represent&#xA;complex intrinsic relationships. In generative tasks, QNNs leverage&#xA;variational quantum circuits to generate complex probability&#xA;distributions that may exceed the capabilities of classical models.&#xA;While these approaches share common learning strategies, they each&#xA;introduce unique challenges and opportunities in terms of model design,&#xA;theoretical exploration, and practical implementation. In the remainder&#xA;of this section, we briefly review recent advances in QNNs. Interested&#xA;readers can refer to @ablayev2019quantum&#xA;[@li2022recent; @massoli2022leap] for a more comprehensive review.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Resources</title>
-      <link>http://localhost:1313/resources/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/resources/</guid>
-      <description>&lt;p&gt;A list of materials, including textbooks, lecture notes, software platforms.&lt;/p&gt;&#xA;&lt;h2 id=&#34;textbooks&#34;&gt;Textbooks&lt;/h2&gt;&#xA;&lt;h2 id=&#34;open-source-libraries&#34;&gt;Open-source libraries&lt;/h2&gt;</description>
-    </item>
-    <item>
-      <title>About</title>
-      <link>http://localhost:1313/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/</guid>
-      <description>&lt;p&gt;Introduction of team and team members.&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>Chapter 2.5 Recent Advancements</title>
       <link>http://localhost:1313/chapter2/5/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
