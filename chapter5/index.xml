@@ -2,37 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Chapter 5 Quantum Transformer on Quantum Machine Learning Tutorial</title>
-    <link>http://localhost:1313/chapter5/</link>
+    <link>https://qml-tutorial.github.io/chapter5/</link>
     <description>Recent content in Chapter 5 Quantum Transformer on Quantum Machine Learning Tutorial</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:1313/chapter5/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://qml-tutorial.github.io/chapter5/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Chapter 5.1 Classical Transformer</title>
-      <link>http://localhost:1313/chapter5/1/</link>
+      <link>https://qml-tutorial.github.io/chapter5/1/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter5/1/</guid>
+      <guid>https://qml-tutorial.github.io/chapter5/1/</guid>
       <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 5.1 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;The transformer architecture is designed to predict the next &lt;em&gt;token&lt;/em&gt; in a sequence by leveraging&#xA;sophisticated neural network components. Its modular design&amp;mdash;including&#xA;residual connections, layer normalization, and feed-forward networks&#xA;(FFNs) as introduced in&#xA;Chapter 4.1&amp;mdash;makes it highly scalable and&#xA;customizable. This versatility has enabled its successful application in&#xA;large-scale foundation models across diverse domains, including natural&#xA;language processing, computer vision, reinforcement learning, robotics,&#xA;and beyond.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Chapter 5.2 Fault-tolerant Quantum Transformer</title>
-      <link>http://localhost:1313/chapter5/2/</link>
+      <link>https://qml-tutorial.github.io/chapter5/2/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter5/2/</guid>
+      <guid>https://qml-tutorial.github.io/chapter5/2/</guid>
       <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 5.2 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;In this section, we move on to show an end-to-end transformer&#xA;architecture implementable on a quantum device, which includes all the&#xA;key building blocks introduced in&#xA;Chapter 5.1, and a discussion of the&#xA;potential runtime speedups of this quantum model. In particular, here we&#xA;focus on the &lt;em&gt;inference process&lt;/em&gt; in which a classical Transformer has&#xA;already been trained and is queried to predict the single next token.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Chapter 5.3 Runtime Analysis with Quadratic Speedups</title>
-      <link>http://localhost:1313/chapter5/3/</link>
+      <link>https://qml-tutorial.github.io/chapter5/3/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter5/3/</guid>
+      <guid>https://qml-tutorial.github.io/chapter5/3/</guid>
       <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 5.3 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;As Theorem 5.1 shows, the quantum transformer&#xA;uses ${\mathcal{\widetilde{O}}}(d N^2 \alpha_s\alpha_w)$ times the input&#xA;block encodings, where $\alpha_s$ and $\alpha_w$ are encoding factors&#xA;that significantly influence the overall complexity. We obtain this&#xA;final complexity on the basis of the following considerations: for&#xA;one-single layer transformer architecture, it includes one&#xA;self-attention, one feed-forward network, and two residual connection&#xA;with layer normalization, corresponding to the encoder-only or&#xA;decoder-only structure. Starting from the input assumption, for the index $j\in [\ell]$, we first&#xA;construct the block encoding of self-attention matrix. This output can be directly&#xA;the input of the quantum residual connection and layer normalization, which output is a state&#xA;encoding. The state encoding can directly be used&#xA;as the input of the feed-forward network. Finally, we put the output of the&#xA;feed-fordward network, which is a state encoding, into the residual&#xA;connection block. This is possible by noticing that state encoding is a&#xA;specific kind of the block encoding. Multiplying the query complexity of&#xA;these computational blocks, one can achieve the result. The detailed analysis of&#xA;runtime is referred to @guo2024quantumlinear2024&lt;/p&gt;</description>
     </item>
     <item>
       <title>Chapter 5.4 Recent Advancements</title>
-      <link>http://localhost:1313/chapter5/4/</link>
+      <link>https://qml-tutorial.github.io/chapter5/4/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter5/4/</guid>
+      <guid>https://qml-tutorial.github.io/chapter5/4/</guid>
       <description>&lt;p&gt;Transformer architecture has profoundly revolutionized AI and has broad&#xA;impacts. As classical computing approaches its physical limitations, it&#xA;is important to ask how we can leverage quantum computers to advance&#xA;Transformers with better performance and energy efficiency. Besides the&#xA;fault-tolerant quantum Transformers, multiple works are&#xA;advancing this frontier from various perspectives.&lt;/p&gt;&#xA;&lt;p&gt;One aspect is to design novel quantum neural network architectures&#xA;introduced in Chapter 4 with the intuition from the Transformer,&#xA;especially the design of the self-attention block. In particular,&#xA;@li2023quantumselfattentionneuralnetworks proposes the quantum&#xA;self-attention neural networks and verifies their effectiveness with the&#xA;synthetic data sets of quantum natural language processing. There are&#xA;several follow-up works along this direction&#xA;[@Cherrat_2024; @evans2024learningsasquatchnovelvariational; @widdows2024quantumnaturallanguageprocessing].&lt;/p&gt;</description>
     </item>
   </channel>

@@ -2,37 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Chapter 3 Quantum Kernel Methods on Quantum Machine Learning Tutorial</title>
-    <link>http://localhost:1313/chapter3/</link>
+    <link>https://qml-tutorial.github.io/chapter3/</link>
     <description>Recent content in Chapter 3 Quantum Kernel Methods on Quantum Machine Learning Tutorial</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:1313/chapter3/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://qml-tutorial.github.io/chapter3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Chapter 3.1 Classical Kernel</title>
-      <link>http://localhost:1313/chapter3/1/</link>
+      <link>https://qml-tutorial.github.io/chapter3/1/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter3/1/</guid>
+      <guid>https://qml-tutorial.github.io/chapter3/1/</guid>
       <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 3.1 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;motivations-for-classical-kernel-machines&#34;&gt;Motivations for classical kernel machines&lt;/h3&gt;&#xA;&lt;p&gt;Before delving into kernel machines, it is essential to first understand&#xA;the motivation behind kernel methods. In many machine learning tasks,&#xA;particularly in classification, the goal is to find a decision boundary&#xA;that best separates different classes of data. When the data is linearly&#xA;separable, this boundary can be represented as a straight line (in 2D),&#xA;a plane (in 3D), or a hyperplane (in higher dimensions), as illustrated&#xA;in the following Figure. Mathematically, given an input space&#xA;$\mathcal{X}\subset \mathbb{R}^d$ with $d\ge 1$ and a target or output&#xA;space $\mathcal{Y}={+1,-1}$, we consider a training dataset&#xA;$\mathcal{D}={(\bm{x}^{(i)}, {y}^{(i)})}_{i=1}^n \in (\mathcal{X} \times \mathcal{Y})^n$&#xA;where each data point $\bm{x}^{(i)}  \in \mathcal{X}$ is associated with&#xA;a label ${y}^{(i)}  \in \mathcal{Y}$. For the dataset to be linearly&#xA;separable, there must exist a vector $\bm{w} \in \mathbb{R}^{d}$ and a&#xA;bias term $b\in \mathbb{R}$ such that&#xA;$$\forall i\in [n], \quad {y}^{(i)}(\bm{w}^{\top} \cdot \bm{x}^{(i)}+b)\ge 0.$$&#xA;This means that a hyperplane defined by $(\bm{\omega},b)$ can perfectly&#xA;separate the two classes.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Chapter 3.2 Quantum Kernel Machines</title>
-      <link>http://localhost:1313/chapter3/2/</link>
+      <link>https://qml-tutorial.github.io/chapter3/2/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter3/2/</guid>
+      <guid>https://qml-tutorial.github.io/chapter3/2/</guid>
       <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 3.2 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;motivations-for-quantum-kernel-machines&#34;&gt;Motivations for quantum kernel machines&lt;/h3&gt;&#xA;&lt;p&gt;To effectively introduce quantum kernel machines, it is essential to&#xA;recognize the limitations of classical kernel machines. As discussed before, classical kernel machines rely on&#xA;manually tailored feature mappings, such as polynomials or radial basis&#xA;functions. However, these mappings may fail to capture the complex&#xA;patterns behind the dataset. Quantum kernel machines emerge as a&#xA;promising alternative, as they perform feature mapping using quantum&#xA;circuits, enabling them to explore exponentially larger feature spaces&#xA;that are otherwise infeasible for classical computation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Chapter 3.3 Theoretical Foundations</title>
-      <link>http://localhost:1313/chapter3/3/</link>
+      <link>https://qml-tutorial.github.io/chapter3/3/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter3/3/</guid>
+      <guid>https://qml-tutorial.github.io/chapter3/3/</guid>
       <description>&lt;p&gt;&lt;em&gt;This content of this section corresponds to the Chapter 3.3 of our paper. Please refer to the original paper for more details.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;theoretical-foundations-of-quantum-kernel-machines&#34;&gt;Theoretical Foundations of Quantum Kernel Machines&lt;/h2&gt;&#xA;&lt;p&gt;In this section, we take a step further to explore the theoretical&#xA;foundations of quantum kernels. Specifically, we focus on two crucial&#xA;aspects: the &lt;em&gt;expressivity&lt;/em&gt; and &lt;em&gt;generalization&lt;/em&gt; properties of quantum&#xA;kernel machines. As shown in&#xA;Figure 3.4,&#xA;these two aspects are essential for understanding the potential&#xA;advantages of quantum kernels over classical learning approaches and&#xA;their inherent limitations. For ease of understanding, this section&#xA;emphasizes the fundamental concepts necessary for evaluating the power&#xA;and limitation of quantum kernels instead of exhaustively reviewing all&#xA;theoretical results.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Chapter 3.4 Recent Advancements</title>
-      <link>http://localhost:1313/chapter3/4/</link>
+      <link>https://qml-tutorial.github.io/chapter3/4/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/chapter3/4/</guid>
+      <guid>https://qml-tutorial.github.io/chapter3/4/</guid>
       <description>&lt;p&gt;The foundational concept of using quantum computers to evaluate kernel&#xA;functions, namely the concept of quantum kernels, was first explored by&#xA;@schuld2017implementing, who highlighted the fundamental differences&#xA;between quantum kernels and quantum support vector machines. Building on&#xA;this, @havlivcek2019supervised and @schuld2019quantum established a&#xA;connection between quantum kernels and parameterized quantum circuits&#xA;(PQCs), demonstrating their practical implementation. These works&#xA;emphasized the parallels between quantum feature maps and the classical&#xA;kernel trick. Since then, a large number of studies delved into figuring&#xA;out the potential of quantum kernels for solving practical real-world&#xA;problems.&lt;/p&gt;</description>
     </item>
   </channel>
