@@ -162,6 +162,13 @@
       <description>&lt;p&gt;Quantum neural networks (QNNs) have emerged as a prominent paradigm in&#xA;quantum machine learning, demonstrating potential in both discriminative&#xA;and generative learning tasks. For discriminative tasks, QNNs utilize&#xA;high-dimensional Hilbert spaces to efficiently capture and represent&#xA;complex intrinsic relationships. In generative tasks, QNNs leverage&#xA;variational quantum circuits to generate complex probability&#xA;distributions that may exceed the capabilities of classical models.&#xA;While these approaches share common learning strategies, they each&#xA;introduce unique challenges and opportunities in terms of model design,&#xA;theoretical exploration, and practical implementation. In the remainder&#xA;of this section, we briefly review recent advances in QNNs. Interested&#xA;readers can refer to @ablayev2019quantum&#xA;[@li2022recent; @massoli2022leap] for a more comprehensive review.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Resources</title>
+      <link>http://localhost:1313/resources/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/resources/</guid>
+      <description>&lt;p&gt;Welcome to the &lt;strong&gt;Resources&lt;/strong&gt; page, where you can find valuable materials to aid your journey in Quantum Machine Learning. Below is a curated list of textbooks, software and hardware platforms, lecture notes, and other open-source libraries.&lt;/p&gt;&#xA;&lt;h2 id=&#34;textbooks&#34;&gt;Textbooks&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://www.cambridge.org/highereducation/books/quantum-computation-and-quantum-information/01E10196D0A682A6AEFFEA52D53BE9AE#overview&#34; target=&#34;_blank&#34;&gt;Quantum Computation and Quantum Information&lt;/a&gt;&lt;/strong&gt;&lt;br&gt;&#xA;&lt;em&gt;Author: Michael A. Nielsen and Isaac L. Chuang&lt;/em&gt;&lt;br&gt;&#xA;This is one of the most widely used textbooks in the field of quantum computing. It covers the fundamental concepts of quantum mechanics, quantum computation, and quantum algorithms in depth. A must-read for anyone getting started with quantum computing.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Chapter 2.5 Recent Advancements</title>
       <link>http://localhost:1313/chapter2/5/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
